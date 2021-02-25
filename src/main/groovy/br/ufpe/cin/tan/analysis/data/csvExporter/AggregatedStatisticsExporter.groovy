@@ -30,8 +30,11 @@ class AggregatedStatisticsExporter {
 
     AggregatedStatisticsExporter(String folder) {
         aggregatedStatisticsFile = "${folder}${File.separator}aggregated.csv"
-        def output = Util.findFilesFromDirectory(folder).findAll {
-            it.contains("${File.separator}${ConstantData.SELECTED_TASKS_BY_CONFIGS_FOLDER}${File.separator}")
+        def output = Util.findFilesFromDirectory(folder)
+        if(Util.RUNNING_ALL_CONFIGURATIONS){
+            output = output.findAll {
+                it.contains("${File.separator}${ConstantData.SELECTED_TASKS_BY_CONFIGS_FOLDER}${File.separator}")
+            }
         }
         relevantSimilarityFiles = output.findAll { it.endsWith("-relevant" + ConstantData.SIMILARITY_FILE_SUFIX) }
         validSimilarityFiles = output.findAll { it.endsWith("-valid" + ConstantData.SIMILARITY_FILE_SUFIX) }
@@ -96,6 +99,7 @@ class AggregatedStatisticsExporter {
         def f2Values = []
 
         files?.each { file ->
+            println "Lendo: ${file} (aggregatedCorrelationTestsPrecisionRecall)"
             List<String[]> entries = CsvUtil.read(file)
             if (entries.size() > ExporterUtil.INITIAL_TEXT_SIZE_SHORT_HEADER) {
                 def data = entries.subList(ExporterUtil.INITIAL_TEXT_SIZE_SHORT_HEADER, entries.size())
