@@ -4,11 +4,9 @@ import br.ufpe.cin.tan.analysis.taskInterface.TaskI
 import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.analysis.task.DoneTask
 import br.ufpe.cin.tan.evaluation.TaskInterfaceEvaluator
-import br.ufpe.cin.tan.similarity.test.TestSimilarityAnalyser
 import br.ufpe.cin.tan.test.AcceptanceTest
 import br.ufpe.cin.tan.test.TestCodeAbstractAnalyser
 import br.ufpe.cin.tan.util.Util
-import br.ufpe.cin.tan.util.ruby.RubyUtil
 import groovy.util.logging.Slf4j
 
 @Slf4j
@@ -19,7 +17,7 @@ class AnalysedTask {
     TaskI taski
     List<String> methods
     int stepCalls
-    String itext
+    String texti
     String stepMatchErrorsText
     int stepMatchErrors
     int multipleStepMatchesCounter
@@ -34,8 +32,6 @@ class AnalysedTask {
     int stepDefCompilationErrors
     String unitCompilationErrorsText
     int unitCompilationErrors
-    List<String> gems
-    List<String> coverageGems
     String rails
     String ruby
 
@@ -43,9 +39,7 @@ class AnalysedTask {
         this.doneTask = doneTask
         this.testi = new TestI()
         this.taski = new TaskI()
-        this.itext = ""
-        this.gems = []
-        this.coverageGems = []
+        this.texti = ""
         this.rails = ""
         this.ruby = ""
     }
@@ -149,21 +143,11 @@ class AnalysedTask {
     }
 
     double precision() {
-        if (Util.SIMILARITY_ANALYSIS) {
-            def similarityAnalyser = new TestSimilarityAnalyser(testi.findFilteredFiles(), taski.findFilteredFiles())
-            similarityAnalyser.calculateSimilarityByJaccard()
-        } else {
-            TaskInterfaceEvaluator.calculateFilesPrecision(testi, taski)
-        }
+        TaskInterfaceEvaluator.calculateFilesPrecision(testi, taski)
     }
 
     double recall() {
-        if (Util.SIMILARITY_ANALYSIS) {
-            def similarityAnalyser = new TestSimilarityAnalyser(testi.findFilteredFiles(), taski.findFilteredFiles())
-            similarityAnalyser.calculateSimilarityByCosine()
-        } else {
-            TaskInterfaceEvaluator.calculateFilesRecall(testi, taski)
-        }
+        TaskInterfaceEvaluator.calculateFilesRecall(testi, taski)
     }
 
     double f2Measure() {
@@ -190,14 +174,6 @@ class AnalysedTask {
         testi.notFoundViews
     }
 
-    def satisfiesGemsFilter() {
-        if (Util.COVERAGE_GEMS.empty) true
-        else {
-            if (Util.COVERAGE_GEMS.intersect(gems).size() > 0) true
-            else false
-        }
-    }
-
     Set<AcceptanceTest> getAcceptanceTests() {
         testi.foundAcceptanceTests
     }
@@ -209,18 +185,8 @@ class AnalysedTask {
 
     def isValid() {
         int zero = 0
-        compilationErrors == zero && stepMatchErrors == zero && satisfiesGemsFilter() &&
-                hasImplementedAcceptanceTests() //&& !taskiFiles().empty
-    }
-
-    def configureGems(String path) {
-        def result = RubyUtil.checkRailsVersionAndGems(path) //[rails, ruby, gems]
-        gems = result.gems
-        rails = result.rails
-        ruby = result.ruby
-        if (gems.size() > 0) {
-            coverageGems = gems.findAll { it == "coveralls" || it == "simplecov" }
-        }
+        compilationErrors == zero && stepMatchErrors == zero &&
+                hasImplementedAcceptanceTests() && !taskiFiles().empty
     }
 
     /**
@@ -229,7 +195,7 @@ class AnalysedTask {
      * #(gherkin tests), #(implemented gherkin tests), #(stepdefs), #(implemented stepdefs), unknown methods,
      * #(step calls), step match errors, #(step match errors), AST errors, #(AST errors), gherkin AST errors,
      * #(gherkin AST errors), step AST errors, #(step AST errors), renamed files, deleted files, not found views,
-     * #views, #TestI, #TaskI, TestI, TaskI, precision, recall, hashes, timestamp, rails version, gems,
+     * #views, #TestI, #TaskI, TestI, TaskI, precision, recall, hashes, timestamp, rails version,
      * #(calls to visit), #(views in TestI), #(files accessed by view analysis), files accessed by view analysis.
      * Complete version with 38 fields.
      * */
@@ -251,7 +217,7 @@ class AnalysedTask {
                           compilationErrorsText, compilationErrors, gherkinCompilationErrorsText, gherkinCompilationErrors,
                           stepDefCompilationErrorsText, stepDefCompilationErrors, renames, removedFiles, views,
                           views.size(), testISize, taskISize, testIFiles, taskIFiles, precision(), recall(),
-                          doneTask.hashes, testi.timestamp, rails, gems, testi.visitCallCounter, testi.lostVisitCall,
+                          doneTask.hashes, testi.timestamp, rails, testi.visitCallCounter, testi.lostVisitCall,
                           viewFileFromTestI, filesFromViewAnalysis.size(), filesFromViewAnalysis, hasMergeCommit(),
                           f2Measure(), multipleStepMatchesCounter, multipleStepMatchesText,
                           genericStepKeywordCounter, genericStepKeywordText]
@@ -300,12 +266,6 @@ class AnalysedTask {
                          removedFiles, views, views.size(), testi.timestamp, hasMergeCommit(), falsePositives.size(),
                          falseNegatives.size(), falsePositives, falseNegatives, hits.size(), hits, f2Measure()]
         line
-    }
-
-    def parseCoverageGemsToString() {
-        def coverage = ""
-        if (!coverageGems.empty) coverage = coverageGems.join(",")
-        coverage
     }
 
     private void extractStepMatchErrorText() {

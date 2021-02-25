@@ -43,7 +43,6 @@ abstract class Util {
     public static final String GEM_I18N
     public static final String GEM_PARSER
     public static final String GEM_AST
-    public static final List<String> COVERAGE_GEMS
     /*************************************************************************************/
 
     /* SPECIFIC FOR RAILS PROJECTS ********************************************************/
@@ -55,8 +54,6 @@ abstract class Util {
     public static boolean WHEN_FILTER
     public static boolean RESTRICT_GHERKIN_CHANGES
     public static final boolean RUNNING_ALL_CONFIGURATIONS
-
-    public static final boolean SIMILARITY_ANALYSIS
 
     static {
         properties = new Properties()
@@ -111,7 +108,6 @@ abstract class Util {
         GEM_I18N = configureGemI18n()
         GEM_PARSER = configureGemParser()
         GEM_AST = configureGemAst()
-        COVERAGE_GEMS = configureCoverageGems()
         VIEW_ANALYSIS = configureViewAnalysis()
 
         CONTROLLER_FILTER = configureControllerFilter()
@@ -120,8 +116,6 @@ abstract class Util {
         RUNNING_ALL_CONFIGURATIONS = configureRunningConfigurations()
 
         createFolders()
-
-        SIMILARITY_ANALYSIS = configureSimilarityAnalysis()
     }
 
     private static loadProperties() {
@@ -208,7 +202,8 @@ abstract class Util {
     }
 
     private static boolean configureViewAnalysis() {
-        configureBooleanProperties(properties.(ConstantData.PROP_VIEW_ANALYSIS), ConstantData.DEFAULT_VIEW_ANALYSIS)
+        if(CODE_LANGUAGE != ConstantData.DEFAULT_LANGUAGE) false
+        else configureBooleanProperties(properties.(ConstantData.PROP_VIEW_ANALYSIS), ConstantData.DEFAULT_VIEW_ANALYSIS)
     }
 
     private static boolean configureControllerFilter() {
@@ -227,10 +222,6 @@ abstract class Util {
         configureBooleanProperties(properties.(ConstantData.PROP_RUN_ALL_CONFIGURATIONS), ConstantData.DEFAULT_RUN_ALL_CONFIGURATIONS)
     }
 
-    private static boolean configureSimilarityAnalysis() {
-        configureBooleanProperties(properties.(ConstantData.PROP_SIMILARITY), ConstantData.DEFAULT_SIMILARITY)
-    }
-
     private static createFolder(String folder) {
         File zipFolder = new File(folder)
         if (!zipFolder.exists()) {
@@ -242,15 +233,6 @@ abstract class Util {
         if (!RUNNING_ALL_CONFIGURATIONS) createFolder(ConstantData.DEFAULT_EVALUATION_FOLDER)
         createFolder(ConstantData.DEFAULT_REPOSITORY_FOLDER)
         createFolder(ConstantData.DEFAULT_VIEW_ANALYSIS_ERROR_FOLDER)
-    }
-
-    private static configureCoverageGems() {
-        def result = []
-        String gems = properties.(ConstantData.PROP_COVERAGE_GEMS)
-        if (gems && !gems.empty) {
-            result = gems.tokenize(',')*.trim()
-        }
-        result
     }
 
     static String configureGitRepositoryName(String url) {

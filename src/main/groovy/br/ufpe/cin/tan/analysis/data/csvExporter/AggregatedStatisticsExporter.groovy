@@ -9,14 +9,10 @@ import br.ufpe.cin.tan.util.Util
 class AggregatedStatisticsExporter {
 
     String aggregatedStatisticsFile
-    def relevantSimilarityFiles
-    def validSimilarityFiles
     def relevantTasksFiles
     def relevantTasksControllerFiles
     def validTasksFiles
     def validTasksControllerFiles
-    def correlationJaccard
-    def correlationCosine
     def correlationTestsPrecision
     def correlationTestsRecall
     def correlationTestIPrecision
@@ -36,8 +32,6 @@ class AggregatedStatisticsExporter {
                 it.contains("${File.separator}${ConstantData.SELECTED_TASKS_BY_CONFIGS_FOLDER}${File.separator}")
             }
         }
-        relevantSimilarityFiles = output.findAll { it.endsWith("-relevant" + ConstantData.SIMILARITY_FILE_SUFIX) }
-        validSimilarityFiles = output.findAll { it.endsWith("-valid" + ConstantData.SIMILARITY_FILE_SUFIX) }
         relevantTasksFiles = output.findAll { it.endsWith(ConstantData.RELEVANT_TASKS_FILE_SUFIX) }
         relevantTasksControllerFiles = output.findAll { it.endsWith("-relevant" + ConstantData.CONTROLLER_FILE_SUFIX) }
         validTasksFiles = output.findAll { it.endsWith(ConstantData.VALID_TASKS_FILE_SUFIX) }
@@ -46,10 +40,6 @@ class AggregatedStatisticsExporter {
 
     def generateAggregatedStatistics() {
         List<String[]> content = []
-        content += ["Relevant similarity files"] as String[]
-        content += aggregatedCorrelationTextReal(relevantSimilarityFiles)
-        content += ["Valid similarity files"] as String[]
-        content += aggregatedCorrelationTextReal(validSimilarityFiles)
         content += ["Relevant tasks files"] as String[]
         content += aggregatedCorrelationTestsPrecisionRecall(relevantTasksFiles)
         content += ["Relevant controller tasks files"] as String[]
@@ -59,33 +49,6 @@ class AggregatedStatisticsExporter {
         content += ["Valid controller tasks files"] as String[]
         content += aggregatedCorrelationTestsPrecisionRecall(validTasksControllerFiles)
         CsvUtil.write(aggregatedStatisticsFile, content)
-    }
-
-    private aggregatedCorrelationTextReal(List<String> files) {
-        List<String[]> content = []
-        def textSimilarity = []
-        def dataRealJaccard = []
-        def dataRealCosine = []
-
-        files?.each { file ->
-            List<String[]> entries = CsvUtil.read(file)
-            if (entries.size() > SimilarityExporter.INITIAL_TEXT_SIZE) {
-                def data = entries.subList(SimilarityExporter.INITIAL_TEXT_SIZE, entries.size())
-                textSimilarity += data.collect { it[SimilarityExporter.TEXT_SIMILARITY_INDEX] as double }
-                dataRealJaccard += data.collect { it[SimilarityExporter.REAL_JACCARD_INDEX] as double }
-                dataRealCosine += data.collect { it[SimilarityExporter.REAL_COSINE_INDEX] as double }
-            }
-        }
-
-        textSimilarity = textSimilarity.flatten()
-        dataRealJaccard = dataRealJaccard.flatten()
-        dataRealCosine = dataRealCosine.flatten()
-
-        correlationJaccard = TaskInterfaceEvaluator.calculateCorrelation(textSimilarity as double[], dataRealJaccard as double[])
-        correlationCosine = TaskInterfaceEvaluator.calculateCorrelation(textSimilarity as double[], dataRealCosine as double[])
-        content += ["Correlation Jaccard Text-Real", correlationJaccard.toString()] as String[]
-        content += ["Correlation Cosine Text-Real", correlationCosine.toString()] as String[]
-        content
     }
 
     private aggregatedCorrelationTestsPrecisionRecall(List<String> files) {
@@ -120,14 +83,9 @@ class AggregatedStatisticsExporter {
         fnValues = fnValues.flatten()
         f2Values = f2Values.flatten()
 
-        def measure1, measure2
-        if (Util.SIMILARITY_ANALYSIS) {
-            measure1 = "Jaccard"
-            measure2 = "Cosine"
-        } else {
-            measure1 = "Precision"
-            measure2 = "Recall"
-        }
+        def measure1 = "Precision"
+        def measure2 = "Recall"
+
         def text1 = "Correlation #Test-$measure1"
         def text2 = "Correlation #Test-$measure2"
         def text3 = "Correlation #TestI-$measure1"

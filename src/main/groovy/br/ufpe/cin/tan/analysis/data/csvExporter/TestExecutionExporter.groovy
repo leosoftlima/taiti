@@ -22,13 +22,12 @@ class TestExecutionExporter {
 
         def url = tasks.first().doneTask.gitRepository.url
         content += ["Repository", url] as String[]
-        String[] header = ["TASK", "HASH", "RUBY", "RAILS", "COVERAGE", "TESTS"]
+        String[] header = ["TASK", "HASH", "RUBY", "RAILS", "TESTS"]
         content += header
 
         tasks.each { task ->
             def scenarios = extractTests(task)
-            def coverage = task.parseCoverageGemsToString()
-            String[] line = [task.doneTask.id, task.doneTask.lastCommit.name, task.ruby, task.rails, coverage, scenarios]
+            String[] line = [task.doneTask.id, task.doneTask.lastCommit.name, task.ruby, task.rails, scenarios]
             content += line
         }
         CsvUtil.write(testFile, content)

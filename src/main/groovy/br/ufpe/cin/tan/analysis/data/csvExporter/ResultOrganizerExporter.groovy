@@ -13,13 +13,11 @@ class ResultOrganizerExporter {
     def selectedTasks
     def validTasks
 
-    def relevantSimilarityFiles
     def relevantTasksFiles
     def relevantTasksControllerFiles
     def relevantTasksDetailedFiles
     def testFiles
     def invalidTasksFiles
-    def validSimilarityFiles
     def validTasksFiles
     def validTasksControllerFiles
     def validTasksDetailedFiles
@@ -30,12 +28,6 @@ class ResultOrganizerExporter {
         this.selectedTasks = selectedTasks
         this.outputFolder = ConstantData.SELECTED_TASKS_BY_CONFIGS_FOLDER
         def resultsFolder = Util.findFilesFromDirectory(projectFolder)
-
-        /* INITIAL TEXT SIZE: 4 */
-        relevantSimilarityFiles = resultsFolder.findAll {
-            it.endsWith("-relevant" + ConstantData.SIMILARITY_FILE_SUFIX)
-        }
-        validSimilarityFiles = resultsFolder.findAll { it.endsWith("-valid" + ConstantData.SIMILARITY_FILE_SUFIX) }
 
         /* INITIAL TEXT SIZE: 4 */
         testFiles = resultsFolder.findAll { it.endsWith("-tests.csv") }
@@ -64,7 +56,6 @@ class ResultOrganizerExporter {
         def relevantFiles = relevantTasksFiles + relevantTasksControllerFiles
         relevantFiles.each { extractEvaluationDataFromRelevantTasks(it) }
 
-        relevantSimilarityFiles.each { extractSimilarityDataFromRelevantTasks(it) }
         relevantTasksDetailedFiles.each { extractDataFromRelevantDetailedTasks(it) }
         testFiles.each { extractTestData(it) }
 
@@ -72,7 +63,6 @@ class ResultOrganizerExporter {
 
         def validFiles = validTasksFiles + validTasksControllerFiles
         validFiles.each { extractEvaluationDataFromValidTasks(it) }
-        validSimilarityFiles.each { extractSimilarityDataFromValidTasks(it) }
         validTasksDetailedFiles.each { extractDataFromValidDetailedTasks(it) }
     }
 
@@ -94,36 +84,6 @@ class ResultOrganizerExporter {
         folder + File.separator + finalName + "-final" + ConstantData.INVALID_TASKS_FILE_SUFIX
         //file
     }*/
-
-    private extractSimilarityDataFromRelevantTasks(String file) {
-        List<String[]> content = []
-        List<String[]> entries = CsvUtil.read(file)
-        if (entries.size() > SimilarityExporter.INITIAL_TEXT_SIZE) {
-            def header = entries.subList(0, SimilarityExporter.INITIAL_TEXT_SIZE)
-            List<String[]> newHeader = []
-            newHeader += header.get(0)
-            def data = entries.subList(SimilarityExporter.INITIAL_TEXT_SIZE, entries.size())
-            def tasks = data.findAll {
-                ((it[0] as int) in selectedTasks) && ((it[1] as int) in selectedTasks)
-            }
-            if (!tasks.empty) {
-                def textSimilarity = tasks.collect { it[SimilarityExporter.TEXT_SIMILARITY_INDEX] as double }
-                def dataRealJaccard = tasks.collect { it[SimilarityExporter.REAL_JACCARD_INDEX] as double }
-                def dataRealCosine = tasks.collect { it[SimilarityExporter.REAL_COSINE_INDEX] as double }
-                def correlationJaccard = TaskInterfaceEvaluator.calculateCorrelation(textSimilarity as double[], dataRealJaccard as double[])
-                def correlationCosine = TaskInterfaceEvaluator.calculateCorrelation(textSimilarity as double[], dataRealCosine as double[])
-                header[1][1] = correlationJaccard
-                header[2][1] = correlationCosine
-                newHeader += header.get(1)
-                newHeader += header.get(2)
-                newHeader += header.get(3)
-            }
-            content += newHeader
-            content += tasks
-            def newName = configureFileName(file)
-            CsvUtil.write(newName, content)
-        }
-    }
 
     private extractEvaluationDataFromRelevantTasks(String file) {
         List<String[]> content = []
@@ -219,36 +179,6 @@ class ResultOrganizerExporter {
             validTasks += tasks
         }
         validTasks = validTasks.sort().unique()
-    }
-
-    private extractSimilarityDataFromValidTasks(String file) {
-        List<String[]> content = []
-        List<String[]> entries = CsvUtil.read(file)
-        if (entries.size() > SimilarityExporter.INITIAL_TEXT_SIZE) {
-            def header = entries.subList(0, SimilarityExporter.INITIAL_TEXT_SIZE)
-            List<String[]> newHeader = []
-            newHeader += header.get(0)
-            def data = entries.subList(SimilarityExporter.INITIAL_TEXT_SIZE, entries.size())
-            def tasks = data.findAll {
-                ((it[0] as int) in validTasks) && ((it[1] as int) in validTasks)
-            }
-            if (!tasks.empty) {
-                def textSimilarity = tasks.collect { it[SimilarityExporter.TEXT_SIMILARITY_INDEX] as double }
-                def dataRealJaccard = tasks.collect { it[SimilarityExporter.REAL_JACCARD_INDEX] as double }
-                def dataRealCosine = tasks.collect { it[SimilarityExporter.REAL_COSINE_INDEX] as double }
-                def correlationJaccard = TaskInterfaceEvaluator.calculateCorrelation(textSimilarity as double[], dataRealJaccard as double[])
-                def correlationCosine = TaskInterfaceEvaluator.calculateCorrelation(textSimilarity as double[], dataRealCosine as double[])
-                header[1][1] = correlationJaccard
-                header[2][1] = correlationCosine
-                newHeader += header.get(1)
-                newHeader += header.get(2)
-                newHeader += header.get(3)
-            }
-            content += newHeader
-            content += tasks
-            def newName = configureFileName(file)
-            CsvUtil.write(newName, content)
-        }
     }
 
     private extractEvaluationDataFromValidTasks(String file) {

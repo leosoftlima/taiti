@@ -11,9 +11,6 @@ abstract class RubyConstantData {
     public static List<String> EXCLUDED_PATH_METHODS = ["current_path", "recognize_path", "assert_routing",
                                                         "assert_recognizes", " assert_response"]
     public static String VIEW_ANALYSER_FILE = "view_analyser.rb"
-    public static String GEM_FILE = "Gemfile"
-    public static List<String> GEMS_OF_INTEREST = ["rails", "cucumber-rails", "rspec-rails", "simplecov", "coveralls",
-                                                   "factory_girl"]
     public static OPERATORS = ["[]", "*", "/", "+", "-", "==", "!=", ">", "<", ">=", "<=", "<=>", "===", ".eql?",
                                "equal?", "defined?", "%", "<<", ">>", "=~", "&", "|", "^", "~", "!", "**"]
     public static IGNORED_METHODS = ["puts", "print", "assert", "should", "should_not"] + EXCLUDED_PATH_METHODS +

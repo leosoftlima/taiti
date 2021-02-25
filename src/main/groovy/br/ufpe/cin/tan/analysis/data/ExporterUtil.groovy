@@ -1,7 +1,6 @@
 package br.ufpe.cin.tan.analysis.data
 
 import br.ufpe.cin.tan.evaluation.TaskInterfaceEvaluator
-import br.ufpe.cin.tan.similarity.test.TestSimilarityAnalyser
 import br.ufpe.cin.tan.util.RegexUtil
 import br.ufpe.cin.tan.util.Util
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics
@@ -34,13 +33,9 @@ class ExporterUtil {
     static final String measure1, measure2
 
     static {
-        if (Util.SIMILARITY_ANALYSIS) {
-            measure1 = "Jaccard"
-            measure2 = "Cosine"
-        } else {
-            measure1 = "Precision"
-            measure2 = "Recall"
-        }
+        measure1 = "Precision"
+        measure2 = "Recall"
+
         SHORT_HEADER = ["Task", "Dates", "#Devs", "#Commits", "Hashes", "#Gherkin_Tests", "#Sted_defs",
                         "#TestI", "#TaskI", "TestI", "TaskI", measure1, measure2, "Rails", "#visit_call",
                         "Lost_visit_call", "#Views_TestI", "#Code_View_Analysis", "Code_View_Analysis",
@@ -124,15 +119,8 @@ class ExporterUtil {
         def testI = findControllers(originalTestI)
         def originalTaskI = configureITask(value, TASKI_INDEX_SHORT_HEADER)
         def taski = findControllers(originalTaskI)
-        def precision, recall
-        if (Util.SIMILARITY_ANALYSIS) {
-            def similarityAnalyser = new TestSimilarityAnalyser(testI, taski)
-            precision = similarityAnalyser.calculateSimilarityByJaccard()
-            recall = similarityAnalyser.calculateSimilarityByCosine()
-        } else {
-            precision = TaskInterfaceEvaluator.calculateFilesPrecision(testI, taski)
-            recall = TaskInterfaceEvaluator.calculateFilesRecall(testI, taski)
-        }
+        def precision = TaskInterfaceEvaluator.calculateFilesPrecision(testI, taski)
+        def recall = TaskInterfaceEvaluator.calculateFilesRecall(testI, taski)
 
         def denominator = 4 * precision + recall
         def f2 = 0

@@ -2,13 +2,12 @@ package br.ufpe.cin.tan.analysis.data.csvExporter
 
 import br.ufpe.cin.tan.analysis.AnalysedTask
 import br.ufpe.cin.tan.analysis.data.ExporterUtil
-import br.ufpe.cin.tan.analysis.data.textExporter.ITextExporter
+import br.ufpe.cin.tan.analysis.data.textExporter.TextIExporter
 import br.ufpe.cin.tan.analysis.data.textExporter.TestCodeExporter
 import br.ufpe.cin.tan.util.CsvUtil
 
 /**
  * Filter and export analysed tasks that contain acceptance test.
- * According to the configuration.properties file, the usage of coverage gems (in case of Rails projects) is also considered.
  */
 class ValidTaskExporter {
 
@@ -26,14 +25,14 @@ class ValidTaskExporter {
 
     def save() {
         if (!tasks || tasks.empty) return
-        saveIText(tasks)
+        saveTextI(tasks)
         saveTestCode(tasks)
         saveAnalysisData(tasks)
     }
 
-    private saveIText(List<AnalysedTask> tasks) {
-        ITextExporter iTextExporter = new ITextExporter(folder, tasks)
-        iTextExporter.save()
+    private saveTextI(List<AnalysedTask> tasks) {
+        TextIExporter textiExporter = new TextIExporter(folder, tasks)
+        textiExporter.save()
     }
 
     private saveTestCode(List<AnalysedTask> tasks) {

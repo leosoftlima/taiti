@@ -42,8 +42,6 @@ abstract class ConstantData {
     final String DEFAULT_EVALUATION_FILE = "$DEFAULT_EVALUATION_FOLDER${File.separator}evaluation_result.csv"
     public static final String ORGANIZED_FILE_SUFIX = "-org.csv"
     public static final String FILTERED_FILE_SUFIX = "-filtered.csv"
-    public static final String SIMILARITY_FILE_SUFIX = "-similarity.csv"
-    public static final String SIMILARITY_ORGANIZED_FILE_SUFIX = "-similarity-org.csv"
     public static final String CONTROLLER_FILE_SUFIX = "-controller.csv"
     public static final String CONTROLLER_ORGANIZED_FILE_SUFIX = "-controller-org.csv"
     public static final String TEST_EXECUTION_FILE_SUFIX = "-tests.csv"
@@ -102,13 +100,8 @@ abstract class ConstantData {
     public static final String PROP_RESTRICT_GHERKIN_CHANGES = "spgroup.testi.filter.gherkinAdds"
     public static final boolean DEFAULT_RESTRICT_GHERKIN_CHANGES = false
 
-    public static final String PROP_COVERAGE_GEMS = "spgroup.gems.coverage"
-
     public static final String PROP_RUN_ALL_CONFIGURATIONS = "spgroup.testi.all.configurations"
     public static final boolean DEFAULT_RUN_ALL_CONFIGURATIONS = false
-
-    public static final String PROP_SIMILARITY = "spgroup.testi.similarity"
-    public static final boolean DEFAULT_SIMILARITY = false
 
     public static final int DEFAULT_TASK_LIMIT = 10000
 }

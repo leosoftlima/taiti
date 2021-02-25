@@ -58,31 +58,4 @@ class RubyUtil extends Util {
         rubyVersion
     }
 
-    static checkRailsVersionAndGems(String path) {
-        List<String> gems = []
-        def railsVersion = ""
-        def rubyVersion = ""
-        File file = new File(path + File.separator + RubyConstantData.GEM_FILE)
-        if (file.exists()) {
-            def lines = file.readLines()
-            rubyVersion = checkRubyVersion(lines)
-            RubyConstantData.GEMS_OF_INTEREST.each { gem ->
-                def regex = /\s*gem\s+"?'?${gem}"?'?.*/
-                def foundGem = lines.find { !(it.trim().startsWith("#")) && it ==~ regex }
-                if (foundGem) {
-                    if (gem == "rails") {
-                        def comment = foundGem.indexOf("#")
-                        def value = foundGem
-                        if (comment > -1) value = foundGem.substring(0, comment)
-                        def index = value.lastIndexOf(",")
-                        if (index > -1) railsVersion = value.substring(index + 1).trim()
-                        railsVersion = railsVersion.replaceAll(/[^\.\d]/, "")
-                    } else gems += gem
-
-                }
-            }
-        }
-        [rails: railsVersion, ruby: rubyVersion, gems: gems]
-    }
-
 }

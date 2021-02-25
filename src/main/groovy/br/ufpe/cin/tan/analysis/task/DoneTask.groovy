@@ -230,15 +230,12 @@ class DoneTask extends Task {
             registryCompilationErrors(analysedTask)
 
             //computes task text based in gherkin scenarios
-            analysedTask.itext = super.computeTextBasedInterface()
+            analysedTask.texti = super.computeTextBasedInterface()
 
             //computes real interface
             initTime = new Date()
             analysedTask.taski = identifyChangedFiles()
             configureTimestamp(initTime, analysedTask.taski)
-
-            //it is only necessary in the evaluation study
-            analysedTask.configureGems(gitRepository.localPath)
 
             // resets repository to last version
             gitRepository.reset()

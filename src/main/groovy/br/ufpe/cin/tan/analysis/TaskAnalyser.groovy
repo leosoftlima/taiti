@@ -27,8 +27,6 @@ class TaskAnalyser {
     /* Output files*/
     String evaluationFile
     String filteredFile
-    String similarityRelevantFile
-    String similarityValidFile
     String testFile
     String relevantTasksFile
     String relevantTasksDetailsFile
@@ -73,7 +71,6 @@ class TaskAnalyser {
 
     def analyseAll() {
         analysePrecisionAndRecall()
-        //analyseSimilarity()
     }
 
     def analysePrecisionAndRecall() {
@@ -153,8 +150,6 @@ class TaskAnalyser {
 
         def name = evaluationFile - ConstantData.CSV_FILE_EXTENSION
         filteredFile = name + ConstantData.FILTERED_FILE_SUFIX
-        similarityRelevantFile = name + "-relevant" + ConstantData.SIMILARITY_FILE_SUFIX
-        similarityValidFile = name + "-valid" + ConstantData.SIMILARITY_FILE_SUFIX
         testFile = name + ConstantData.TEST_EXECUTION_FILE_SUFIX
         relevantTasksFile = name + ConstantData.RELEVANT_TASKS_FILE_SUFIX
         relevantTasksDetailsFile = name + ConstantData.RELEVANT_TASKS_DETAILS_FILE_SUFIX
@@ -291,22 +286,6 @@ class TaskAnalyser {
             EvaluationExporter evaluationExporter = new EvaluationExporter(evaluationFile, validTasks)
             evaluationExporter.save()
         }
-    }
-
-    private analyseSimilarity() {
-        if (!relevantTasksFile.empty) {
-            log.info "<  Analysing similarity among tasks from '$relevantTasksFile'  >"
-            SimilarityExporter similarityExporter = new SimilarityExporter(relevantTasksFile, similarityRelevantFile)
-            similarityExporter.save()
-            log.info "The results were saved!"
-        }
-        if (!validTasksFile.empty) {
-            log.info "<  Analysing similarity among tasks from '$validTasksFile'  >"
-            SimilarityExporter similarityExporter = new SimilarityExporter(validTasksFile, similarityValidFile)
-            similarityExporter.save()
-            log.info "The results were saved!"
-        }
-
     }
 
     /* filter results to only consider controller files (via csv) - TEMPORARY CODE */
