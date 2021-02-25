@@ -20,7 +20,7 @@ abstract class Util {
     public static final String GHERKIN_FILES_RELATIVE_PATH
     public static final String STEPS_FILES_RELATIVE_PATH
     public static final String UNIT_TEST_FILES_RELATIVE_PATH
-    public static final String PRODUCTION_FILES_RELATIVE_PATH
+    public static final String APPLICATION_FILES_RELATIVE_PATH
     public static final String VIEWS_FILES_RELATIVE_PATH
     public static final String CONTROLLER_FILES_RELATIVE_PATH
     public static final String MODEL_FILES_RELATIVE_PATH
@@ -71,10 +71,10 @@ abstract class Util {
         GHERKIN_FILES_RELATIVE_PATH = configureGherkin()
         STEPS_FILES_RELATIVE_PATH = configureSteps()
         UNIT_TEST_FILES_RELATIVE_PATH = configureUnitTest()
-        PRODUCTION_FILES_RELATIVE_PATH = configureProduction()
-        VIEWS_FILES_RELATIVE_PATH = "$PRODUCTION_FILES_RELATIVE_PATH${File.separator}views"
-        CONTROLLER_FILES_RELATIVE_PATH = "$PRODUCTION_FILES_RELATIVE_PATH${File.separator}controllers"
-        MODEL_FILES_RELATIVE_PATH = "$PRODUCTION_FILES_RELATIVE_PATH${File.separator}models"
+        APPLICATION_FILES_RELATIVE_PATH = configureApplication()
+        VIEWS_FILES_RELATIVE_PATH = "$APPLICATION_FILES_RELATIVE_PATH${File.separator}views"
+        CONTROLLER_FILES_RELATIVE_PATH = "$APPLICATION_FILES_RELATIVE_PATH${File.separator}controllers"
+        MODEL_FILES_RELATIVE_PATH = "$APPLICATION_FILES_RELATIVE_PATH${File.separator}models"
 
         FRAMEWORK_PATH = configureFramework()
         FRAMEWORK_FILES = findFilesFromDirectory(FRAMEWORK_PATH)
@@ -104,7 +104,7 @@ abstract class Util {
         }
 
         VALID_EXTENSIONS = [VALID_EXTENSION] + VALID_VIEW_FILES + [ConstantData.FEATURE_EXTENSION]
-        VALID_FOLDERS = [GHERKIN_FILES_RELATIVE_PATH, PRODUCTION_FILES_RELATIVE_PATH, LIB_RELATIVE_PATH]
+        VALID_FOLDERS = [GHERKIN_FILES_RELATIVE_PATH, APPLICATION_FILES_RELATIVE_PATH, LIB_RELATIVE_PATH]
 
         GEMS_PATH = (properties.(ConstantData.PROP_GEMS)).replace(File.separator, Matcher.quoteReplacement(File.separator))
         GEM_INFLECTOR = configureGemInflector()
@@ -174,8 +174,8 @@ abstract class Util {
         configureMandatoryProperties(properties.(ConstantData.PROP_UNIT_TEST), ConstantData.DEFAULT_UNITY_FOLDER)
     }
 
-    private static configureProduction() {
-        configureMandatoryProperties(properties.(ConstantData.PROP_PRODUCTION), ConstantData.DEFAULT_PRODUCTION_FOLDER)
+    private static configureApplication() {
+        configureMandatoryProperties(properties.(ConstantData.PROP_APPLICATION), ConstantData.DEFAULT_APPLICATION_FOLDER)
     }
 
     private static configureFramework() {
@@ -262,7 +262,7 @@ abstract class Util {
         new File(".").getCanonicalPath() + File.separator + REPOSITORY_FOLDER_PATH
     }
 
-    static Collection<String> findAllProductionFiles(Collection<String> files) {
+    static Collection<String> findAllApplicationFiles(Collection<String> files) {
         files?.findAll { isApplicationFile(it) }
     }
 

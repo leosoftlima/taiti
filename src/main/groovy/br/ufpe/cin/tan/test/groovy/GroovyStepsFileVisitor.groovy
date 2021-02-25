@@ -6,7 +6,7 @@ import org.codehaus.groovy.ast.expr.StaticMethodCallExpression
 import org.codehaus.groovy.control.SourceUnit
 
 /***
- * Visits steps declaration of interest and its body looking for production method calls.
+ * Visits steps declaration of interest and its body looking for application method calls.
  */
 class GroovyStepsFileVisitor extends ClassCodeVisitorSupport {
 

@@ -24,13 +24,13 @@ class TaskImporter {
     List<String[]> ptImportedTasks
     List<String[]> bigTasks
 
-    //tasks extracted from the input CSV file that do not have production and test code
+    //tasks extracted from the input CSV file that do not have application and test code
     List<String[]> notPtImportedTasks
 
-    //tasks that have production and test code, but not gherkin scenarios
+    //tasks that have application and test code, but not gherkin scenarios
     List<DoneTask> falsePtTasks
 
-    //tasks extracted from the input CSV file that changed production code and gherkin scenarios
+    //tasks extracted from the input CSV file that changed application code and gherkin scenarios
     List<DoneTask> candidateTasks
 
     TaskImporter(File file) {
@@ -45,7 +45,7 @@ class TaskImporter {
     def printInfo() {
         log.info "All tasks imported from '${file.path}': ${importedTasks.size()}"
         log.info "Big tasks (more than ${Util.TASK_MAX_SIZE} commits): ${bigTasks.size()}"
-        log.info "Invalid imported tasks (do not have production and test code or big tasks): ${notPtImportedTasks.size()}"
+        log.info "Invalid imported tasks (do not have application and test code or big tasks): ${notPtImportedTasks.size()}"
         log.info "Relevant imported tasks: ${ptImportedTasks.size()}"
     }
 

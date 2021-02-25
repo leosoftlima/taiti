@@ -12,7 +12,7 @@ abstract class ConstantData {
     public static final String PROP_GHERKIN = "spgroup.gherkin.files.relative.path"
     public static final String PROP_STEPS = "spgroup.steps.files.relative.path"
     public static final String PROP_UNIT_TEST = "spgroup.unit.files.relative.path"
-    public static final String PROP_PRODUCTION = "spgroup.production.files.relative.path"
+    public static final String PROP_APPLICATION = "spgroup.application.files.relative.path"
     public static final String PROP_FRAMEWORK = "spgroup.framework.path"
     public static final String PROP_GEMS = "spgroup.gems.path"
     public static final String PROP_GEM_INFLECTOR = "spgroup.gems.activesupport-inflector.folder"
@@ -28,7 +28,7 @@ abstract class ConstantData {
     public static final String DEFAULT_GHERKIN_FOLDER = "features"
     public static final String DEFAULT_STEPS_FOLDER = "features/step_definitions"
     public static final String DEFAULT_UNITY_FOLDER = "spec"
-    public static final String DEFAULT_PRODUCTION_FOLDER = "app"
+    public static final String DEFAULT_APPLICATION_FOLDER = "app"
 
     public static final String DEFAULT_GEM_INFLECTOR = "activesupport-inflector-0.1.0"
     public static final String DEFAULT_GEM_I18N_FOLDER = "i18n-0.7.0"

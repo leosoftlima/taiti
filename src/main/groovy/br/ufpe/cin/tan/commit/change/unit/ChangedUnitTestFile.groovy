@@ -14,9 +14,9 @@ class ChangedUnitTestFile implements CodeChange {
     String path
 
     /***
-     * All test unit file exercises a specific production class
+     * All test unit file exercises a specific application class
      */
-    def productionClass //keywords: name, path
+    def applicationClass //keywords: name, path
 
     /***
      * Node list of unit tests that was changed by the commit. The assumption is only the test code changed

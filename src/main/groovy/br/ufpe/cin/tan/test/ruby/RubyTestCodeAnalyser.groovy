@@ -748,7 +748,7 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
         def node = generateAst(file.path)
         def visitor = new RubyTestCodeVisitor(projectFiles, file.path, methods)
         visitor.lastVisitedFile = file.path
-        visitor.productionClass = file.productionClass //keywords: name, path
+        visitor.applicationClass = file.applicationClass //keywords: name, path
         def testCodeVisitor = new RSpecFileVisitor(file.tests*.lines, visitor)
         node?.accept(testCodeVisitor)
         visitor
@@ -766,7 +766,7 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
             } else {
                 def changedTests = visitor.tests.findAll { it.lines.intersect(changedLines) }
                 if (changedTests) {
-                    unitFile = new ChangedUnitTestFile(path: path, tests: changedTests, productionClass: visitor.productionClass)
+                    unitFile = new ChangedUnitTestFile(path: path, tests: changedTests, applicationClass: visitor.applicationClass)
                 } else {
                     log.info "No unit test was changed or the changed one was not found!"
                 }

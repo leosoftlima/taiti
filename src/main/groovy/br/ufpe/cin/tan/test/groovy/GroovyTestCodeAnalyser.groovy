@@ -33,8 +33,8 @@ class GroovyTestCodeAnalyser extends TestCodeAbstractAnalyser {
         super(repositoryPath, gherkinManager)
     }
 
-    private static configureClassLoader(String productionPath, String testPath) {
-        classLoader.addClasspath(productionPath) //compiled code files
+    private static configureClassLoader(String applicationPath, String testPath) {
+        classLoader.addClasspath(applicationPath) //compiled code files
         classLoader.addClasspath(testPath) //compiled test code
     }
 

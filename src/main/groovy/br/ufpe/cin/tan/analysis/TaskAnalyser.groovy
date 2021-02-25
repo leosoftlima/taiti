@@ -215,7 +215,7 @@ class TaskAnalyser {
         def candidatesSize = taskImporter.candidateTasks.size()
         def falsePtTasksSize = taskImporter.falsePtTasks.size()
         log.info "Extracted tasks at round $round: ${candidatesSize + falsePtTasksSize}"
-        log.info "Candidate tasks (have production code and candidate gherkin scenarios): ${candidatesSize}"
+        log.info "Candidate tasks (have application code and candidate gherkin scenarios): ${candidatesSize}"
         log.info "Seem to have test but actually do not (do not have candidate gherkin scenarios): ${falsePtTasksSize}"
         log.info "Valid tasks so far: ${validTasks.size()}"
         log.info "Relevant tasks so far: ${relevantTasks.size()}"
@@ -253,7 +253,7 @@ class TaskAnalyser {
 
     private generateResult() {
         taskImporter.extractPtTasks()
-        log.info "Candidate tasks (have production code and candidate gherkin scenarios): ${taskImporter.candidateTasks.size()}"
+        log.info "Candidate tasks (have application code and candidate gherkin scenarios): ${taskImporter.candidateTasks.size()}"
         log.info "Seem to have test but actually do not (do not have candidate gherkin scenarios): ${taskImporter.falsePtTasks.size()}"
 
         if (taskLimit > 0) analyseLimitedTasks()

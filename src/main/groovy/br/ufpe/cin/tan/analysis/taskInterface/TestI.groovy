@@ -73,8 +73,8 @@ class TestI extends TaskInterface {
     }
 
     /***
-     * Lists all production files related to the task.
-     * Until the moment, the identification of such files is made by the usage of production classes and methods only.
+     * Lists all application files related to the task.
+     * Until the moment, the identification of such files is made by the usage of application classes and methods only.
      *
      * @return a list of files
      */
@@ -159,10 +159,10 @@ class TestI extends TaskInterface {
     }
 
     private Set<String> getAllProdFiles() {
-        //production classes
+        //application classes
         def classes = (classes?.findAll { Util.isApplicationFile(it.file) })*.file
 
-        //production methods
+        //application methods
         def methodFiles = methods?.findAll {
             it.type != null && !it.type.empty && it.type != "StepCall" &&
                     it.file && Util.isApplicationFile(it.file)
@@ -170,7 +170,7 @@ class TestI extends TaskInterface {
 
         def viewFiles = referencedPages*.file
 
-        //production files
+        //application files
         ((classes + methodFiles + viewFiles) as Set)?.sort()
     }
 

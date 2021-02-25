@@ -7,7 +7,7 @@ import org.jrubyparser.ast.FCallNode
 import org.jrubyparser.util.NoopVisitor
 
 /***
- * Visits steps declaration of interest and its body looking for production method calls.
+ * Visits steps declaration of interest and its body looking for application method calls.
  */
 class RubyStepsFileVisitor extends NoopVisitor {
 

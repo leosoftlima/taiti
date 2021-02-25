@@ -17,7 +17,7 @@ class Commit {
     long date
     boolean merge
 
-    List<ChangedProdFile> coreChanges //code changes in production code only
+    List<ChangedProdFile> coreChanges //code changes in application code only
     List<ChangedGherkinFile> gherkinChanges //code changes in feature files only
     List<ChangedStepdefFile> stepChanges //code changes in step definition files only
     List<ChangedUnitTestFile> unitChanges //code changes in unit test files only

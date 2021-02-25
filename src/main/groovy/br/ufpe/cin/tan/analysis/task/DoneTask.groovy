@@ -22,7 +22,7 @@ import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.revwalk.RevCommit
 
 /***
- * Represents a done task, that is, a task that contains production and test code. The code is published in a public
+ * Represents a done task, that is, a task that contains application and test code. The code is published in a public
  * Git repository in GitHub. The task is used to evaluation study, to validate test-based task interfaces by comparing
  * them with real interfaces.
  */
@@ -85,7 +85,7 @@ class DoneTask extends Task {
             // resets repository to the state of the last commit to extract changes
             gitRepository.reset(lastHash)
 
-            // computes task interface based on the production code exercised by tests
+            // computes task interface based on the application code exercised by tests
             def initTime = new Date()
             taskInterface = testCodeAnalyser.computeInterfaceForDoneTask(changedGherkinFiles, changedStepDefinitions, gitRepository.removedSteps)
             configureTimestamp(initTime, taskInterface)
@@ -134,7 +134,7 @@ class DoneTask extends Task {
 
             //computes real interface
             def initTime = new Date()
-            taskInterface = identifyProductionChangedFiles()
+            taskInterface = identifyApplicationChangedFiles()
             configureTimestamp(initTime, taskInterface)
 
             // resets repository to last version
@@ -154,7 +154,7 @@ class DoneTask extends Task {
             gitRepository.reset(lastHash)
 
             //candidate files
-            def currentFiles = Util.findAllProductionFiles(identifyAllProjectFiles())
+            def currentFiles = Util.findAllApplicationFiles(identifyAllProjectFiles())
 
             // resets repository to last version
             gitRepository.reset()
@@ -190,7 +190,7 @@ class DoneTask extends Task {
             gitRepository.reset(lastHash)
 
             //candidate files
-            def currentFiles = Util.findAllProductionFiles(identifyAllProjectFiles())
+            def currentFiles = Util.findAllApplicationFiles(identifyAllProjectFiles())
 
             // resets repository to last version
             gitRepository.reset()
@@ -222,7 +222,7 @@ class DoneTask extends Task {
             // resets repository to the state of the last commit to extract changes
             gitRepository.reset(lastHash)
 
-            // computes task interface based on the production code exercised by tests
+            // computes task interface based on the application code exercised by tests
             def initTime = new Date()
             analysedTask.testi = testCodeAnalyser.computeInterfaceForDoneTask(changedGherkinFiles,
                     changedStepDefinitions, gitRepository.removedSteps)
@@ -523,7 +523,7 @@ class DoneTask extends Task {
         currentFiles
     }
 
-    private TaskI identifyProductionChangedFiles() {
+    private TaskI identifyApplicationChangedFiles() {
         def currentFiles = identifyAllProjectFiles()
 
         /* Identifies all changed files by task */
@@ -534,7 +534,7 @@ class DoneTask extends Task {
         def validFiles = filenames.findAll { it in currentFiles }
 
         /* Constructs task interface object */
-        organizeProductionFiles(validFiles)
+        organizeApplicationFiles(validFiles)
     }
 
     /* calcula TaskI como sendo o conjunto dos arquivos adicionados, alterados ou removidos pela tarefa, sem filtros. */
@@ -543,16 +543,16 @@ class DoneTask extends Task {
         def files = commits*.files?.flatten()?.unique()
 
         /* Constructs task interface object */
-        organizeProductionFiles(files)
+        organizeApplicationFiles(files)
     }
 
-    private TaskI organizeProductionFiles(productionFiles) {
+    private TaskI organizeApplicationFiles(applicationFiles) {
         def taskInterface = new TaskI()
 
         //filtering result to only identify view and/or controller files
-        productionFiles = Util.filterFiles(productionFiles)
+        applicationFiles = Util.filterFiles(applicationFiles)
 
-        productionFiles?.each { file ->
+        applicationFiles?.each { file ->
             def path = pathSufix + file
             if (path.contains(Util.VIEWS_FILES_RELATIVE_PATH)) {
                 def index = path.lastIndexOf(File.separator)

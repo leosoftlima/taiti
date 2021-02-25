@@ -1,7 +1,7 @@
 package br.ufpe.cin.tan.commit.change
 
 /***
- * Represents a code change in a production file by a commit.
+ * Represents a code change in an application file by a commit.
  */
 class ChangedProdFile implements CodeChange {
 
@@ -11,7 +11,7 @@ class ChangedProdFile implements CodeChange {
 
     @Override
     String toString() {
-        "(Production change) path: $path; type: $type; lines: $lines"
+        "(Application change) path: $path; type: $type; lines: $lines"
     }
 
 }

@@ -17,7 +17,7 @@ import groovy.util.logging.Slf4j
 import java.util.regex.Matcher
 
 /***
- * Represents a new task, that is, a task that contains test code but the production code is not done yet. The task is
+ * Represents a new task, that is, a task that contains test code but the application code is not done yet. The task is
  * used to compute test-based task interfaces and prevent code conflicts.
  */
 @Slf4j

@@ -12,7 +12,7 @@ class RSpecTestDefinitionVisitor extends NoopVisitor {
 
     List<String> KEYWORDS = ["describe"]
     List<String> projectFiles
-    def productionClass //keywords: name, path
+    def applicationClass //keywords: name, path
     Set tests //keywords: name, path, lines
     String path
     String content
@@ -24,17 +24,17 @@ class RSpecTestDefinitionVisitor extends NoopVisitor {
         this.projectFiles = Util.findFilesFromDirectoryByLanguage(repositoryPath)
     }
 
-    private configureProductionClass(def value) {
-        if (!productionClass) {
+    private configureApplicationClass(def value) {
+        if (!applicationClass) {
             def index1 = this.path.lastIndexOf(File.separator)
             def index2 = this.path.indexOf("_spec")
 
             if (index1 != -1 && index2 != -1) {
                 def name = this.path.substring(index1 + 1, index2) + ConstantData.RUBY_EXTENSION
-                def path = Util.findAllProductionFiles(projectFiles).find { it.endsWith(name) }
-                productionClass = [name: value.name, path: path]
+                def path = Util.findAllApplicationFiles(projectFiles).find { it.endsWith(name) }
+                applicationClass = [name: value.name, path: path]
             } else {
-                productionClass = [name: value.name, path: null]
+                applicationClass = [name: value.name, path: null]
             }
         }
     }
@@ -43,7 +43,7 @@ class RSpecTestDefinitionVisitor extends NoopVisitor {
         def result = tests.sort { it.lines.size() }
         if (!result.empty) {
             def outterDescribe = tests.last()
-            configureProductionClass(outterDescribe)
+            configureApplicationClass(outterDescribe)
             result.remove(outterDescribe) //the one that englobes all others
         }
         result

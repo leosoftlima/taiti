@@ -20,7 +20,7 @@ class RubyTestCodeVisitor extends NoopVisitor implements TestCodeVisitorInterfac
     List<String> viewFiles
     String lastVisitedFile
     Set projectMethods //keys: name, args, path; all methods from project
-    def productionClass //keys: name, path; used when visiting RSpec files; try a better way to represent it!
+    def applicationClass //keys: name, path; used when visiting RSpec files; try a better way to represent it!
 
     List<StepCall> calledSteps
     static int stepCallCounter
@@ -554,8 +554,8 @@ class RubyTestCodeVisitor extends NoopVisitor implements TestCodeVisitorInterfac
         //log.info "Method call: ${iVisited.name} $lastVisitedFile (${iVisited.position.startLine + 1});   Receptor: ${iVisited.receiver.class}"
 
         // unit test file
-        if (productionClass && iVisited.receiver.properties.containsKey("name") && iVisited.receiver.name == "subject") {
-            taskInterface.methods += [name: iVisited.name, type: productionClass.name, file: productionClass.path,
+        if (applicationClass && iVisited.receiver.properties.containsKey("name") && iVisited.receiver.name == "subject") {
+            taskInterface.methods += [name: iVisited.name, type: applicationClass.name, file: applicationClass.path,
                                       step: configureStep()]
         }
         // routing methods

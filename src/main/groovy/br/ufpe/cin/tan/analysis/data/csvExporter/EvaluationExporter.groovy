@@ -106,8 +106,8 @@ class EvaluationExporter {
         initialData += ["Tasks with relevant AST error", compilationErrors.size()] as String[]
         initialData += ["Tasks with AST error of Gherkin files", gherkinCompilationErrors.size()] as String[]
         initialData += ["Tasks with AST error of StepDef files", stepDefCompilationErrors.size()] as String[]
-        def productionErrors = compilationErrors.size() - (gherkinCompilationErrors.size() + stepDefCompilationErrors.size())
-        initialData += ["Tasks with AST error of production files", productionErrors] as String[]
+        def applicationErrors = compilationErrors.size() - (gherkinCompilationErrors.size() + stepDefCompilationErrors.size())
+        initialData += ["Tasks with AST error of application files", applicationErrors] as String[]
         initialData += ["Tasks with AST error of unit test files", unitCompilationErrors.size()] as String[]
         initialData += ["Tasks with step match error", stepMatchError.size()] as String[]
         initialData += ["Tasks without required gems", noRequiredGems.size()] as String[]

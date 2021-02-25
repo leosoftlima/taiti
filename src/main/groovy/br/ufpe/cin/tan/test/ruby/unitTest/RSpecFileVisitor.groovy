@@ -5,7 +5,7 @@ import org.jrubyparser.ast.FCallNode
 import org.jrubyparser.util.NoopVisitor
 
 /***
- * Visits unit test declaration of interest and its body looking for production method calls.
+ * Visits unit test declaration of interest and its body looking for application method calls.
  */
 class RSpecFileVisitor extends NoopVisitor {
 
