@@ -265,7 +265,6 @@ abstract class TestCodeAbstractAnalyser {
             }
             if (!partialResult.empty) {
                 def methodsToAnalyse = []
-                if (Util.WHEN_FILTER) partialResult = partialResult?.findAll { it.keyword != ConstantData.THEN_STEP_EN }
                 partialResult?.each {
                     methodsToAnalyse += new MethodToAnalyse(line: it.line, args: [], type: it.keyword)
                 }
@@ -635,10 +634,7 @@ abstract class TestCodeAbstractAnalyser {
         def files = (stepCodes*.codePath)?.flatten()?.unique()
         files?.each { file ->
             def codes = []
-            if (Util.WHEN_FILTER) codes = stepCodes.findAll {
-                it.codePath == file && it.type != ConstantData.THEN_STEP_EN
-            }
-            else codes = stepCodes.findAll { it.codePath == file }
+            codes = stepCodes.findAll { it.codePath == file }
             List<MethodToAnalyse> methods = []
             codes?.each {
                 methods += new MethodToAnalyse(line: it.line, args: it.args, type: it.type)
