@@ -1,6 +1,6 @@
 package br.ufpe.cin.tan.similarity.test
 
-import br.ufpe.cin.tan.analysis.itask.ITest
+import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import org.apache.commons.math3.linear.ArrayRealVector
 import org.apache.commons.math3.linear.RealVector
 
@@ -16,7 +16,7 @@ class TestSimilarityAnalyser {
         terms = (c1 + c2).unique().sort()
     }
 
-    TestSimilarityAnalyser(ITest interface1, ITest interface2) {
+    TestSimilarityAnalyser(TestI interface1, TestI interface2) {
         this.c1 = interface1.getFiles()
         this.c2 = interface2.getFiles()
         terms = (c1 + c2).sort()

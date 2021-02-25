@@ -14,14 +14,14 @@ class ExporterUtil {
     public static String[] PLUS_HEADER
     public static final int RECALL_INDEX_SHORT_HEADER
     public static final int PRECISION_INDEX_SHORT_HEADER
-    public static final int IREAL_INDEX_SHORT_HEADER
-    public static final int ITEST_INDEX_SHORT_HEADER
-    public static final int ITEST_SIZE_INDEX_SHORT_HEADER
-    public static final int IREAL_SIZE_INDEX_SHORT_HEADER
+    public static final int TASKI_INDEX_SHORT_HEADER
+    public static final int TESTI_INDEX_SHORT_HEADER
+    public static final int TESTI_SIZE_INDEX_SHORT_HEADER
+    public static final int TASKI_SIZE_INDEX_SHORT_HEADER
     public static final int IMPLEMENTED_GHERKIN_TESTS
     public static final int INITIAL_TEXT_SIZE_SHORT_HEADER
     public static final int INITIAL_TEXT_SIZE_NO_CORRELATION_SHORT_HEADER
-    public static final int ITEST_VIEWS_SIZE_INDEX_SHORT_HEADER
+    public static final int TESTI_VIEWS_SIZE_INDEX_SHORT_HEADER
 
     public static final int FP_NUMBER_INDEX
     public static final int FN_NUMBER_INDEX
@@ -50,14 +50,14 @@ class ExporterUtil {
         SHORT_HEADER_PLUS = SHORT_HEADER + PLUS_HEADER
         RECALL_INDEX_SHORT_HEADER = SHORT_HEADER_PLUS.size() - 21
         PRECISION_INDEX_SHORT_HEADER = RECALL_INDEX_SHORT_HEADER - 1
-        IREAL_INDEX_SHORT_HEADER = PRECISION_INDEX_SHORT_HEADER - 1
-        ITEST_INDEX_SHORT_HEADER = IREAL_INDEX_SHORT_HEADER - 1
-        ITEST_SIZE_INDEX_SHORT_HEADER = ITEST_INDEX_SHORT_HEADER - 2
-        IREAL_SIZE_INDEX_SHORT_HEADER = IREAL_INDEX_SHORT_HEADER - 2
+        TASKI_INDEX_SHORT_HEADER = PRECISION_INDEX_SHORT_HEADER - 1
+        TESTI_INDEX_SHORT_HEADER = TASKI_INDEX_SHORT_HEADER - 1
+        TESTI_SIZE_INDEX_SHORT_HEADER = TESTI_INDEX_SHORT_HEADER - 2
+        TASKI_SIZE_INDEX_SHORT_HEADER = TASKI_INDEX_SHORT_HEADER - 2
         IMPLEMENTED_GHERKIN_TESTS = 5
         INITIAL_TEXT_SIZE_SHORT_HEADER = 13
         INITIAL_TEXT_SIZE_NO_CORRELATION_SHORT_HEADER = INITIAL_TEXT_SIZE_SHORT_HEADER - 2
-        ITEST_VIEWS_SIZE_INDEX_SHORT_HEADER = 16
+        TESTI_VIEWS_SIZE_INDEX_SHORT_HEADER = 16
         FP_NUMBER_INDEX = SHORT_HEADER_PLUS.size() - PLUS_HEADER.size()
         FN_NUMBER_INDEX = FP_NUMBER_INDEX + 1
         FP_INDEX = FN_NUMBER_INDEX + 1
@@ -120,36 +120,36 @@ class ExporterUtil {
     }
 
     static String[] configureLine(String[] value) {
-        def originalItest = configureITask(value, ITEST_INDEX_SHORT_HEADER)
-        def itest = findControllers(originalItest)
-        def originalIReal = configureITask(value, IREAL_INDEX_SHORT_HEADER)
-        def ireal = findControllers(originalIReal)
+        def originalTestI = configureITask(value, TESTI_INDEX_SHORT_HEADER)
+        def testI = findControllers(originalTestI)
+        def originalTaskI = configureITask(value, TASKI_INDEX_SHORT_HEADER)
+        def taski = findControllers(originalTaskI)
         def precision, recall
         if (Util.SIMILARITY_ANALYSIS) {
-            def similarityAnalyser = new TestSimilarityAnalyser(itest, ireal)
+            def similarityAnalyser = new TestSimilarityAnalyser(testI, taski)
             precision = similarityAnalyser.calculateSimilarityByJaccard()
             recall = similarityAnalyser.calculateSimilarityByCosine()
         } else {
-            precision = TaskInterfaceEvaluator.calculateFilesPrecision(itest, ireal)
-            recall = TaskInterfaceEvaluator.calculateFilesRecall(itest, ireal)
+            precision = TaskInterfaceEvaluator.calculateFilesPrecision(testI, taski)
+            recall = TaskInterfaceEvaluator.calculateFilesRecall(testI, taski)
         }
 
         def denominator = 4 * precision + recall
         def f2 = 0
         if (denominator != 0) f2 = 5 * ((precision * recall) / denominator)
 
-        def falsePositives = itest - ireal
-        def falseNegatives = ireal - itest
-        def hits = itest.intersect(ireal)
+        def falsePositives = testI - taski
+        def falseNegatives = taski - testI
+        def hits = testI.intersect(taski)
 
         String[] line = value
-        line[ITEST_SIZE_INDEX_SHORT_HEADER] = itest.size()
-        line[IREAL_SIZE_INDEX_SHORT_HEADER] = ireal.size()
-        line[ITEST_INDEX_SHORT_HEADER] = itest
-        line[IREAL_INDEX_SHORT_HEADER] = ireal
+        line[TESTI_SIZE_INDEX_SHORT_HEADER] = testI.size()
+        line[TASKI_SIZE_INDEX_SHORT_HEADER] = taski.size()
+        line[TESTI_INDEX_SHORT_HEADER] = testI
+        line[TASKI_INDEX_SHORT_HEADER] = taski
         line[PRECISION_INDEX_SHORT_HEADER] = precision
         line[RECALL_INDEX_SHORT_HEADER] = recall
-        line[ITEST_VIEWS_SIZE_INDEX_SHORT_HEADER] = 0
+        line[TESTI_VIEWS_SIZE_INDEX_SHORT_HEADER] = 0
         line[FP_NUMBER_INDEX] = falsePositives.size()
         line[FN_NUMBER_INDEX] = falseNegatives.size()
         line[FP_INDEX] = falsePositives
@@ -165,11 +165,11 @@ class ExporterUtil {
     }
 
     static Set configureITask(String[] value, int index) {
-        def originalItest = value[index].replaceAll(RegexUtil.FILE_SEPARATOR_REGEX, "/")
+        def originalTestI = value[index].replaceAll(RegexUtil.FILE_SEPARATOR_REGEX, "/")
                 .substring(1, value[index].size() - 1)
                 .split(",")
                 .flatten()
                 .collect { it.trim() } as Set
-        originalItest
+        originalTestI
     }
 }

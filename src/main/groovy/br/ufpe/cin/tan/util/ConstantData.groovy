@@ -89,28 +89,28 @@ abstract class ConstantData {
 
     public static final String INFLECTOR_FILE = "inflector.rb"
 
-    public static final String PROP_VIEW_ANALYSIS = "spgroup.itest.views"
+    public static final String PROP_VIEW_ANALYSIS = "spgroup.testi.views"
     public static final boolean DEFAULT_VIEW_ANALYSIS = true
     public static final String DEFAULT_VIEW_ANALYSIS_ERROR_FOLDER = "error"
 
-    public static final String PROP_CONTROLLER_FILTER = "spgroup.itest.filter.controller"
+    public static final String PROP_CONTROLLER_FILTER = "spgroup.testi.filter.controller"
     public static final boolean DEFAULT_CONTROLLER_FILTER = false
 
-    public static final String PROP_WHEN_FILTER = "spgroup.itest.filter.when"
+    public static final String PROP_WHEN_FILTER = "spgroup.testi.filter.when"
     public static final boolean DEFAULT_WHEN_FILTER = false
 
-    public static final String PROP_VIEW_FILTER = "spgroup.itest.filter.view"
+    public static final String PROP_VIEW_FILTER = "spgroup.testi.filter.view"
     public static final boolean DEFAULT_VIEW_FILTER = false
 
-    public static final String PROP_RESTRICT_GHERKIN_CHANGES = "spgroup.itest.filter.gherkinAdds"
+    public static final String PROP_RESTRICT_GHERKIN_CHANGES = "spgroup.testi.filter.gherkinAdds"
     public static final boolean DEFAULT_RESTRICT_GHERKIN_CHANGES = false
 
     public static final String PROP_COVERAGE_GEMS = "spgroup.gems.coverage"
 
-    public static final String PROP_RUN_ALL_CONFIGURATIONS = "spgroup.itest.all.configurations"
+    public static final String PROP_RUN_ALL_CONFIGURATIONS = "spgroup.testi.all.configurations"
     public static final boolean DEFAULT_RUN_ALL_CONFIGURATIONS = false
 
-    public static final String PROP_SIMILARITY = "spgroup.itest.similarity"
+    public static final String PROP_SIMILARITY = "spgroup.testi.similarity"
     public static final boolean DEFAULT_SIMILARITY = false
 
     public static final int DEFAULT_TASK_LIMIT = 10000

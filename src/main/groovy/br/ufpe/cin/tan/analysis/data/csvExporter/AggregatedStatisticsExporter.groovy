@@ -19,14 +19,14 @@ class AggregatedStatisticsExporter {
     def correlationCosine
     def correlationTestsPrecision
     def correlationTestsRecall
-    def correlationITestPrecision
-    def correlationITestRecall
+    def correlationTestIPrecision
+    def correlationTestIRecall
     def correlationTestsF2
-    def correlationITestF2
+    def correlationTestIF2
     def correlationTestsFP
     def correlationTestsFN
-    def correlationITestFP
-    def correlationITestFN
+    def correlationTestIFP
+    def correlationTestIFN
 
     AggregatedStatisticsExporter(String folder) {
         aggregatedStatisticsFile = "${folder}${File.separator}aggregated.csv"
@@ -93,18 +93,17 @@ class AggregatedStatisticsExporter {
         def tests = []
         def precisionValues = []
         def recallValues = []
-        def itestSize = []
+        def testISize = []
         def fpValues = []
         def fnValues = []
         def f2Values = []
 
         files?.each { file ->
-            println "Lendo: ${file} (aggregatedCorrelationTestsPrecisionRecall)"
             List<String[]> entries = CsvUtil.read(file)
             if (entries.size() > ExporterUtil.INITIAL_TEXT_SIZE_SHORT_HEADER) {
                 def data = entries.subList(ExporterUtil.INITIAL_TEXT_SIZE_SHORT_HEADER, entries.size())
                 tests += data.collect { it[ExporterUtil.IMPLEMENTED_GHERKIN_TESTS] as double }
-                itestSize += data.collect { it[ExporterUtil.ITEST_SIZE_INDEX_SHORT_HEADER] as double }
+                testISize += data.collect { it[ExporterUtil.TESTI_SIZE_INDEX_SHORT_HEADER] as double }
                 precisionValues += data.collect { it[ExporterUtil.PRECISION_INDEX_SHORT_HEADER] as double }
                 recallValues += data.collect { it[ExporterUtil.RECALL_INDEX_SHORT_HEADER] as double }
                 fpValues += data.collect { it[ExporterUtil.FP_NUMBER_INDEX] as double }
@@ -114,7 +113,7 @@ class AggregatedStatisticsExporter {
         }
 
         tests = tests.flatten()
-        itestSize = itestSize.flatten()
+        testISize = testISize.flatten()
         precisionValues = precisionValues.flatten()
         recallValues = recallValues.flatten()
         fpValues = fpValues.flatten()
@@ -131,35 +130,35 @@ class AggregatedStatisticsExporter {
         }
         def text1 = "Correlation #Test-$measure1"
         def text2 = "Correlation #Test-$measure2"
-        def text3 = "Correlation #ITest-$measure1"
-        def text4 = "Correlation #ITest-$measure2"
+        def text3 = "Correlation #TestI-$measure1"
+        def text4 = "Correlation #TestI-$measure2"
         def text5 = "Correlation #Test-F2"
-        def text6 = "Correlation #ITest-F2"
+        def text6 = "Correlation #TestI-F2"
         def text7 = "Correlation #Test-FP"
         def text8 = "Correlation #Test-FN"
-        def text9 = "Correlation #ITest-FP"
-        def text10 = "Correlation #ITest-FN"
+        def text9 = "Correlation #TestI-FP"
+        def text10 = "Correlation #TestI-FN"
 
         correlationTestsPrecision = TaskInterfaceEvaluator.calculateCorrelation(tests as double[], precisionValues as double[])
         correlationTestsRecall = TaskInterfaceEvaluator.calculateCorrelation(tests as double[], recallValues as double[])
         content += [text1, correlationTestsPrecision.toString()] as String[]
         content += [text2, correlationTestsRecall.toString()] as String[]
-        correlationITestPrecision = TaskInterfaceEvaluator.calculateCorrelation(itestSize as double[], precisionValues as double[])
-        correlationITestRecall = TaskInterfaceEvaluator.calculateCorrelation(itestSize as double[], recallValues as double[])
-        content += [text3, correlationITestPrecision.toString()] as String[]
-        content += [text4, correlationITestRecall.toString()] as String[]
+        correlationTestIPrecision = TaskInterfaceEvaluator.calculateCorrelation(testISize as double[], precisionValues as double[])
+        correlationTestIRecall = TaskInterfaceEvaluator.calculateCorrelation(testISize as double[], recallValues as double[])
+        content += [text3, correlationTestIPrecision.toString()] as String[]
+        content += [text4, correlationTestIRecall.toString()] as String[]
         correlationTestsF2 = TaskInterfaceEvaluator.calculateCorrelation(tests as double[], f2Values as double[])
-        correlationITestF2 = TaskInterfaceEvaluator.calculateCorrelation(itestSize as double[], f2Values as double[])
+        correlationTestIF2 = TaskInterfaceEvaluator.calculateCorrelation(testISize as double[], f2Values as double[])
         content += [text5, correlationTestsF2.toString()] as String[]
-        content += [text6, correlationITestF2.toString()] as String[]
+        content += [text6, correlationTestIF2.toString()] as String[]
         correlationTestsFP = TaskInterfaceEvaluator.calculateCorrelation(tests as double[], fpValues as double[])
         correlationTestsFN = TaskInterfaceEvaluator.calculateCorrelation(tests as double[], fnValues as double[])
         content += [text7, correlationTestsFP.toString()] as String[]
         content += [text8, correlationTestsFN.toString()] as String[]
-        correlationITestFP = TaskInterfaceEvaluator.calculateCorrelation(itestSize as double[], fpValues as double[])
-        correlationITestFN = TaskInterfaceEvaluator.calculateCorrelation(itestSize as double[], fnValues as double[])
-        content += [text9, correlationITestFP.toString()] as String[]
-        content += [text10, correlationITestFN.toString()] as String[]
+        correlationTestIFP = TaskInterfaceEvaluator.calculateCorrelation(testISize as double[], fpValues as double[])
+        correlationTestIFN = TaskInterfaceEvaluator.calculateCorrelation(testISize as double[], fnValues as double[])
+        content += [text9, correlationTestIFP.toString()] as String[]
+        content += [text10, correlationTestIFN.toString()] as String[]
         content
     }
 

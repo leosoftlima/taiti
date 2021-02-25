@@ -1,4 +1,4 @@
-package br.ufpe.cin.tan.analysis.itask
+package br.ufpe.cin.tan.analysis.taskInterface
 
 import groovy.time.TimeDuration
 

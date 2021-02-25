@@ -1,6 +1,6 @@
 package br.ufpe.cin.tan.test.groovy
 
-import br.ufpe.cin.tan.analysis.itask.ITest
+import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.test.StepCall
 import br.ufpe.cin.tan.test.TestCodeVisitorInterface
 import br.ufpe.cin.tan.util.Util
@@ -15,7 +15,7 @@ import org.codehaus.groovy.control.SourceUnit
 class GroovyTestCodeVisitor extends ClassCodeVisitorSupport implements TestCodeVisitorInterface {
 
     SourceUnit source
-    ITest taskInterface
+    TestI taskInterface
     List<String> projectFiles //valid files
     String lastVisitedFile
     List<StepCall> calledSteps
@@ -24,7 +24,7 @@ class GroovyTestCodeVisitor extends ClassCodeVisitorSupport implements TestCodeV
     GroovyTestCodeVisitor(String repositoryPath, String currentFile) {
         this.source = null
         this.projectFiles = Util.findFilesFromDirectoryByLanguage(repositoryPath)
-        this.taskInterface = new ITest()
+        this.taskInterface = new TestI()
         this.lastVisitedFile = currentFile
         calledSteps = []
     }

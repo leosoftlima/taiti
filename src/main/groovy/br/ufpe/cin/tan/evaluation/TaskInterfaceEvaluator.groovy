@@ -1,6 +1,6 @@
 package br.ufpe.cin.tan.evaluation
 
-import br.ufpe.cin.tan.analysis.itask.TaskInterface
+import br.ufpe.cin.tan.analysis.taskInterface.TaskInterface
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation
 
 class TaskInterfaceEvaluator {
@@ -8,15 +8,15 @@ class TaskInterfaceEvaluator {
     /***
      * Calculates precision of test based task interface considering files only.
      *
-     * @param iTest task interface based in test code
-     * @param iReal task interface computed after task is done
+     * @param testI task interface based in test code
+     * @param taskI task interface computed after task is done
      * @return value between 0 and 1
      */
-    static double calculateFilesPrecision(TaskInterface iTest, TaskInterface iReal) {
+    static double calculateFilesPrecision(TaskInterface testI, TaskInterface taskI) {
         double result = 0
-        if (invalidInput(iTest, iReal)) return result
-        def testFiles = iTest.findFilteredFiles()
-        def truePositives = calculateTruePositives(testFiles, iReal.findFilteredFiles())
+        if (invalidInput(testI, taskI)) return result
+        def testFiles = testI.findFilteredFiles()
+        def truePositives = calculateTruePositives(testFiles, taskI.findFilteredFiles())
         if (truePositives > 0) result = (double) truePositives / testFiles.size()
         result
     }
@@ -24,32 +24,32 @@ class TaskInterfaceEvaluator {
     /***
      * Calculates recall of test based task interface considering files only.
      *
-     * @param iTest ITest task interface based in test code
-     * @param iReal task interface computed after task is done
+     * @param testI task interface based in test code
+     * @param taskI task interface computed after task is done
      * @return value between 0 and 1
      */
-    static double calculateFilesRecall(TaskInterface iTest, TaskInterface iReal) {
+    static double calculateFilesRecall(TaskInterface testI, TaskInterface taskI) {
         double result = 0
-        if (invalidInput(iTest, iReal)) return result
-        def realFiles = iReal.findFilteredFiles()
-        def truePositives = calculateTruePositives(iTest.findFilteredFiles(), realFiles)
+        if (invalidInput(testI, taskI)) return result
+        def realFiles = taskI.findFilteredFiles()
+        def truePositives = calculateTruePositives(testI.findFilteredFiles(), realFiles)
         if (truePositives > 0) result = (double) truePositives / realFiles.size()
         result
     }
 
-    static double calculateFilesPrecision(Set iTest, Set iReal) {
+    static double calculateFilesPrecision(Set testI, Set taskI) {
         double result = 0
-        if (invalidInput(iTest, iReal)) return result
-        def truePositives = calculateTruePositives(iTest, iReal)
-        if (truePositives > 0) result = (double) truePositives / iTest.size()
+        if (invalidInput(testI, taskI)) return result
+        def truePositives = calculateTruePositives(testI, taskI)
+        if (truePositives > 0) result = (double) truePositives / testI.size()
         result
     }
 
-    static double calculateFilesRecall(Set iTest, Set iReal) {
+    static double calculateFilesRecall(Set testI, Set taskI) {
         double result = 0
-        if (invalidInput(iTest, iReal)) return result
-        def truePositives = calculateTruePositives(iTest, iReal)
-        if (truePositives > 0) result = (double) truePositives / iReal.size()
+        if (invalidInput(testI, taskI)) return result
+        def truePositives = calculateTruePositives(testI, taskI)
+        if (truePositives > 0) result = (double) truePositives / taskI.size()
         result
     }
 
@@ -66,8 +66,8 @@ class TaskInterfaceEvaluator {
         (set1.intersect(set2)).size()
     }
 
-    private static invalidInput(iTest, iReal) {
-        if (!iTest || iTest.empty || !iReal || iReal.empty) true
+    private static invalidInput(testI, taskI) {
+        if (!testI || testI.empty || !taskI || taskI.empty) true
         else false
     }
 

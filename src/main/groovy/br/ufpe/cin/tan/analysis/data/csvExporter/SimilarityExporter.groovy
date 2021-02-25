@@ -41,28 +41,28 @@ class SimilarityExporter {
         taskPairs?.each { item ->
             def task = item.task
             def taskText = extractTaskText(task[0])
-            def itest1 = task[ExporterUtil.ITEST_INDEX_SHORT_HEADER]?.replace(File.separator, Matcher.quoteReplacement(File.separator))
-                    ?.substring(1, task[ExporterUtil.ITEST_INDEX_SHORT_HEADER].size() - 1)?.split(", ") as List
-            def ireal1 = task[ExporterUtil.IREAL_INDEX_SHORT_HEADER]?.replace(File.separator, Matcher.quoteReplacement(File.separator))
-                    ?.substring(1, task[ExporterUtil.IREAL_INDEX_SHORT_HEADER].size() - 1)?.split(", ") as List
+            def testi1 = task[ExporterUtil.TESTI_INDEX_SHORT_HEADER]?.replace(File.separator, Matcher.quoteReplacement(File.separator))
+                    ?.substring(1, task[ExporterUtil.TESTI_INDEX_SHORT_HEADER].size() - 1)?.split(", ") as List
+            def taski1 = task[ExporterUtil.TASKI_INDEX_SHORT_HEADER]?.replace(File.separator, Matcher.quoteReplacement(File.separator))
+                    ?.substring(1, task[ExporterUtil.TASKI_INDEX_SHORT_HEADER].size() - 1)?.split(", ") as List
 
             item.pairs?.each { other ->
                 def otherText = extractTaskText(other[0])
                 def textualSimilarityAnalyser = new TextualSimilarityAnalyser()
                 def textSimilarity = textualSimilarityAnalyser.calculateSimilarity(taskText, otherText)
 
-                def itest2 = other[ExporterUtil.ITEST_INDEX_SHORT_HEADER]
+                def testi2 = other[ExporterUtil.TESTI_INDEX_SHORT_HEADER]
                         ?.replace(File.separator, Matcher.quoteReplacement(File.separator))
-                        ?.substring(1, other[ExporterUtil.ITEST_INDEX_SHORT_HEADER].size() - 1)?.split(", ") as List
-                def ireal2 = other[ExporterUtil.IREAL_INDEX_SHORT_HEADER]
+                        ?.substring(1, other[ExporterUtil.TESTI_INDEX_SHORT_HEADER].size() - 1)?.split(", ") as List
+                def taski2 = other[ExporterUtil.TASKI_INDEX_SHORT_HEADER]
                         ?.replace(File.separator, Matcher.quoteReplacement(File.separator))
-                        ?.substring(1, other[ExporterUtil.IREAL_INDEX_SHORT_HEADER].size() - 1)?.split(", ") as List
+                        ?.substring(1, other[ExporterUtil.TASKI_INDEX_SHORT_HEADER].size() - 1)?.split(", ") as List
 
-                def similarityAnalyser = new TestSimilarityAnalyser(itest1, itest2)
+                def similarityAnalyser = new TestSimilarityAnalyser(testi1, testi2)
                 def testSimJaccard = similarityAnalyser.calculateSimilarityByJaccard()
                 def testSimCosine = similarityAnalyser.calculateSimilarityByCosine()
 
-                similarityAnalyser = new TestSimilarityAnalyser(ireal1, ireal2)
+                similarityAnalyser = new TestSimilarityAnalyser(taski1, taski2)
                 def realSimJaccard = similarityAnalyser.calculateSimilarityByJaccard()
                 def realSimCosine = similarityAnalyser.calculateSimilarityByCosine()
 

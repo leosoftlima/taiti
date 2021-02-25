@@ -1,6 +1,6 @@
 package br.ufpe.cin.tan.test
 
-import br.ufpe.cin.tan.analysis.itask.ITest
+import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.commit.change.gherkin.ChangedGherkinFile
 import br.ufpe.cin.tan.commit.change.gherkin.GherkinManager
 import br.ufpe.cin.tan.commit.change.gherkin.StepDefinition
@@ -129,7 +129,7 @@ abstract class TestCodeAbstractAnalyser {
      * @param gherkinFiles list of changed gherkin files
      * @return task interface
      */
-    ITest computeInterfaceForDoneTask(List<ChangedGherkinFile> gherkinFiles, List<ChangedStepdefFile> stepFiles,
+    TestI computeInterfaceForDoneTask(List<ChangedGherkinFile> gherkinFiles, List<ChangedStepdefFile> stepFiles,
                                       Set removedSteps) {
         configureProperties()
         List<AcceptanceTest> acceptanceTests = extractAcceptanceTest(gherkinFiles)
@@ -146,7 +146,7 @@ abstract class TestCodeAbstractAnalyser {
      * @param gherkinFiles list of changed gherkin files
      * @return task interface
      */
-    ITest computeInterfaceForTodoTask(List<ChangedGherkinFile> gherkinFiles) {
+    TestI computeInterfaceForTodoTask(List<ChangedGherkinFile> gherkinFiles) {
         List<AcceptanceTest> acceptanceTests = extractAcceptanceTest(gherkinFiles)
         List<StepCode> stepCodes = acceptanceTests*.stepCodes?.flatten()?.unique()
         List<FileToAnalyse> filesToAnalyse = identifyMethodsPerFileToVisit(stepCodes)
@@ -418,7 +418,7 @@ abstract class TestCodeAbstractAnalyser {
         analysisData.trace = aux.sort { it.path }
     }
 
-    private ITest computeInterface(List<FileToAnalyse> filesToAnalyse, Set removedSteps) {
+    private TestI computeInterface(List<FileToAnalyse> filesToAnalyse, Set removedSteps) {
         def interfaces = []
         List<StepCall> calledSteps = []
 
@@ -486,24 +486,24 @@ abstract class TestCodeAbstractAnalyser {
         if (!newStepsToAnalyse.empty) interfaces += computeInterface(newStepsToAnalyse, removedSteps)
 
         /* collapses step code interfaces to define the interface for the whole task */
-        fillITest(interfaces, removedSteps)
+        fillTestI(interfaces, removedSteps)
     }
 
-    private fillITest(List<ITest> interfaces, Set removedSteps) {
-        def itest = ITest.collapseInterfaces(interfaces)
-        itest.matchStepErrors = organizeMatchStepErrors(removedSteps)
-        itest.multipleStepMatches = organizeMultipleStepMatches(removedSteps)
-        itest.genericStepKeyword = analysisData.genericStepKeyword
-        itest.compilationErrors = organizeCompilationErrors()
-        itest.codeFromViewAnalysis = this.getCodeFromViewAnalysis()
-        itest.notFoundViews = notFoundViews.sort()
-        itest.foundAcceptanceTests = analysisData.foundAcceptanceTests
-        itest.foundStepDefs = analysisData.foundStepDefs
-        itest.visitCallCounter = analysisData.visitCallCounter
-        itest.lostVisitCall = analysisData.lostVisitCall
-        itest.code += analysisData.testCode
-        itest.trace = consolidateTrace()
-        itest
+    private fillTestI(List<TestI> interfaces, Set removedSteps) {
+        def testi = TestI.collapseInterfaces(interfaces)
+        testi.matchStepErrors = organizeMatchStepErrors(removedSteps)
+        testi.multipleStepMatches = organizeMultipleStepMatches(removedSteps)
+        testi.genericStepKeyword = analysisData.genericStepKeyword
+        testi.compilationErrors = organizeCompilationErrors()
+        testi.codeFromViewAnalysis = this.getCodeFromViewAnalysis()
+        testi.notFoundViews = notFoundViews.sort()
+        testi.foundAcceptanceTests = analysisData.foundAcceptanceTests
+        testi.foundStepDefs = analysisData.foundStepDefs
+        testi.visitCallCounter = analysisData.visitCallCounter
+        testi.lostVisitCall = analysisData.lostVisitCall
+        testi.code += analysisData.testCode
+        testi.trace = consolidateTrace()
+        testi
     }
 
     private organizeMatchStepErrors(Set removedSteps) {

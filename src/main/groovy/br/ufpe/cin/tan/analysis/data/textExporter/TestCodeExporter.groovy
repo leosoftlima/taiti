@@ -7,13 +7,13 @@ class TestCodeExporter extends TextExporter {
 
     String testcodeFileSufix
     String traceFileSufix
-    String detailedITestFileSufix
+    String detailedTestIFileSufix
 
     TestCodeExporter(String folderName, List<AnalysedTask> tasks) {
         super(folderName, tasks)
         testcodeFileSufix = "_testcode${ConstantData.TEXT_EXTENSION}"
         traceFileSufix = "_trace${ConstantData.TEXT_EXTENSION}"
-        detailedITestFileSufix = "_detailed_itest${ConstantData.TEXT_EXTENSION}"
+        detailedTestIFileSufix = "_detailed_testi${ConstantData.TEXT_EXTENSION}"
     }
 
     @Override
@@ -22,14 +22,14 @@ class TestCodeExporter extends TextExporter {
         def name = "${filePrefix}${analysedTask.doneTask.id}$testcodeFileSufix"
         File file = new File(name)
         file.withWriter("utf-8") { out ->
-            analysedTask.itest.code.each { method ->
+            analysedTask.testi.code.each { method ->
                 method.lines.each { line ->
                     out.write(line + "\n")
                 }
             }
         }
         writeTraceFile(analysedTask)
-        writeITestDetailed(analysedTask)
+        writeTestIDetailed(analysedTask)
     }
 
     private writeTraceFile(AnalysedTask analysedTask) {
@@ -40,11 +40,11 @@ class TestCodeExporter extends TextExporter {
         }
     }
 
-    private writeITestDetailed(AnalysedTask analysedTask) {
-        def name = "${filePrefix}${analysedTask.doneTask.id}$detailedITestFileSufix"
+    private writeTestIDetailed(AnalysedTask analysedTask) {
+        def name = "${filePrefix}${analysedTask.doneTask.id}$detailedTestIFileSufix"
         File file = new File(name)
         file.withWriter("utf-8") { out ->
-            analysedTask.itest.each { out.write(it.toStringDetailed() + "\n") }
+            analysedTask.testi.each { out.write(it.toStringDetailed() + "\n") }
         }
     }
 

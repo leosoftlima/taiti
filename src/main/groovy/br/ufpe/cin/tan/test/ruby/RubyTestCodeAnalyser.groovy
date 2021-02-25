@@ -1,6 +1,6 @@
 package br.ufpe.cin.tan.test.ruby
 
-import br.ufpe.cin.tan.analysis.itask.ITest
+import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.commit.change.gherkin.GherkinManager
 import br.ufpe.cin.tan.commit.change.gherkin.StepDefinition
 import br.ufpe.cin.tan.commit.change.unit.ChangedUnitTestFile
@@ -33,7 +33,7 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
     String routesFile
     Set<Route> routes
     Set<Route> problematicRoutes
-    ITest interfaceFromViews
+    TestI interfaceFromViews
     ViewCodeExtractor viewCodeExtractor
     static counter = 1
     Set<MethodBody> methodBodies
@@ -43,7 +43,7 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
         this.routesFile = repositoryPath + RubyConstantData.ROUTES_FILE
         this.routes = [] as Set
         this.problematicRoutes = [] as Set
-        this.interfaceFromViews = new ITest()
+        this.interfaceFromViews = new TestI()
         if (Util.VIEW_ANALYSIS) viewCodeExtractor = new ViewCodeExtractor()
         methodBodies = [] as Set
     }

@@ -108,7 +108,7 @@ class Main {
             log.info "< Running added_when configuration... >"
             def addedWhenAnalyser = runAnalysis(inputTasksFile)
             analyzedTasks += addedWhenAnalyser.analyzedTasks
-            def addedWhenTasks = addedWhenAnalyser.filterRelevantTasksByTestsAndEmptyItest()
+            def addedWhenTasks = addedWhenAnalyser.filterRelevantTasksByTestsAndEmptyTestI()
             def idsAddedWhen = addedWhenTasks?.collect { it.doneTask.id }?.sort()
             this.addedWhenTasks += idsAddedWhen
             def relevantButNotSelected = ((addedWhenAnalyser.validTasks - addedWhenAnalyser.relevantTasks) +
@@ -133,7 +133,7 @@ class Main {
             log.info "< Running added configuration... >"
             def addedAnalyser = runAnalysis(inputTasksFile)
             analyzedTasks += addedAnalyser.analyzedTasks
-            def addedTasks = addedAnalyser.filterRelevantTasksByTestsAndEmptyItest()
+            def addedTasks = addedAnalyser.filterRelevantTasksByTestsAndEmptyTestI()
             def idsAdded = addedTasks?.collect { it.doneTask.id }?.sort()
             this.addedTasks += idsAdded
             def intersection1 = idsAdded.intersect(idsAddedWhen)
@@ -159,7 +159,7 @@ class Main {
             log.info "< Running changed_when configuration... >"
             def allWhenAnalyser = runAnalysis(inputTasksFile)
             analyzedTasks += allWhenAnalyser.analyzedTasks
-            def allWhenTasks = allWhenAnalyser.filterRelevantTasksByTestsAndEmptyItest()
+            def allWhenTasks = allWhenAnalyser.filterRelevantTasksByTestsAndEmptyTestI()
             def idsAllWhen = allWhenTasks?.collect { it.doneTask.id }?.sort()
             this.allWhenTasks += idsAllWhen
             def intersection2 = idsAllWhen.intersect(intersection1)
@@ -185,7 +185,7 @@ class Main {
             log.info "< Running changed configuration... >"
             def allAnalyser = runAnalysis(inputTasksFile)
             analyzedTasks += allAnalyser.analyzedTasks
-            def allTasks = allAnalyser.filterRelevantTasksByTestsAndEmptyItest()
+            def allTasks = allAnalyser.filterRelevantTasksByTestsAndEmptyTestI()
             def idsAll = allTasks?.collect { it.doneTask.id }?.sort()
             this.allTasks += idsAll
             def intersection3 = idsAll.intersect(intersection2)

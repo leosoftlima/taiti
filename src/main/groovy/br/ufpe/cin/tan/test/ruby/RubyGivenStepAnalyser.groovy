@@ -1,6 +1,6 @@
 package br.ufpe.cin.tan.test.ruby
 
-import br.ufpe.cin.tan.analysis.itask.ITest
+import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.test.MethodToAnalyse
 import br.ufpe.cin.tan.util.Util
 import org.jrubyparser.ast.FCallNode
@@ -51,7 +51,7 @@ class RubyGivenStepAnalyser {
     }
 
     private organizeAnalysisResult(RubyTestCodeVisitor filteredVisitor, RubyTestCodeVisitor auxVisitor) {
-        ITest diff = auxVisitor.taskInterface.minus(filteredVisitor.taskInterface)
+        TestI diff = auxVisitor.taskInterface.minus(filteredVisitor.taskInterface)
         def calledSteps = (filteredVisitor.calledSteps + auxVisitor.calledSteps).unique()
         def testMethods = diff.methods.findAll { (it.file != null && Util.isTestFile(it.file)) }
         methodCallVisitor.calledSteps += calledSteps

@@ -80,7 +80,7 @@ class TaskAnalyser {
         if (incrementalAnalysis) generateResultPartially()
         else generateResult()
         //we wanna tasks that are valid for controller filtering
-        relevantTasks = filterRelevantTasksByTestsAndEmptyItest()
+        relevantTasks = filterRelevantTasksByTestsAndEmptyTestI()
         exportTasks()
         exportAllDetailedInfo()
         //filterResult() //no novo estudo não filtramos resultados por controller
@@ -99,10 +99,10 @@ class TaskAnalyser {
         (validTasks + invalidTasks + relevantTasks).unique().collect { it.doneTask.id }.sort()
     }
 
-    def filterRelevantTasksByTestsAndEmptyItest() {
+    def filterRelevantTasksByTestsAndEmptyTestI() {
         def entries = organizeTests()
         def selected = entries.collect { it.task }
-        def filtered = relevantTasks?.findAll { (it.doneTask.id in selected) && !it.itestIsEmpty() }?.sort {
+        def filtered = relevantTasks?.findAll { (it.doneTask.id in selected) && !it.testiIsEmpty() }?.sort {
             it.doneTask.id
         }
         def excluded = relevantTasks - filtered
@@ -135,7 +135,7 @@ class TaskAnalyser {
 
     private static extractTests(AnalysedTask task) {
         def scenarios = []
-        Set<AcceptanceTest> tests = task.itest.foundAcceptanceTests
+        Set<AcceptanceTest> tests = task.testi.foundAcceptanceTests
         tests.each { test ->
             def lines = test.scenarioDefinition*.location.line
             scenarios += [file: test.gherkinFilePath, lines: lines.sort()]
@@ -231,7 +231,7 @@ class TaskAnalyser {
         log.info "(analyseLimitedTasks) Task interfaces were computed for ${counter} tasks!"
         log.info "(analyseLimitedTasks) (From candidates) Invalid tasks: ${invalidTasks.size()}"
         log.info "(analyseLimitedTasks) (From candidates) Valid tasks: ${validTasks.size()}"
-        log.info "(analyseLimitedTasks) (From candidates) Relevant tasks (valid but with no empty ITest): ${relevantTasks.size()}"
+        log.info "(analyseLimitedTasks) (From candidates) Relevant tasks (valid but with no empty TestI): ${relevantTasks.size()}"
     }
 
     private analyse(DoneTask task) {
@@ -248,7 +248,7 @@ class TaskAnalyser {
         log.info "Task interfaces were computed for ${taskImporter.candidateTasks.size()} tasks!"
         log.info "(From candidates) Invalid tasks: ${invalidTasks.size()}"
         log.info "(From candidates) Valid tasks: ${validTasks.size()}"
-        log.info "(From candidates) Relevant tasks (valid but with no empty ITest): ${relevantTasks.size()}"
+        log.info "(From candidates) Relevant tasks (valid but with no empty TestI): ${relevantTasks.size()}"
     }
 
     private generateResult() {

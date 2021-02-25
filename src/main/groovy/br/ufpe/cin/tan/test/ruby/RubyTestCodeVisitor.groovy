@@ -1,6 +1,6 @@
 package br.ufpe.cin.tan.test.ruby
 
-import br.ufpe.cin.tan.analysis.itask.ITest
+import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.test.MethodToAnalyse
 import br.ufpe.cin.tan.test.StepCall
 import br.ufpe.cin.tan.test.TestCodeVisitorInterface
@@ -15,7 +15,7 @@ import org.jrubyparser.util.NoopVisitor
 @Slf4j
 class RubyTestCodeVisitor extends NoopVisitor implements TestCodeVisitorInterface {
 
-    ITest taskInterface
+    TestI taskInterface
     List<String> projectFiles
     List<String> viewFiles
     String lastVisitedFile
@@ -35,7 +35,7 @@ class RubyTestCodeVisitor extends NoopVisitor implements TestCodeVisitorInterfac
     Set lostVisitCall //keys: path, line
 
     RubyTestCodeVisitor(String currentFile) { //test purpose only
-        taskInterface = new ITest()
+        taskInterface = new TestI()
         lastVisitedFile = currentFile
         calledSteps = []
         lostVisitCall = [] as Set

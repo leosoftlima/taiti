@@ -1,9 +1,9 @@
-package br.ufpe.cin.tan.analysis.itask
+package br.ufpe.cin.tan.analysis.taskInterface
 
 import br.ufpe.cin.tan.util.Util
 
 
-class IReal extends TaskInterface {
+class TaskI extends TaskInterface {
 
     boolean isEmpty() {
         if (files.empty) true

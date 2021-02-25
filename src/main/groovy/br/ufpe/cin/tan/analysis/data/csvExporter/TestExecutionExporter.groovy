@@ -36,7 +36,7 @@ class TestExecutionExporter {
 
     private static extractTests(task) {
         def scenarios = ""
-        Set<AcceptanceTest> tests = task.itest.foundAcceptanceTests
+        Set<AcceptanceTest> tests = task.testi.foundAcceptanceTests
         tests.each { test ->
             def lines = test.scenarioDefinition*.location.line
             scenarios += test.gherkinFilePath + "(" + lines.join(",") + ")" + ";"

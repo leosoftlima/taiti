@@ -52,7 +52,7 @@ class ValidTaskExporter {
 
     private generateNumeralData() {
         if (!tasks || tasks.empty) return []
-        double[] tests = tasks.collect { it.itest.foundAcceptanceTests.size() }
+        double[] tests = tasks.collect { it.testi.foundAcceptanceTests.size() }
         double[] precisionValues = tasks.collect { it.precision() }
         double[] recallValues = tasks.collect { it.recall() }
         double[] f2Values = tasks.collect { it.f2Measure() }
@@ -65,7 +65,7 @@ class ValidTaskExporter {
             this.tasks = []
             url = ""
         } else {
-            this.tasks = tasks.findAll { it.isValid() }?.sort { -it.itest.foundAcceptanceTests.size() }
+            this.tasks = tasks.findAll { it.isValid() }?.sort { -it.testi.foundAcceptanceTests.size() }
             url = tasks.first().doneTask.gitRepository.url
         }
     }

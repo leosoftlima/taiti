@@ -1,9 +1,9 @@
-package br.ufpe.cin.tan.analysis.itask
+package br.ufpe.cin.tan.analysis.taskInterface
 
 import br.ufpe.cin.tan.test.ruby.MethodBody
 import br.ufpe.cin.tan.util.Util
 
-class ITest extends TaskInterface {
+class TestI extends TaskInterface {
 
     Set methods //static and non-static called methods; keys:[name, type, file, step]
     Set staticFields //declared static fields; [name, type, value, file]
@@ -30,7 +30,7 @@ class ITest extends TaskInterface {
 
     Set<MethodBody> code
 
-    ITest() {
+    TestI() {
         super()
         this.methods = [] as Set
         this.staticFields = [] as Set
@@ -93,7 +93,7 @@ class ITest extends TaskInterface {
         files?.findAll { String f -> Util.isViewFile(f) }
     }
 
-    def collapseInterfaces(ITest task) {
+    def collapseInterfaces(TestI task) {
         this.classes += task.classes
         this.methods += task.methods
         this.staticFields += task.staticFields
@@ -114,14 +114,14 @@ class ITest extends TaskInterface {
         this.code += task.code
     }
 
-    static ITest collapseInterfaces(List<ITest> interfaces) {
-        def taskInterface = new ITest()
+    static TestI collapseInterfaces(List<TestI> interfaces) {
+        def taskInterface = new TestI()
         interfaces.each { taskInterface.collapseInterfaces(it) }
         return taskInterface
     }
 
-    ITest minus(ITest task) {
-        def taskInterface = new ITest()
+    TestI minus(TestI task) {
+        def taskInterface = new TestI()
         taskInterface.classes = classes - task.classes
         taskInterface.methods = methods - task.methods
         taskInterface.staticFields = staticFields - task.staticFields

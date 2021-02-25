@@ -1,9 +1,9 @@
 package br.ufpe.cin.tan.analysis.task
 
 import br.ufpe.cin.tan.analysis.AnalysedTask
-import br.ufpe.cin.tan.analysis.itask.IReal
-import br.ufpe.cin.tan.analysis.itask.ITest
-import br.ufpe.cin.tan.analysis.itask.TaskInterface
+import br.ufpe.cin.tan.analysis.taskInterface.TaskI
+import br.ufpe.cin.tan.analysis.taskInterface.TestI
+import br.ufpe.cin.tan.analysis.taskInterface.TaskInterface
 import br.ufpe.cin.tan.commit.Commit
 import br.ufpe.cin.tan.commit.change.gherkin.ChangedGherkinFile
 import br.ufpe.cin.tan.commit.change.gherkin.StepDefinition
@@ -76,8 +76,8 @@ class DoneTask extends Task {
      * @return task interface
      */
     @Override
-    ITest computeTestBasedInterface() {
-        def taskInterface = new ITest()
+    TestI computeTestBasedInterface() {
+        def taskInterface = new TestI()
         if (hasNoCommits() || !hasTest()) return taskInterface
         showTaskInfo()
 
@@ -124,8 +124,8 @@ class DoneTask extends Task {
         text
     }
 
-    IReal computeRealInterface() {
-        def taskInterface = new IReal()
+    TaskI computeRealInterface() {
+        def taskInterface = new TaskI()
         if (hasNoCommits()) return taskInterface
 
         try {
@@ -224,9 +224,9 @@ class DoneTask extends Task {
 
             // computes task interface based on the production code exercised by tests
             def initTime = new Date()
-            analysedTask.itest = testCodeAnalyser.computeInterfaceForDoneTask(changedGherkinFiles,
+            analysedTask.testi = testCodeAnalyser.computeInterfaceForDoneTask(changedGherkinFiles,
                     changedStepDefinitions, gitRepository.removedSteps)
-            configureTimestamp(initTime, analysedTask.itest)
+            configureTimestamp(initTime, analysedTask.testi)
             registryCompilationErrors(analysedTask)
 
             //computes task text based in gherkin scenarios
@@ -234,8 +234,8 @@ class DoneTask extends Task {
 
             //computes real interface
             initTime = new Date()
-            analysedTask.ireal = identifyChangedFiles()
-            configureTimestamp(initTime, analysedTask.ireal)
+            analysedTask.taski = identifyChangedFiles()
+            configureTimestamp(initTime, analysedTask.taski)
 
             //it is only necessary in the evaluation study
             analysedTask.configureGems(gitRepository.localPath)
@@ -523,7 +523,7 @@ class DoneTask extends Task {
         currentFiles
     }
 
-    private IReal identifyProductionChangedFiles() {
+    private TaskI identifyProductionChangedFiles() {
         def currentFiles = identifyAllProjectFiles()
 
         /* Identifies all changed files by task */
@@ -537,17 +537,17 @@ class DoneTask extends Task {
         organizeProductionFiles(validFiles)
     }
 
-    /* calcula IReal como sendo o conjunto dos arquivos adicionados, alterados ou removidos pela tarefa, sem filtros. */
+    /* calcula TaskI como sendo o conjunto dos arquivos adicionados, alterados ou removidos pela tarefa, sem filtros. */
 
-    private IReal identifyChangedFiles() {
+    private TaskI identifyChangedFiles() {
         def files = commits*.files?.flatten()?.unique()
 
         /* Constructs task interface object */
         organizeProductionFiles(files)
     }
 
-    private IReal organizeProductionFiles(productionFiles) {
-        def taskInterface = new IReal()
+    private TaskI organizeProductionFiles(productionFiles) {
+        def taskInterface = new TaskI()
 
         //filtering result to only identify view and/or controller files
         productionFiles = Util.filterFiles(productionFiles)
@@ -602,14 +602,14 @@ class DoneTask extends Task {
     }
 
     private registryCompilationErrors(AnalysedTask task) {
-        ITest temp = task.itest
+        TestI temp = task.testi
         registryCompilationErrors(temp)
-        task.itest = temp
+        task.testi = temp
     }
 
-    private registryCompilationErrors(ITest itest) {
+    private registryCompilationErrors(TestI testi) {
         def finalErrorSet = []
-        def errors = itest.compilationErrors
+        def errors = testi.compilationErrors
 
         def gherkinErrors = errors.findAll { Util.isGherkinFile(it.path) }
         gherkinErrors?.each { error ->
@@ -631,6 +631,6 @@ class DoneTask extends Task {
             formatedResult += [path: name, msgs: error.msgs]
         }
 
-        itest.compilationErrors = formatedResult
+        testi.compilationErrors = formatedResult
     }
 }

@@ -1,7 +1,7 @@
 package br.ufpe.cin.tan.analysis
 
-import br.ufpe.cin.tan.analysis.itask.IReal
-import br.ufpe.cin.tan.analysis.itask.ITest
+import br.ufpe.cin.tan.analysis.taskInterface.TaskI
+import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.analysis.task.DoneTask
 import br.ufpe.cin.tan.evaluation.TaskInterfaceEvaluator
 import br.ufpe.cin.tan.similarity.test.TestSimilarityAnalyser
@@ -15,8 +15,8 @@ import groovy.util.logging.Slf4j
 class AnalysedTask {
 
     DoneTask doneTask
-    ITest itest
-    IReal ireal
+    TestI testi
+    TaskI taski
     List<String> methods
     int stepCalls
     String itext
@@ -41,8 +41,8 @@ class AnalysedTask {
 
     AnalysedTask(DoneTask doneTask) {
         this.doneTask = doneTask
-        this.itest = new ITest()
-        this.ireal = new IReal()
+        this.testi = new TestI()
+        this.taski = new TaskI()
         this.itext = ""
         this.gems = []
         this.coverageGems = []
@@ -50,10 +50,10 @@ class AnalysedTask {
         this.ruby = ""
     }
 
-    void setItest(ITest itest) {
-        this.itest = itest
-        this.stepCalls = itest?.methods?.findAll { it.type == "StepCall" }?.unique()?.size()
-        this.methods = itest?.methods?.findAll { it.type == "Object" }?.unique()*.name
+    void setTesti(TestI testi) {
+        this.testi = testi
+        this.stepCalls = testi?.methods?.findAll { it.type == "StepCall" }?.unique()?.size()
+        this.methods = testi?.methods?.findAll { it.type == "Object" }?.unique()*.name
         this.extractStepMatchErrorText()
         this.extractCompilationErrorText()
         this.extractMultipleStepMatches()
@@ -61,11 +61,11 @@ class AnalysedTask {
     }
 
     Set getTrace() {
-        itest.trace
+        testi.trace
     }
 
     boolean isRelevant() {
-        if (itestIsEmpty()) false
+        if (testiIsEmpty()) false
         else true
     }
 
@@ -114,55 +114,55 @@ class AnalysedTask {
         doneTask.hasMergeCommit()
     }
 
-    def irealFiles() {
-        ireal.findFilteredFiles()
+    def taskiFiles() {
+        taski.findFilteredFiles()
     }
 
-    def irealHasControllers() {
-        def controllers = irealFiles().findAll { Util.isControllerFile(it) }
+    def taskiHasControllers() {
+        def controllers = taskiFiles().findAll { Util.isControllerFile(it) }
         !controllers.empty
     }
 
-    def irealIsEmpty() {
-        ireal.findFilteredFiles().empty
+    def taskiIsEmpty() {
+        taski.findFilteredFiles().empty
     }
 
-    def itestFiles() {
-        itest.findFilteredFiles()
+    def testiFiles() {
+        testi.findFilteredFiles()
     }
 
-    def itestHasControllers() {
-        def controllers = itestFiles().findAll { Util.isControllerFile(it) }
+    def testiHasControllers() {
+        def controllers = testiFiles().findAll { Util.isControllerFile(it) }
         !controllers.empty
     }
 
-    def itestIsEmpty() {
-        itestFiles().empty
+    def testiIsEmpty() {
+        testiFiles().empty
     }
 
-    def itestViewFiles() {
-        itestFiles().findAll { Util.isViewFile(it) }
+    def testiViewFiles() {
+        testiFiles().findAll { Util.isViewFile(it) }
     }
 
     def filesFromViewAnalysis() {
-        itest.codeFromViewAnalysis
+        testi.codeFromViewAnalysis
     }
 
     double precision() {
         if (Util.SIMILARITY_ANALYSIS) {
-            def similarityAnalyser = new TestSimilarityAnalyser(itest.findFilteredFiles(), ireal.findFilteredFiles())
+            def similarityAnalyser = new TestSimilarityAnalyser(testi.findFilteredFiles(), taski.findFilteredFiles())
             similarityAnalyser.calculateSimilarityByJaccard()
         } else {
-            TaskInterfaceEvaluator.calculateFilesPrecision(itest, ireal)
+            TaskInterfaceEvaluator.calculateFilesPrecision(testi, taski)
         }
     }
 
     double recall() {
         if (Util.SIMILARITY_ANALYSIS) {
-            def similarityAnalyser = new TestSimilarityAnalyser(itest.findFilteredFiles(), ireal.findFilteredFiles())
+            def similarityAnalyser = new TestSimilarityAnalyser(testi.findFilteredFiles(), taski.findFilteredFiles())
             similarityAnalyser.calculateSimilarityByCosine()
         } else {
-            TaskInterfaceEvaluator.calculateFilesRecall(itest, ireal)
+            TaskInterfaceEvaluator.calculateFilesRecall(testi, taski)
         }
     }
 
@@ -187,7 +187,7 @@ class AnalysedTask {
     }
 
     def notFoundViews() {
-        itest.notFoundViews
+        testi.notFoundViews
     }
 
     def satisfiesGemsFilter() {
@@ -199,18 +199,18 @@ class AnalysedTask {
     }
 
     Set<AcceptanceTest> getAcceptanceTests() {
-        itest.foundAcceptanceTests
+        testi.foundAcceptanceTests
     }
 
     def hasImplementedAcceptanceTests() {
-        if (itest.foundAcceptanceTests.size() > 0) true
+        if (testi.foundAcceptanceTests.size() > 0) true
         else false
     }
 
     def isValid() {
         int zero = 0
         compilationErrors == zero && stepMatchErrors == zero && satisfiesGemsFilter() &&
-                hasImplementedAcceptanceTests() //&& !irealFiles().empty
+                hasImplementedAcceptanceTests() //&& !taskiFiles().empty
     }
 
     def configureGems(String path) {
@@ -229,30 +229,30 @@ class AnalysedTask {
      * #(gherkin tests), #(implemented gherkin tests), #(stepdefs), #(implemented stepdefs), unknown methods,
      * #(step calls), step match errors, #(step match errors), AST errors, #(AST errors), gherkin AST errors,
      * #(gherkin AST errors), step AST errors, #(step AST errors), renamed files, deleted files, not found views,
-     * #views, #ITest, #IReal, ITest, IReal, precision, recall, hashes, timestamp, rails version, gems,
-     * #(calls to visit), #(views in ITest), #(files accessed by view analysis), files accessed by view analysis.
+     * #views, #TestI, #TaskI, TestI, TaskI, precision, recall, hashes, timestamp, rails version, gems,
+     * #(calls to visit), #(views in TestI), #(files accessed by view analysis), files accessed by view analysis.
      * Complete version with 38 fields.
      * */
     def parseAllToArray() {
-        def itestFiles = this.itestFiles()
-        def itestSize = itestFiles.size()
-        def irealFiles = this.irealFiles()
-        def irealSize = irealFiles.size()
+        def testIFiles = this.testiFiles()
+        def testISize = testIFiles.size()
+        def taskIFiles = this.taskiFiles()
+        def taskISize = taskIFiles.size()
         def renames = renamedFiles
         if (renames.empty) renames = ""
         def views = notFoundViews()
         if (views.empty) views = ""
         def filesFromViewAnalysis = filesFromViewAnalysis()
-        def viewFileFromITest = itestViewFiles().size()
+        def viewFileFromTestI = testiViewFiles().size()
         def project = formatProjectName(doneTask.gitRepository.name)
         String[] array = [project, doneTask.id, dates, doneTask.days, doneTask.commitsQuantity, commitMsg, developers,
-                          doneTask.gherkinTestQuantity, itest.foundAcceptanceTests.size(), doneTask.stepDefQuantity,
-                          itest.foundStepDefs.size(), configureUnknownMethods(), stepCalls, stepMatchErrorsText, stepMatchErrors,
+                          doneTask.gherkinTestQuantity, testi.foundAcceptanceTests.size(), doneTask.stepDefQuantity,
+                          testi.foundStepDefs.size(), configureUnknownMethods(), stepCalls, stepMatchErrorsText, stepMatchErrors,
                           compilationErrorsText, compilationErrors, gherkinCompilationErrorsText, gherkinCompilationErrors,
                           stepDefCompilationErrorsText, stepDefCompilationErrors, renames, removedFiles, views,
-                          views.size(), itestSize, irealSize, itestFiles, irealFiles, precision(), recall(),
-                          doneTask.hashes, itest.timestamp, rails, gems, itest.visitCallCounter, itest.lostVisitCall,
-                          viewFileFromITest, filesFromViewAnalysis.size(), filesFromViewAnalysis, hasMergeCommit(),
+                          views.size(), testISize, taskISize, testIFiles, taskIFiles, precision(), recall(),
+                          doneTask.hashes, testi.timestamp, rails, gems, testi.visitCallCounter, testi.lostVisitCall,
+                          viewFileFromTestI, filesFromViewAnalysis.size(), filesFromViewAnalysis, hasMergeCommit(),
                           f2Measure(), multipleStepMatchesCounter, multipleStepMatchesText,
                           genericStepKeywordCounter, genericStepKeywordText]
         array
@@ -274,30 +274,30 @@ class AnalysedTask {
     /**
      * Represents an analysed task as an array in order to export content to CSV files.
      * Task information is organized as follows: id, dates, dates, #developers, #commits, hashes,
-     * #(implemented gherkin tests), #(implemented stepdefs), #ITest, #IReal, ITest, IReal, precision, recall,
-     * rails version, #(calls to visit), #(views in ITest), #(files accessed by view analysis), files accessed by view
+     * #(implemented gherkin tests), #(implemented stepdefs), #TestI, #TaskI, TestI, TaskI, precision, recall,
+     * rails version, #(calls to visit), #(views in TestI), #(files accessed by view analysis), files accessed by view
      * analysis, unknown methods, renamed files, deleted files, views, #views, timestamp.
      * Partial version with 24 fields.
      * */
     def parseToArray() {
-        def itestFiles = this.itestFiles()
-        def itestSize = itestFiles.size()
-        def irealFiles = this.irealFiles()
-        def irealSize = irealFiles.size()
+        def testIFiles = this.testiFiles()
+        def testISize = testIFiles.size()
+        def taskIFiles = this.taskiFiles()
+        def taskISize = taskIFiles.size()
         def renames = renamedFiles
         if (renames.empty) renames = ""
         def views = notFoundViews()
         if (views.empty) views = ""
         def filesFromViewAnalysis = filesFromViewAnalysis()
-        def viewFileFromITest = itestViewFiles().size()
-        def falsePositives = itestFiles - irealFiles
-        def falseNegatives = irealFiles - itestFiles
-        def hits = itestFiles.intersect(irealFiles)
+        def viewFileFromTestI = testiViewFiles().size()
+        def falsePositives = testIFiles - taskIFiles
+        def falseNegatives = taskIFiles - testIFiles
+        def hits = testIFiles.intersect(taskIFiles)
         String[] line = [doneTask.id, dates, developers, doneTask.commitsQuantity, doneTask.hashes,
-                         itest.foundAcceptanceTests.size(), itest.foundStepDefs.size(), itestSize, irealSize, itestFiles,
-                         irealFiles, precision(), recall(), rails, itest.visitCallCounter, itest.lostVisitCall,
-                         viewFileFromITest, filesFromViewAnalysis.size(), filesFromViewAnalysis, configureUnknownMethods(), renames,
-                         removedFiles, views, views.size(), itest.timestamp, hasMergeCommit(), falsePositives.size(),
+                         testi.foundAcceptanceTests.size(), testi.foundStepDefs.size(), testISize, taskISize, testIFiles,
+                         taskIFiles, precision(), recall(), rails, testi.visitCallCounter, testi.lostVisitCall,
+                         viewFileFromTestI, filesFromViewAnalysis.size(), filesFromViewAnalysis, configureUnknownMethods(), renames,
+                         removedFiles, views, views.size(), testi.timestamp, hasMergeCommit(), falsePositives.size(),
                          falseNegatives.size(), falsePositives, falseNegatives, hits.size(), hits, f2Measure()]
         line
     }
@@ -309,7 +309,7 @@ class AnalysedTask {
     }
 
     private void extractStepMatchErrorText() {
-        def stepErrors = itest.matchStepErrors
+        def stepErrors = testi.matchStepErrors
         def stepErrorsQuantity = 0
         def text = ""
         if (stepErrors.empty) text = ""
@@ -325,9 +325,9 @@ class AnalysedTask {
     }
 
     private void extractMultipleStepMatches() {
-        this.multipleStepMatchesCounter = itest.multipleStepMatches.size()
+        this.multipleStepMatchesCounter = testi.multipleStepMatches.size()
         this.multipleStepMatchesText = ""
-        itest.multipleStepMatches?.each { msm ->
+        testi.multipleStepMatches?.each { msm ->
             this.multipleStepMatchesText += "[path:${msm.path}, text:${msm.text}], "
         }
         if (!this.multipleStepMatchesText.empty) {
@@ -336,9 +336,9 @@ class AnalysedTask {
     }
 
     private void extractGenericStepKeyword() {
-        this.genericStepKeywordCounter = itest.genericStepKeyword.size()
+        this.genericStepKeywordCounter = testi.genericStepKeyword.size()
         this.genericStepKeywordText = ""
-        itest.genericStepKeyword?.each { gsk ->
+        testi.genericStepKeyword?.each { gsk ->
             this.genericStepKeywordText += "[path:${gsk.path}, text:${gsk.text}], "
         }
         if (!this.genericStepKeywordText.empty) {
@@ -347,7 +347,7 @@ class AnalysedTask {
     }
 
     private void extractCompilationErrorText() {
-        def compilationErrors = itest.compilationErrors
+        def compilationErrors = testi.compilationErrors
         def compErrorsQuantity = 0
         def gherkinQuantity = 0
         def stepsQuantity = 0

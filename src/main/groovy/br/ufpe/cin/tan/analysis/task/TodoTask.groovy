@@ -1,6 +1,6 @@
 package br.ufpe.cin.tan.analysis.task
 
-import br.ufpe.cin.tan.analysis.itask.ITest
+import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.commit.change.gherkin.ChangedGherkinFile
 import br.ufpe.cin.tan.exception.CloningRepositoryException
 import br.ufpe.cin.tan.util.RegexUtil
@@ -38,7 +38,7 @@ class TodoTask extends Task {
     }
 
     @Override
-    ITest computeTestBasedInterface() {
+    TestI computeTestBasedInterface() {
         def taskInterface = null
         TimeDuration timestamp = null
 

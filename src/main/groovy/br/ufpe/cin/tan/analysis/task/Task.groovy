@@ -1,6 +1,6 @@
 package br.ufpe.cin.tan.analysis.task
 
-import br.ufpe.cin.tan.analysis.itask.ITest
+import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.commit.GitRepository
 import br.ufpe.cin.tan.commit.change.gherkin.ChangedGherkinFile
 import br.ufpe.cin.tan.exception.CloningRepositoryException
@@ -54,7 +54,7 @@ abstract class Task {
         text.replaceAll("(?m)^\\s", "") //(?m) - regex multiline - to avoid lines that only contain blank space
     }
 
-    abstract ITest computeTestBasedInterface()
+    abstract TestI computeTestBasedInterface()
 
     abstract List<ChangedGherkinFile> getAcceptanceTests()
 
