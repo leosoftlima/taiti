@@ -37,7 +37,8 @@ class RubyStepsFileVisitor extends NoopVisitor {
             def matches = methods.findAll { it.line == iVisited.position.startLine }
             matches?.each { method ->
                 extractMethodBody(iVisited)
-                noFilteredAnalysis(iVisited, method)
+                if (Util.WHEN_FILTER) filteredAnalysis(iVisited, method)
+                else noFilteredAnalysis(iVisited, method)
             }
         }
         iVisited

@@ -38,15 +38,21 @@ abstract class ConstantData {
     public static String DEFAULT_EVALUATION_FOLDER = "output"
     public static final String DEFAULT_TEXT_FOLDER = "text"
     public static final String SELECTED_TASKS_BY_CONFIGS_FOLDER = "selected"
+    public static
+    final String DEFAULT_EVALUATION_FILE = "$DEFAULT_EVALUATION_FOLDER${File.separator}evaluation_result.csv"
+    public static final String ORGANIZED_FILE_SUFIX = "-org.csv"
     public static final String FILTERED_FILE_SUFIX = "-filtered.csv"
     public static final String SIMILARITY_FILE_SUFIX = "-similarity.csv"
+    public static final String SIMILARITY_ORGANIZED_FILE_SUFIX = "-similarity-org.csv"
     public static final String CONTROLLER_FILE_SUFIX = "-controller.csv"
+    public static final String CONTROLLER_ORGANIZED_FILE_SUFIX = "-controller-org.csv"
     public static final String TEST_EXECUTION_FILE_SUFIX = "-tests.csv"
     public static final String RELEVANT_TASKS_FILE_SUFIX = "-relevant.csv"
     public static final String RELEVANT_TASKS_DETAILS_FILE_SUFIX = "-relevant-detailed.csv"
     public static final String VALID_TASKS_DETAILS_FILE_SUFIX = "-valid-detailed.csv"
     public static final String VALID_TASKS_FILE_SUFIX = "-valid.csv"
     public static final String INVALID_TASKS_FILE_SUFIX = "-invalid.csv"
+    public static final String RANDOM_RESULTS_FILE_SUFIX = "-random.csv"
 
     public static final String NON_PRIMITIVE_ARRAY_PREFIX = "[L"
     public static final String HTML_EXTENSION = ".html"
@@ -87,6 +93,12 @@ abstract class ConstantData {
     public static final boolean DEFAULT_VIEW_ANALYSIS = true
     public static final String DEFAULT_VIEW_ANALYSIS_ERROR_FOLDER = "error"
 
+    public static final String PROP_CONTROLLER_FILTER = "spgroup.itest.filter.controller"
+    public static final boolean DEFAULT_CONTROLLER_FILTER = false
+
+    public static final String PROP_WHEN_FILTER = "spgroup.itest.filter.when"
+    public static final boolean DEFAULT_WHEN_FILTER = false
+
     public static final String PROP_VIEW_FILTER = "spgroup.itest.filter.view"
     public static final boolean DEFAULT_VIEW_FILTER = false
 
@@ -94,6 +106,9 @@ abstract class ConstantData {
     public static final boolean DEFAULT_RESTRICT_GHERKIN_CHANGES = false
 
     public static final String PROP_COVERAGE_GEMS = "spgroup.gems.coverage"
+
+    public static final String PROP_RUN_ALL_CONFIGURATIONS = "spgroup.itest.all.configurations"
+    public static final boolean DEFAULT_RUN_ALL_CONFIGURATIONS = false
 
     public static final String PROP_SIMILARITY = "spgroup.itest.similarity"
     public static final boolean DEFAULT_SIMILARITY = false

@@ -53,6 +53,7 @@ class TaskAnalyser {
         invalidTasks = []
         relevantTasks = []
         log.info "<  Restrict gherkin changes: '${Util.RESTRICT_GHERKIN_CHANGES}'  >"
+        log.info "<  Filter when steps: '${Util.WHEN_FILTER}'  >"
         log.info "<  Analyse views: '${Util.VIEW_ANALYSIS}'  >"
     }
 

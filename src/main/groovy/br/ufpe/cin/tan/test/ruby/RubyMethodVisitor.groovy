@@ -1,5 +1,7 @@
 package br.ufpe.cin.tan.test.ruby
 
+import br.ufpe.cin.tan.util.ConstantData
+import br.ufpe.cin.tan.util.Util
 import org.jrubyparser.ast.DefnNode
 import org.jrubyparser.ast.DefsNode
 import org.jrubyparser.ast.MethodDefNode
@@ -43,8 +45,14 @@ class RubyMethodVisitor extends NoopVisitor {
         def foundMethod = methods.find { it.name == iVisited.name }
         if (foundMethod) {
             extractMethodBody(iVisited)
-            methodBodyVisitor.step = foundMethod.step
-            iVisited.accept(methodBodyVisitor)
+            if (Util.WHEN_FILTER && foundMethod.step == ConstantData.GIVEN_STEP_EN) {
+                RubyGivenStepAnalyser givenStepAnalyser = new RubyGivenStepAnalyser(methodBodyVisitor)
+                givenStepAnalyser.analyse(iVisited, foundMethod.step)
+            } else if (Util.WHEN_FILTER && foundMethod.step == ConstantData.THEN_STEP_EN) return
+            else {
+                methodBodyVisitor.step = foundMethod.step
+                iVisited.accept(methodBodyVisitor)
+            }
         }
         iVisited
     }
