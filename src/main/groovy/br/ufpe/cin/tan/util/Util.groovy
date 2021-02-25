@@ -36,13 +36,10 @@ abstract class Util {
     public static final String GEM_PARSER
     public static final String GEM_AST
     public static final boolean VIEW_ANALYSIS
-    public static final boolean CONTROLLER_FILTER
-    public static boolean WHEN_FILTER
     public static final boolean VIEW_FILTER
     public static final boolean MULTIPLE_TASK_FILES
     public static final List<String> COVERAGE_GEMS
     public static boolean RESTRICT_GHERKIN_CHANGES
-    public static final boolean RUNNING_ALL_CONFIGURATIONS
     public static final boolean SIMILARITY_ANALYSIS
 
     static {
@@ -97,13 +94,10 @@ abstract class Util {
         GEM_PARSER = configureGemParser()
         GEM_AST = configureGemAst()
         VIEW_ANALYSIS = configureViewAnalysis()
-        CONTROLLER_FILTER = configureControllerFilter()
-        WHEN_FILTER = configureWhenFilter()
         VIEW_FILTER = configureViewFilter()
         createFolders()
         COVERAGE_GEMS = configureCoverageGems()
         RESTRICT_GHERKIN_CHANGES = configureGherkinAdds()
-        RUNNING_ALL_CONFIGURATIONS = configureRunningConfigurations()
         SIMILARITY_ANALYSIS = configureSimilarityAnalysis()
     }
 
@@ -194,24 +188,12 @@ abstract class Util {
         configureBooleanProperties(properties.(ConstantData.PROP_VIEW_ANALYSIS), ConstantData.DEFAULT_VIEW_ANALYSIS)
     }
 
-    private static boolean configureControllerFilter() {
-        configureBooleanProperties(properties.(ConstantData.PROP_CONTROLLER_FILTER), ConstantData.DEFAULT_CONTROLLER_FILTER)
-    }
-
-    private static boolean configureWhenFilter() {
-        configureBooleanProperties(properties.(ConstantData.PROP_WHEN_FILTER), ConstantData.DEFAULT_WHEN_FILTER)
-    }
-
     private static boolean configureViewFilter() {
         configureBooleanProperties(properties.(ConstantData.PROP_VIEW_FILTER), ConstantData.DEFAULT_VIEW_FILTER)
     }
 
     private static boolean configureGherkinAdds() {
         configureBooleanProperties(properties.(ConstantData.PROP_RESTRICT_GHERKIN_CHANGES), ConstantData.DEFAULT_RESTRICT_GHERKIN_CHANGES)
-    }
-
-    private static boolean configureRunningConfigurations() {
-        configureBooleanProperties(properties.(ConstantData.PROP_RUN_ALL_CONFIGURATIONS), ConstantData.DEFAULT_RUN_ALL_CONFIGURATIONS)
     }
 
     private static boolean configureSimilarityAnalysis() {
@@ -226,7 +208,7 @@ abstract class Util {
     }
 
     private static createFolders() {
-        if (!RUNNING_ALL_CONFIGURATIONS) createFolder(ConstantData.DEFAULT_EVALUATION_FOLDER)
+        createFolder(ConstantData.DEFAULT_EVALUATION_FOLDER)
         createFolder(ConstantData.DEFAULT_REPOSITORY_FOLDER)
         createFolder(ConstantData.DEFAULT_VIEW_ANALYSIS_ERROR_FOLDER)
     }
@@ -456,17 +438,7 @@ abstract class Util {
         //identifying view files
         if (VIEW_FILTER) filteredFiles = files?.findAll { isViewFile(it) }
 
-        //identifying controller files
-        if (CONTROLLER_FILTER) filteredFiles = files?.findAll { isControllerFile(it) }
-
         filteredFiles
-    }
-
-    static setRunningConfiguration(boolean whenFilter, boolean gherkinFilter, String folder) {
-        WHEN_FILTER = whenFilter
-        RESTRICT_GHERKIN_CHANGES = gherkinFilter
-        ConstantData.DEFAULT_EVALUATION_FOLDER = folder
-        createFolder(ConstantData.DEFAULT_EVALUATION_FOLDER)
     }
 
 }
