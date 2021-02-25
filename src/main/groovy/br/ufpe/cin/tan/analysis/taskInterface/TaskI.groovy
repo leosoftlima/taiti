@@ -12,7 +12,8 @@ class TaskI extends TaskInterface {
 
     Set<String> getFiles() {
         def candidates = classes.collect { Util.REPOSITORY_FOLDER_PATH + it.file }
-        def prodFiles = candidates//?.findAll { Util.isProductionFile(it) }
+        def prodFiles = candidates?.findAll { Util.isApplicationFile(it) }  //only application files (extensions that TestI might reach)
+        //def prodFiles = candidates//?.findAll { Util.isApplicationFile(it) }  //all changed files
         if (prodFiles.empty) return []
         def files = prodFiles
         Util.organizePathsForInterfaces(files) as Set

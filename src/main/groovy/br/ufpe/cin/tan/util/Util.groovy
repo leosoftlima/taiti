@@ -8,12 +8,15 @@ import java.util.regex.Matcher
 @Slf4j
 abstract class Util {
 
-    static final String GEM_SUFFIX = Matcher.quoteReplacement(File.separator) + "lib"
     static final Properties properties
+
     public static final String TASKS_FILE
+    public static final boolean MULTIPLE_TASK_FILES
     public static final int TASK_MAX_SIZE
     public static final String REPOSITORY_FOLDER_PATH
+
     public static final LanguageOption CODE_LANGUAGE
+
     public static final String GHERKIN_FILES_RELATIVE_PATH
     public static final String STEPS_FILES_RELATIVE_PATH
     public static final String UNIT_TEST_FILES_RELATIVE_PATH
@@ -21,28 +24,38 @@ abstract class Util {
     public static final String VIEWS_FILES_RELATIVE_PATH
     public static final String CONTROLLER_FILES_RELATIVE_PATH
     public static final String MODEL_FILES_RELATIVE_PATH
-    public static final String LIB_RELATIVE_PATH
-    public static final String FRAMEWORK_PATH
-    public static final String FRAMEWORK_LIB_PATH
-    public static final List<String> FRAMEWORK_FILES
     public static final List<String> VALID_FOLDERS
     public static final String VALID_EXTENSION
     public static final List<String> VALID_EXTENSIONS
     public static final List<String> VALID_VIEW_FILES
     public static final List<String> SPECIAL_VALID_VIEW_FILES
+    /* SPECIFIC FOR RAILS PROJECTS ********************************************************/
+    public static final String LIB_RELATIVE_PATH
+    public static final String FRAMEWORK_PATH
+    public static final String FRAMEWORK_LIB_PATH
+    public static final List<String> FRAMEWORK_FILES
+    /*************************************************************************************/
+
+    /* SPECIFIC FOR RAILS PROJECTS ********************************************************/
+    static final String GEM_SUFFIX = Matcher.quoteReplacement(File.separator) + "lib"
     public static final String GEMS_PATH
     public static final String GEM_INFLECTOR
     public static final String GEM_I18N
     public static final String GEM_PARSER
     public static final String GEM_AST
+    public static final List<String> COVERAGE_GEMS
+    /*************************************************************************************/
+
+    /* SPECIFIC FOR RAILS PROJECTS ********************************************************/
+    public static final boolean VIEW_FILTER
     public static final boolean VIEW_ANALYSIS
+    /*************************************************************************************/
+
     public static final boolean CONTROLLER_FILTER
     public static boolean WHEN_FILTER
-    public static final boolean VIEW_FILTER
-    public static final boolean MULTIPLE_TASK_FILES
-    public static final List<String> COVERAGE_GEMS
     public static boolean RESTRICT_GHERKIN_CHANGES
     public static final boolean RUNNING_ALL_CONFIGURATIONS
+
     public static final boolean SIMILARITY_ANALYSIS
 
     static {
@@ -52,7 +65,9 @@ abstract class Util {
         TASK_MAX_SIZE = configureTaskMaxSize()
         MULTIPLE_TASK_FILES = TASKS_FILE.empty
         REPOSITORY_FOLDER_PATH = configureRepositoryFolderPath()
+
         CODE_LANGUAGE = configureLanguage()
+
         GHERKIN_FILES_RELATIVE_PATH = configureGherkin()
         STEPS_FILES_RELATIVE_PATH = configureSteps()
         UNIT_TEST_FILES_RELATIVE_PATH = configureUnitTest()
@@ -60,10 +75,10 @@ abstract class Util {
         VIEWS_FILES_RELATIVE_PATH = "$PRODUCTION_FILES_RELATIVE_PATH${File.separator}views"
         CONTROLLER_FILES_RELATIVE_PATH = "$PRODUCTION_FILES_RELATIVE_PATH${File.separator}controllers"
         MODEL_FILES_RELATIVE_PATH = "$PRODUCTION_FILES_RELATIVE_PATH${File.separator}models"
+
         FRAMEWORK_PATH = configureFramework()
         FRAMEWORK_FILES = findFilesFromDirectory(FRAMEWORK_PATH)
         FRAMEWORK_LIB_PATH = configureLib()
-        //log.info "FRAMEWORK_FILES: ${FRAMEWORK_FILES.size()}"
 
         //configure language dependents
         switch (CODE_LANGUAGE) {
@@ -83,7 +98,7 @@ abstract class Util {
             case LanguageOption.JAVA:
                 VALID_EXTENSION = ConstantData.JAVA_EXTENSION
                 SPECIAL_VALID_VIEW_FILES = []
-                VALID_VIEW_FILES = []
+                VALID_VIEW_FILES = [".html",".jsp",".jsf"]
                 LIB_RELATIVE_PATH = ""
                 break
         }
@@ -96,14 +111,16 @@ abstract class Util {
         GEM_I18N = configureGemI18n()
         GEM_PARSER = configureGemParser()
         GEM_AST = configureGemAst()
+        COVERAGE_GEMS = configureCoverageGems()
         VIEW_ANALYSIS = configureViewAnalysis()
+
         CONTROLLER_FILTER = configureControllerFilter()
         WHEN_FILTER = configureWhenFilter()
-        VIEW_FILTER = configureViewFilter()
-        createFolders()
-        COVERAGE_GEMS = configureCoverageGems()
         RESTRICT_GHERKIN_CHANGES = configureGherkinAdds()
         RUNNING_ALL_CONFIGURATIONS = configureRunningConfigurations()
+
+        createFolders()
+
         SIMILARITY_ANALYSIS = configureSimilarityAnalysis()
     }
 
@@ -202,10 +219,6 @@ abstract class Util {
         configureBooleanProperties(properties.(ConstantData.PROP_WHEN_FILTER), ConstantData.DEFAULT_WHEN_FILTER)
     }
 
-    private static boolean configureViewFilter() {
-        configureBooleanProperties(properties.(ConstantData.PROP_VIEW_FILTER), ConstantData.DEFAULT_VIEW_FILTER)
-    }
-
     private static boolean configureGherkinAdds() {
         configureBooleanProperties(properties.(ConstantData.PROP_RESTRICT_GHERKIN_CHANGES), ConstantData.DEFAULT_RESTRICT_GHERKIN_CHANGES)
     }
@@ -250,7 +263,7 @@ abstract class Util {
     }
 
     static Collection<String> findAllProductionFiles(Collection<String> files) {
-        files?.findAll { isProductionFile(it) }
+        files?.findAll { isApplicationFile(it) }
     }
 
     static boolean isTestFile(String path) {
@@ -305,7 +318,7 @@ abstract class Util {
         else false
     }
 
-    static boolean isProductionFile(String path) {
+    static boolean isApplicationFile(String path) {
         if (isValidFile(path) && !isTestFile(path)) true
         else false
     }

@@ -4,6 +4,9 @@ import br.ufpe.cin.tan.util.Util
 import br.ufpe.cin.tan.util.ruby.RubyConstantData
 import org.jruby.embed.ScriptingContainer
 
+/***
+ * Parses view files from Rails projects. The supported files are defined at Util.util
+ */
 class ViewCodeExtractor {
 
     ScriptingContainer container

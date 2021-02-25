@@ -99,9 +99,6 @@ abstract class ConstantData {
     public static final String PROP_WHEN_FILTER = "spgroup.testi.filter.when"
     public static final boolean DEFAULT_WHEN_FILTER = false
 
-    public static final String PROP_VIEW_FILTER = "spgroup.testi.filter.view"
-    public static final boolean DEFAULT_VIEW_FILTER = false
-
     public static final String PROP_RESTRICT_GHERKIN_CHANGES = "spgroup.testi.filter.gherkinAdds"
     public static final boolean DEFAULT_RESTRICT_GHERKIN_CHANGES = false
 

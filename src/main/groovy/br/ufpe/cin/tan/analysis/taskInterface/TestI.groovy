@@ -160,12 +160,12 @@ class TestI extends TaskInterface {
 
     private Set<String> getAllProdFiles() {
         //production classes
-        def classes = (classes?.findAll { Util.isProductionFile(it.file) })*.file
+        def classes = (classes?.findAll { Util.isApplicationFile(it.file) })*.file
 
         //production methods
         def methodFiles = methods?.findAll {
             it.type != null && !it.type.empty && it.type != "StepCall" &&
-                    it.file && Util.isProductionFile(it.file)
+                    it.file && Util.isApplicationFile(it.file)
         }*.file
 
         def viewFiles = referencedPages*.file

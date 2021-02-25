@@ -388,7 +388,7 @@ class GitRepository {
             def lines = 0..<result.readLines().size()
             if (Util.isUnitTestFile(entry.newPath)) {
                 //change = extractUnitChanges(commit, entry.newPath, lines, parser)
-            } else if (Util.isProductionFile(entry.newPath)) {
+            } else if (Util.isApplicationFile(entry.newPath)) {
                 change = new ChangedProdFile(path: entry.newPath, type: entry.changeType, lines: lines)
             }
         }
@@ -405,7 +405,7 @@ class GitRepository {
             def lines = computeChanges(commit, entry.newPath)
             if (Util.isUnitTestFile(entry.newPath)) {
                 //change = extractUnitChanges(commit, entry.newPath, lines, parser)
-            } else if (Util.isProductionFile(entry.newPath)) {
+            } else if (Util.isApplicationFile(entry.newPath)) {
                 change = new ChangedProdFile(path: entry.newPath, type: entry.changeType, lines: lines)
             }
         }
@@ -436,7 +436,7 @@ class GitRepository {
                     }
                     break
                 case DiffEntry.ChangeType.DELETE: //the file size is already known
-                    if (Util.isProductionFile(entry.oldPath)) {
+                    if (Util.isApplicationFile(entry.oldPath)) {
                         def result = extractFileContent(parent, entry.oldPath)
                         codeChanges += new ChangedProdFile(path: entry.oldPath, type: entry.changeType,
                                 lines: 0..<result.readLines().size())
