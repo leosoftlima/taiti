@@ -1,5 +1,7 @@
 package br.ufpe.cin.tan.test.ruby
 
+import br.ufpe.cin.tan.analysis.taskInterface.CalledMethod
+import br.ufpe.cin.tan.analysis.taskInterface.ReferencedPage
 import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.commit.change.gherkin.GherkinManager
 import br.ufpe.cin.tan.commit.change.gherkin.StepDefinition
@@ -27,6 +29,9 @@ import org.jrubyparser.parser.ParserConfiguration
 
 import java.util.regex.Matcher
 
+/***
+ * Visita código Ruby de forma geral.
+ */
 @Slf4j
 class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
@@ -214,8 +219,8 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
                 def views = viewFiles?.findAll { it.contains(path) }
                 if (views && !views.empty) { //no case execute it yet
                     views.each { v ->
-                        visitor?.taskInterface?.referencedPages += [file: v, step: visitor.step]
-                        interfaceFromViews.referencedPages += [file: v, step: visitor.step]
+                        visitor?.taskInterface?.referencedPages += new ReferencedPage(file: v, step: visitor.step)
+                        interfaceFromViews.referencedPages += new ReferencedPage(file: v, step: visitor.step)
                     }
                     foundView = true
                     //trying to find controller and action by view seems risky
@@ -311,8 +316,10 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
             def className = RubyUtil.underscoreToCamelCase(data.controller + "_controller")
             def filePaths = RubyUtil.getClassPathForRubyClass(className, this.projectFiles)
             filePaths.each { filePath ->
-                visitor?.taskInterface?.methods += [name: data.action, type: className, file: filePath, step: visitor.step]
-                interfaceFromViews.methods += [name: data.action, type: className, file: filePath, step: visitor.step]
+                visitor?.taskInterface?.methods += new CalledMethod(name: data.action, type: className, file: filePath,
+                        step: visitor.step)
+                interfaceFromViews.methods += new CalledMethod(name: data.action, type: className, file: filePath,
+                        step: visitor.step)
             }
             controller = data.controller
             action = data.action
@@ -324,8 +331,8 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
         def foundView = false
         if (views && !views.empty) {
             views.each { v ->
-                visitor?.taskInterface?.referencedPages += [file: v, step: visitor.step]
-                interfaceFromViews.referencedPages += [file: v, step: visitor.step]
+                visitor?.taskInterface?.referencedPages += new ReferencedPage(file: v, step: visitor.step)
+                interfaceFromViews.referencedPages += new ReferencedPage(file: v, step: visitor.step)
             }
             foundView = true
         }
@@ -446,7 +453,8 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
                 def methodName2 = method + RubyConstantData.ROUTE_URL_SUFIX
                 def matches = methods.findAll { it.name == methodName1 || it.name == methodName2 }
                 matches?.each { m ->
-                    def newMethod = [name: m.name, type: RubyUtil.getClassName(m.path), file: m.path, step: visitor.step]
+                    def newMethod = new CalledMethod(name: m.name, type: RubyUtil.getClassName(m.path), file: m.path,
+                            step: visitor.step)
                     visitor?.taskInterface?.methods += newMethod
                     interfaceFromViews.methods += newMethod
                     log.info "False rails path method: ${newMethod.name} (${newMethod.file})"
@@ -557,13 +565,14 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
                 it.name == method.name && counter <= it.args && counter >= it.args - it.optionalArgs
             }
             matches?.each { m ->
-                def newMethod = [name: m.name, type: RubyUtil.getClassName(m.path), file: m.path, step: visitor.step]
+                def newMethod = new CalledMethod(name: m.name, type: RubyUtil.getClassName(m.path), file: m.path,
+                        step: visitor.step)
                 visitor?.taskInterface?.methods += newMethod
                 interfaceFromViews.methods += newMethod
             }
             if (matches.empty) {
                 log.info "method with unknown receiver: '${method}' has no match"
-                def newMethod = [name: method.name, type: "Object", file: null, step: visitor.step]
+                def newMethod = new CalledMethod(name: method.name, type: "Object", file: null, step: visitor.step)
                 visitor?.taskInterface?.methods += newMethod
                 interfaceFromViews.methods += newMethod
                 notFoundMethods += method
@@ -727,14 +736,16 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
     }
 
     /***
-     * Visits selected method bodies from a source code file searching for other method calls. The result is stored as a
-     * field of the input visitor.
+     * O método deve visitar o corpo de métodos selecionados de um arquivo de código-fonte procurando por outras chamadas
+     * de método. O resultado é armazenado com um campo do visitor de entrada.
      *
-     * @param file a map object that identifies a file by 'path' and 'methods'. A method is identified by its name and step.
-     * @param visitor visitor to visit method bodies
+     * @param file um map que identifica o arquivo e seus respectivos métodos a serem analisados. As palavras-chave são
+     * 'path' para identificar o arquivo e 'methods' para os métodos que, por usa vez, é descrito pelas chave 'name' e
+     * 'step'.
+     * @param visitor Visitor usado para analisar o código, específico de LP
      */
     @Override
-    visitFile(file, TestCodeVisitorInterface visitor) { //[path:, methods: [name:, step:]]
+    visitFile(file, TestCodeVisitorInterface visitor) {
         def node = this.generateAst(file.path)
         visitor.lastVisitedFile = file.path
         def fileContent = recoverFileContent(file.path)

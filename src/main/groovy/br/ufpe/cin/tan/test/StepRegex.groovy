@@ -1,12 +1,14 @@
 package br.ufpe.cin.tan.test
 
-
+/***
+ * Representa uma expressão regular identificada em um arquivo de código fonte.
+ */
 class StepRegex {
 
-    String keyword //it is used only when we are dealing with generic steps (asterisk keyword)
-    String path
-    String value
-    int line
+    String keyword //palavra-chave identificadora. Em Ruby, só é usado quando se trata de um step genérico (*)
+    String path //arquivo em que a expressão foi declarada
+    String value //a expressão em si
+    int line //linha do arquivo em que a expressão se encontra
 
     @Override
     String toString() {

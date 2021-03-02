@@ -1,23 +1,23 @@
 package br.ufpe.cin.tan.test
 
 /***
- * Represents a step definition call made by other step definition.
+ * Representa uma chamada à um step Gherkin feita a partir de um step definition.
  */
 class StepCall {
 
     /***
-     * The called expression. It is necessary to identify the called step definition.
+     * A expressão chamada. Ela necessária para ser possível identificar o step chamado.
      */
     String text
 
     /***
-     * The file that made the call.
+     * O arquivo que fez a chamada.
      */
     String path
 
     /***
-     * The location of the call described by a line at path.
-     */
+     * A localização da chamada descrita pela linha no arquivo onde ela foi feita.
+     * */
     int line
 
     String parentType

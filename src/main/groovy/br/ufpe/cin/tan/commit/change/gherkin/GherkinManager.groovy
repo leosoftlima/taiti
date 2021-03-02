@@ -7,6 +7,9 @@ import gherkin.ast.*
 import groovy.util.logging.Slf4j
 import org.eclipse.jgit.revwalk.RevCommit
 
+/***
+ * Parser de arquivo Gherkin.
+ */
 @Slf4j
 class GherkinManager {
 

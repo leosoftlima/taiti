@@ -1,5 +1,6 @@
 package br.ufpe.cin.tan.test.groovy
 
+import br.ufpe.cin.tan.analysis.taskInterface.ReferencedPage
 import br.ufpe.cin.tan.commit.change.gherkin.GherkinManager
 import br.ufpe.cin.tan.commit.change.gherkin.StepDefinition
 import br.ufpe.cin.tan.commit.change.unit.ChangedUnitTestFile
@@ -135,7 +136,9 @@ class GroovyTestCodeAnalyser extends TestCodeAbstractAnalyser {
                 generateAst(f).classes.get(0).visitContents(pageCodeVisitor) //gets url
             }
         }
-        visitor?.taskInterface?.referencedPages = pageCodeVisitor.pages
+        pageCodeVisitor.pages.each{ page ->
+            visitor?.taskInterface?.referencedPages += new ReferencedPage(file:page, step:null)
+        }
     }
 
     @Override

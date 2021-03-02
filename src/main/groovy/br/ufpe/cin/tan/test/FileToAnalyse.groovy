@@ -1,17 +1,17 @@
 package br.ufpe.cin.tan.test
 
 /***
- * Represents a file to be parsed and the methods that must be analysed to compute test-based task interface.
+ * Representa um arquivo cujos métodos precisam ser visitados a fim de ser possível calcular TestI.
  */
 class FileToAnalyse {
 
     /***
-     * The file location.
+     * A localização do arquivo.
      */
     String path
 
     /***
-     * Methods to be analysed.
+     * Métodos a serem analisados, basicamente step definitions e métodos auxiliares.
      */
     List<MethodToAnalyse> methods
 

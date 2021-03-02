@@ -16,8 +16,8 @@ import gherkin.ast.Step
 import groovy.util.logging.Slf4j
 
 /***
- * Provides the common logic for test code parsers and the base method to compute task interfaces by
- * Template Method pattern.
+ * Provê a lógica base para utilização de parsers para código de teste a fim de ser possível computar TestI.
+ * Utiliza o padrão de projeto Template Method.
  */
 @Slf4j
 abstract class TestCodeAbstractAnalyser {
@@ -39,9 +39,11 @@ abstract class TestCodeAbstractAnalyser {
     Set codeFromViewAnalysis
 
     /***
-     * Initializes fields used to link step declaration and code.
+     * Inicializa os campos usados para fazer a ligação entre a declaração de um step em Gherkin e o código que o
+     * automatiza, os step definitions.
      *
-     * @param repositoryPath It could be a URL or a local path.
+     * @param repositoryPath O caminho de acesso ao repositório do projeto, que pode ser uma URL ou caminho local.
+     * @param gherkinManager Parser de arquivos Gherkin, que contém declarações de step.
      */
     TestCodeAbstractAnalyser(String repositoryPath, GherkinManager gherkinManager) {
         this.repositoryPath = repositoryPath
@@ -60,74 +62,129 @@ abstract class TestCodeAbstractAnalyser {
     }
 
     /***
-     * Updates a visitor's task interface by identifying related view files.
+     * O método deve encontrar todas as páginas web acessadas via testes.
+     * O resultado deve ficar armazenado no próprio visitor passado como parâmetro.
      *
-     * @param visitor
+     * @param visitor Visitor usado para analisar o código, específico de LP
      */
     abstract void findAllPages(TestCodeVisitorInterface visitor)
 
     /***
-     * Finds all regex expression in a source code file.
+     * O método deve encontrar todas as expressões regulares encontradas no arquivo de código-fonte
+     * passado como parâmetro. Supostamente, tais expressões servem para identificar step definitions.
      *
-     * @param path file path
-     * @return list of StepRegex objects identifying the file and its regexs
-     */
+     * @param path nome completo do arquivo a ser analisado
+     * @return lista expressões regulares que foram encontradas. Elas são armazenadas em objetos StepRegex.
+     * */
     abstract List<StepRegex> doExtractStepsRegex(String path)
 
     /***
-     * Finds all step definition in a source code file.
+     * O método deve encontrar todos os step definitions em um arquivo de código-fonte passado como parâmetro.
+     * Um step definition possui uma expressão regular em sua declaração.
      *
-     * @param path file path
-     * @param file content
-     * @return list of StepDefinition objects
+     * @param path nome completo do arquivo a ser analisado
+     * @param content conteúdo do arquivo
+     * @return list de step definitions encontrados. Eles são armazenados em objetos StepDefinition.
      */
     abstract List<StepDefinition> doExtractStepDefinitions(String path, String content)
 
     /***
-     * Finds all methods declaration in source code file.
-     * @param path file path
+     * O método deve encontrar todas as declarações de método em um arquivo de código-fonte.
+     *
+     * @param path nome completo do arquivo a ser analisado.
+     * @return conjunto de declarações de métodos encontrado. Ele consiste em um Set cujos elementos possuem as seguintes
+     * chaves: name (nome do método), args (quantidade total de argumentos; se a linguagem define argumentos opcionais,
+     * então essa é a quantidade máxima de argumentos aceita pelo método), optionalArgs (quantidade de argumentos opcionais),
+     * path (arquivo em que ele foi declarado).
      */
     abstract Set doExtractMethodDefinitions(String path)
 
     /***
-     * Visits a step body and method calls inside it. The result is stored as a field of the returned visitor.
+     * O método deve visitar o corpo de todos os step definitions e as chamadas de método internas à eles.
+     * O resultado é armazenado no visitor usado, que é retornado pelo método.
      *
-     * @param file List of map objects that identifies files by 'path' and 'lines'.
-     * @return visitor to visit method bodies
+     * @param file Arquivo a ser analisado e seus respectivos métodos a serem analisados, encapsulados em um objeto
+     * do tipo FileToAnalyse.
+     * @return visitor Visitor usado para analisar o código, específico de LP
      */
-    abstract TestCodeVisitorInterface parseStepBody(FileToAnalyse file) //keys: path, lines
+    abstract TestCodeVisitorInterface parseStepBody(FileToAnalyse file)
 
     /***
-     * Visits selected method bodies from a source code file searching for other method calls. The result is stored as a
-     * field of the input visitor.
      *
-     * @param file a map object that identifies a file by 'path' and 'methods'. A method is identified by its name.
-     * @param visitor visitor to visit method bodies
+     * O método deve visitar o corpo de métodos selecionados de um arquivo de código-fonte procurando por outras chamadas
+     * de método. O resultado é armazenado com um campo do visitor de entrada.
+     *
+     * @param file um map que identifica o arquivo e seus respectivos métodos a serem analisados. As palavras-chave são
+     * 'path' para identificar o arquivo e 'methods' para os métodos que, por usa vez, é descrito pelas chave 'name' e
+     * 'step'.
+     * @param visitor Visitor usado para analisar o código, específico de LP
      */
     abstract visitFile(file, TestCodeVisitorInterface visitor)
 
+    /***
+     * O método deve visitar o corpo de um teste unitário procurando por outras chamadas de método.
+     * O resultado é armazenado no visitor usado.
+     * Na versão atual da ferramenta, testes unitários não são usados para calcular TestI.
+     * 
+     * @param file o arquivo de teste unitário a ser analisado
+     * @return Visitor usado para analisar o código, específico de LP
+     */
     abstract TestCodeVisitorInterface parseUnitBody(ChangedUnitTestFile file)
 
+    /***
+     * O método deve visitar métodos de interesse de um arquivo de testes unitários procurando por outras chamadas de método.
+     * O resultado é armazenado no visitor usado.
+     * Na versão atual da ferramenta, testes unitários não são usados para calcular TestI.
+     *
+     * @param path o arquivo de teste unitário a ser analisado
+     * @param content o conteúdo do arquivo a ser visitado
+     * @param changedLines a linha em que os métodos de interesse estão declarados
+     * @return
+     */
     abstract ChangedUnitTestFile doExtractUnitTest(String path, String content, List<Integer> changedLines)
 
+    /***
+     * O método deve devolver o nome da classe declarada no arquivo de código-fonte passada como parâmetro.
+     * Por exemplo, em um projeto Rails, dado o arquivo contact.rb, o método devolve o nome Contact
+     *
+     * @param path nome do arquivo de código-fonte
+     * @return nome da classe
+     */
     abstract String getClassForFile(String path)
 
+    /***
+     * O método deve informar se um arquivo possui erro de compilação/parse. Quando há esse tipo de erro, não é possível
+     * gerar a AST para o arquivo.
+     *
+     * @param path arquivo a verificar se possui erro de compilação/parse
+     * @return flag sinalizando se há erro (true) ou não (false)
+     */
     abstract boolean hasCompilationError(String path)
 
+    /***
+     * O método inicializa as informações elementares sobre o projeto para ser possível calcular TestI. São elas:
+     * o rastro da análise (trace), os arquivos de código-fonte do projeto em sua versão mais atual (na perspectiva da tarefa),
+     * a lista de expressões regulares usadas para fazer o casamento entre steps e step definitions, a lista de métodos
+     * declarados no projeto e a lista de views existentes no projeto.
+     */
     def configureProperties() {
         analysisData.trace = []
         projectFiles = Util.findFilesFromDirectoryByLanguage(repositoryPath)
-        configureRegexList() // Updates regex list used to match step definition and step code
+        configureRegexList()
         configureMethodsList()
         def views = Util.findFilesFromDirectory(repositoryPath + File.separator + Util.VIEWS_FILES_RELATIVE_PATH)
         viewFiles = views.findAll { Util.isViewFile(it) }
     }
 
     /***
-     * Template method to compute test-based task interface for done tasks (evaluation study).
+     * Método template para calcular TestI para tarefas concluídas (estudo de avaliação).
      *
-     * @param gherkinFiles list of changed gherkin files
-     * @return task interface
+     * @param gherkinFiles lista de arquivos Gherkin associados à tarefa, que são os que foram alterados por seus commits
+     * @param stepFiles lista de arquivos de step definitions associados à tarefa, que são os que foram alterados por
+     * seus commits, independente das mudanças feitas em arquivos Gherkin
+     * @param removedSteps lista de steps em Gherkin que foram removidos pela tarefa, identificados por um set cujos
+     * elementos possuem as chaves 'path' (identifica o arquivo Gherkin que continha o step) e 'text' (o conteúdo do step).
+     * @return TestI da tarefa
      */
     TestI computeInterfaceForDoneTask(List<ChangedGherkinFile> gherkinFiles, List<ChangedStepdefFile> stepFiles,
                                       Set removedSteps) {
@@ -141,10 +198,10 @@ abstract class TestCodeAbstractAnalyser {
     }
 
     /***
-     * Template method to compute test-based task interface for new tasks.
+     * Método template para calcular TestI para tarefas planejadas, não iniciadas.
      *
-     * @param gherkinFiles list of changed gherkin files
-     * @return task interface
+     * @param gherkinFiles lista de arquivos Gherkin associados à tarefa
+     * @return TestI da tarefa
      */
     TestI computeInterfaceForTodoTask(List<ChangedGherkinFile> gherkinFiles) {
         List<AcceptanceTest> acceptanceTests = extractAcceptanceTest(gherkinFiles)
@@ -153,6 +210,18 @@ abstract class TestCodeAbstractAnalyser {
         computeInterface(filesToAnalyse, null)
     }
 
+    /***
+     * O método busca a implementação de um step Gherkin invocado por um step definition.
+     *
+     * @param call Objeto que representa a chamada para um step Gherkin.
+     * @param extractArgs flag que sinaliza se devem ser considerados os valores usados como argumento na invocação do
+     * step
+     * @return lista de arquivos a serem analisados por conter o código de implementação do step de interesse.
+     * Em tese, cada step possui uma implementação única, ou seja, casa com um único step definition. Porém, por
+     * limitações no processo de extração de expressões regulares identificadoras de step definitions (caso particular
+     * delas usarem variáveis, cujo valor é definido em tempo de execução), é possível haver múltiplos casamentos entre
+     * step e step definitions.
+     */
     List<FileToAnalyse> findCodeForStepOrganizedByFile(StepCall call, boolean extractArgs) {
         def calledSteps = []  //path, line, args, parentType
         List<FileToAnalyse> result = []
@@ -332,12 +401,14 @@ abstract class TestCodeAbstractAnalyser {
     }
 
     /***
-     * Identifies methods to visit from a list of method calls, considering the visit history.
-     * The methods of interest are defined by test code.
+     * Identifica os métodos para visitar dentre uma lista de chamadas de método, considerando o histórico de visitas.
+     * Os métodos de interesse são definidos pelo código de teste.
      *
-     * @param lastCalledMethods list of map objects identifying called methods by 'name', 'type', 'file' and 'step'.
-     * @param allVisitedFiles A collection all visited files identified by 'path' and visited 'methods'.
-     * @return a list of methods grouped by path.
+     * @param lastCalledMethods lista de objetos map que identificam os métodos chamados usando as chaves 'name', 'type',
+     * 'file' and 'step'.
+     * @param allVisitedFiles Uma coleção de todos os arquivos visitados identificados e seus métodos.
+     * Arquivos são identificados pela chave 'path' e os métodos, pela chave 'methods'.
+     * @return lista de métodos agrupados por arquivo
      */
     def listFilesToParse(lastCalledMethods, allVisitedFiles) {
         def validCalledMethods = lastCalledMethods.findAll { it.file != null && it.type != "StepCall" }
@@ -356,10 +427,11 @@ abstract class TestCodeAbstractAnalyser {
     }
 
     /***
-     * Identifies methods to visit from a list of method calls. The methods of interest are defined by test code.
+     * Identifica os métodos para visitar dentre uma lista de chamadas de método.
+     * Os métodos de interesse são definidos pelo código de teste.
      *
      * @param methodsList list of map objects identifying called methods by 'name', 'type' and 'file'.
-     * @return a list of methods grouped by path.
+     * @return lista de métodos agrupados por arquivo
      */
     static groupMethodsToVisitByFile(methodsList) {
         def testFiles = []
@@ -418,6 +490,14 @@ abstract class TestCodeAbstractAnalyser {
         analysisData.trace = aux.sort { it.path }
     }
 
+    /***
+     * Método que efetivamente calcula TestI com base nos testes associados à tarefa, seja esta uma tarefa a fazer ou
+     * uma tarefa já concluída (perspectiva de estudo retroativo).
+     * @param filesToAnalyse Conjunto de arquivos a serem visitados e os métodos de interesse neles.
+     * @param removedSteps Conjunto de steps Gherkin removidos pela tarefa, que não podem ser considerados no cálculo de
+     * TestI. Só faz sentido no caso de tarefas já concluídas.
+     * @return TestI da tarefa
+     */
     private TestI computeInterface(List<FileToAnalyse> filesToAnalyse, Set removedSteps) {
         def interfaces = []
         List<StepCall> calledSteps = []
@@ -426,10 +506,10 @@ abstract class TestCodeAbstractAnalyser {
         filesToAnalyse?.eachWithIndex { stepDefFile, index ->
             log.info stepDefFile.toString()
 
-            /* first level: To identify method calls from step body. */
+            /* Primeio nível: Identificar chamadas de método a partir do corpo de step definitions. */
             TestCodeVisitorInterface testCodeVisitor = parseStepBody(stepDefFile)
 
-            /* second level: To visit methods until there is no more method calls of methods defined in test code. */
+            /* Segundo nível: Visitar métodos até não haver mais chamadas de métodos de teste. */
             def visitedFiles = []
             def filesToParse = listFilesToParse(testCodeVisitor.taskInterface.methods, visitedFiles) //[path: file.path, methods: [name:, step:]]
             log.info "Files to parse: ${filesToParse.size()}"
@@ -442,31 +522,31 @@ abstract class TestCodeAbstractAnalyser {
             }
 
             while (!filesToParse.empty) {
-                /* copies methods from task interface */
+                /* Copia métodos de TestI */
                 def backupCalledMethods = testCodeVisitor.taskInterface.methods
 
-                /* visits each file */
+                /* Visita cada arquivo */
                 filesToParse.each { f ->
                     visitFile(f, testCodeVisitor)
                 }
 
-                /* computes methods to visit based on visit history */
+                /* Define os métodos para visitar com base no histórico de visitas */
                 visitedFiles = updateVisitedFiles(visitedFiles, filesToParse)
                 def lastCalledMethods = testCodeVisitor.taskInterface.methods - backupCalledMethods
                 filesToParse = listFilesToParse(lastCalledMethods, visitedFiles)
             }
 
-            /* updates called steps */
+            /* Atualiza os steps chamados */
             calledSteps += testCodeVisitor.calledSteps
 
-            /* searches for view files */
+            /* Procura por views */
             if(!testCodeVisitor?.taskInterface?.calledPageMethods?.empty) {
                 log.info "calledPageMethods:"
                 testCodeVisitor?.taskInterface?.calledPageMethods?.each { log.info it.toString() }
                 findAllPages(testCodeVisitor)
             }
 
-            /* updates task interface */
+            /* Atualiza TestI */
             interfaces += testCodeVisitor.taskInterface
 
             analysisData.visitCallCounter += testCodeVisitor.visitCallCounter
@@ -477,7 +557,7 @@ abstract class TestCodeAbstractAnalyser {
             analysisData.testCode += testCodeVisitor.methodBodies
         }
 
-        /* identifies more step definitions to analyse */
+        /* Identifica mais step definitions para analisar, dado que testes podem invocar step definitions diretamente */
         log.info "calledSteps: ${calledSteps.size()}"
         calledSteps.each{ log.info it.toString() }
 
@@ -485,7 +565,7 @@ abstract class TestCodeAbstractAnalyser {
         newStepsToAnalyse = updateStepFiles(filesToAnalyse, newStepsToAnalyse)
         if (!newStepsToAnalyse.empty) interfaces += computeInterface(newStepsToAnalyse, removedSteps)
 
-        /* collapses step code interfaces to define the interface for the whole task */
+        /* Junta resultados parciais a fim de delimitar TestI único para a tarefa */
         fillTestI(interfaces, removedSteps)
     }
 
@@ -566,12 +646,22 @@ abstract class TestCodeAbstractAnalyser {
         acceptanceTests
     }
 
+    /***
+     * O método lista todas as expressões regulares usadas como identificadores de step definitions no projeto.
+     * @return a lista de expressões regulares
+     */
     private configureRegexList() {
         regexList = []
         def files = Util.findFilesFromDirectoryByLanguage(stepsFilePath)
         files.each { regexList += doExtractStepsRegex(it) }
     }
 
+    /***
+     * O método lista todas as declarações de métodos no projeto considerando o conjunto de pastas consideradas válidas
+     * (que seriam aquelas que possuem métodos de aplicação e métodos de testes).
+     *
+     * @return a lista de métodos
+     */
     private configureMethodsList() {
         methods = [] as Set
         def filesForSearchMethods = []
@@ -581,6 +671,10 @@ abstract class TestCodeAbstractAnalyser {
         filesForSearchMethods.each { methods += doExtractMethodDefinitions(it) }
     }
 
+    /***
+     * Método que lista métodos de API, a fim de possibilitar a diferenciação destes dos métodos declarados no projeto.
+     * TestI só considera métodos declarados no projeto.
+     */
     private configureApiMethodsList() {
         if (apiMethods != null) return
         apiMethods = [] as Set
@@ -674,6 +768,10 @@ abstract class TestCodeAbstractAnalyser {
         args
     }
 
+    /***
+     * Método que configura o caminho da pasta onde se localizam os arquivos de step definitions do projeto.
+     * O Cucumber define um caminho default, mas os projetos podem configurá-lo também.
+     */
     private configureStepsFilePath() {
         stepsFilePath = repositoryPath + File.separator + Util.STEPS_FILES_RELATIVE_PATH
         def directory = new File(stepsFilePath)

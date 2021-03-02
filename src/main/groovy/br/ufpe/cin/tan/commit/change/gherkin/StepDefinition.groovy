@@ -1,14 +1,16 @@
 package br.ufpe.cin.tan.commit.change.gherkin
 
-
+/***
+ * Representa um step definition (método que automatiza a execução de um step em Gherkin).
+ */
 class StepDefinition {
 
-    String keyword
-    String path
-    String value
-    String regex
-    int line
-    int end
+    String keyword //keyword Gherkin associada ao step definition, mas que na prática não serve de identificador
+    String path //arquivo em que o step defitinion foi declarado
+    String value //o corpo do step definition
+    String regex //a expressão regular usada para associar o step definition ao step Gherkin
+    int line //linha inicial da declaração do step definition
+    int end //linha final da declaração do step definition
     List<String> body
 
     @Override

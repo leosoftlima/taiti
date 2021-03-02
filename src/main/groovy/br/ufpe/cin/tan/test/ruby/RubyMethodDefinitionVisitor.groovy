@@ -9,7 +9,7 @@ import org.jrubyparser.util.NoopVisitor
  */
 class RubyMethodDefinitionVisitor extends NoopVisitor {
 
-    Set methods = [] //keys: name, args, path
+    Set methods = [] //keys: name, args, optionalArgs, path
     String path
 
     @Override

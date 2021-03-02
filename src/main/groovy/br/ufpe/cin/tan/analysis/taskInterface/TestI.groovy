@@ -5,15 +5,14 @@ import br.ufpe.cin.tan.util.Util
 
 class TestI extends TaskInterface {
 
-    Set methods //static and non-static called methods; keys:[name, type, file, step]
-    Set staticFields //declared static fields; [name, type, value, file]
-    Set fields //declared fields; [name, type, value, file]
-    Set accessedProperties //accessed fields and constants, for example: "foo.bar"
+    Set<CalledMethod> methods
+    Set<DeclaredField> staticFields
+    Set<DeclaredField> fields
+    Set<AccessedProperty> accessedProperties //accessed fields and constants, for example: "foo.bar"
 
     /******************************************** used by web-based tests *********************************************/
-    Set calledPageMethods
-    //keys:[file, name, args] //help to identify referenced pages (GSP files); methods "to" and "at";
-    Set referencedPages //[file, step]
+    Set<CalledPageMethod> calledPageMethods //help to identify referenced pages (GSP files); methods "to" and "at";
+    Set<ReferencedPage> referencedPages
     /** ****************************************************************************************************************/
 
     Set genericStepKeyword
