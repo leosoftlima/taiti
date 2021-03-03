@@ -7,16 +7,27 @@ import br.ufpe.cin.tan.test.FileToAnalyse
 import br.ufpe.cin.tan.test.StepRegex
 import br.ufpe.cin.tan.test.TestCodeAbstractAnalyser
 import br.ufpe.cin.tan.test.TestCodeVisitorInterface
+import groovy.util.logging.Slf4j
+import com.github.javaparser.ast.Node
 
+@Slf4j
 class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
+      String routesFile
+
+    CompilationUnit generateAst(String path) { 
+      CompilationUnit compilationUnit = StaticJavaParser.parse(new File(path));
+      return compilationUnit;
+    }    
 
     JavaTestCodeAnalyser(String repositoryPath, GherkinManager gherkinManager) {
         super(repositoryPath, gherkinManager)
+         this.routesFile = repositoryPath + JavaConstantData.ROUTES_FILE
     }
 
     /***
      * Só faz sentido em projeto web. Nesse primeiro momento, pode ficar de fora.
      */
+
     @Override
     void findAllPages(TestCodeVisitorInterface visitor) {
 
@@ -24,7 +35,7 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
     @Override
     List<StepRegex> doExtractStepsRegex(String path) {
-        return null
+         return null
     }
 
     @Override
@@ -34,7 +45,10 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
     @Override
     Set doExtractMethodDefinitions(String path) {
-        return null
+        JavaMethodDefinitionVisitor javaMethodDefinitionVisitor = new JavaMethodDefinitionVisitor()
+        def compilationUnit = this.generateAst(path);
+        javaMethodDefinitionVisitor?.visit(compilationUnit, null);
+        javaMethodDefinitionVisitor.signatures
     }
 
     @Override
