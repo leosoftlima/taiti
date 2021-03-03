@@ -37,7 +37,10 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
     @Override
     List<StepDefinition> doExtractStepDefinitions(String path, String content) {
-        return null
+        JavaStepDefinitionVisitor javaStepDefinitionVisitor = new JavaStepDefinitionVisitor()
+        def compilationUnit = this.generateAst(path);
+        javaStepDefinitionVisitor?.visit(compilationUnit, null);
+        return javaStepDefinitionVisitor.stepDefinitions
     }
 
     @Override
