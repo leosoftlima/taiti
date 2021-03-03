@@ -24,7 +24,10 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
          this.routesFile = repositoryPath + JavaConstantData.ROUTES_FILE
     }
 
-   
+    /***
+     * Só faz sentido em projeto web. Nesse primeiro momento, pode ficar de fora.
+     */
+
     @Override
     void findAllPages(TestCodeVisitorInterface visitor) {
 
@@ -61,11 +64,17 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
         return null
     }
 
+    /***
+     * Não precisa implementar porque não estamos usando testes unitários para calcular TestI.
+     */
     @Override
     TestCodeVisitorInterface parseUnitBody(ChangedUnitTestFile file) {
         return null
     }
 
+    /***
+     * Não precisa implementar porque não estamos usando testes unitários para calcular TestI.
+     */
     @Override
     ChangedUnitTestFile doExtractUnitTest(String path, String content, List<Integer> changedLines) {
         return null

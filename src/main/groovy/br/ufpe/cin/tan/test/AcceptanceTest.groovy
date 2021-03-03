@@ -4,7 +4,8 @@ import gherkin.ast.ScenarioDefinition
 import groovy.util.logging.Slf4j
 
 /***
- * Represents a match result among a Gherkin scenario definition and its implementation code.
+ * Representa um teste de aceitação completo, fazendo o casamento entre o scenario Gherkin e o código que automatiza
+ * sua execução.
  */
 @Slf4j
 class AcceptanceTest {
