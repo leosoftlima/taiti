@@ -6,6 +6,9 @@ import br.ufpe.cin.tan.commit.change.gherkin.GherkinManager
 import br.ufpe.cin.tan.commit.change.gherkin.StepDefinition
 import br.ufpe.cin.tan.commit.change.stepdef.ChangedStepdefFile
 import br.ufpe.cin.tan.commit.change.unit.ChangedUnitTestFile
+import br.ufpe.cin.tan.test.error.ParseErrorList
+import br.ufpe.cin.tan.test.error.StepError
+import br.ufpe.cin.tan.test.error.StepErrorList
 import br.ufpe.cin.tan.test.ruby.routes.RoutesManager
 import br.ufpe.cin.tan.util.ConstantData
 import br.ufpe.cin.tan.util.Util
@@ -34,7 +37,6 @@ abstract class TestCodeAbstractAnalyser {
 
     AnalysisData analysisData
     protected Set notFoundViews
-    protected Set compilationErrors
     GherkinManager gherkinManager
     Set codeFromViewAnalysis
 
@@ -54,11 +56,9 @@ abstract class TestCodeAbstractAnalyser {
         projectFiles = []
         viewFiles = []
         notFoundViews = [] as Set
-        compilationErrors = [] as Set
         codeFromViewAnalysis = [] as Set
         analysisData = new AnalysisData()
         configureApiMethodsList()
-        //log.info "apiMethods: ${apiMethods.size()}"
     }
 
     /***
@@ -236,7 +236,7 @@ abstract class TestCodeAbstractAnalyser {
         if (stepCodeMatch.size() > 1) {
             log.warn "There are many implementations for step code: ${call.text}; ${call.path} (${call.line})"
             stepCodeMatch.each { log.info it.toString() }
-            analysisData.multipleStepMatches += [path: call.path, text: call.text]
+            analysisData.multipleStepMatches += new StepError(path: call.path, text: call.text)
         }
         if (match) { //step code was found
             def args = []
@@ -245,7 +245,7 @@ abstract class TestCodeAbstractAnalyser {
         } else {
             log.warn "Step code was not found: ${call.text}; ${call.path} (${call.line})"
             def text = call.text.replaceAll(/".+"/,"\"\"").replaceAll(/'.+'/,"\'\'")
-            analysisData.matchStepErrors += [path: call.path, text: text]
+            analysisData.matchStepErrors += new StepError(path: call.path, text: text)
         }
 
         /* organizes step declarations in files */
@@ -287,7 +287,7 @@ abstract class TestCodeAbstractAnalyser {
         if (stepCodeMatch.size() > 1) {
             log.warn "There are many implementations for step code: ${step.text}; $path (${step.location.line})"
             stepCodeMatch.each { log.info it.toString() }
-            analysisData.multipleStepMatches += [path: path, text: step.text]
+            analysisData.multipleStepMatches += new StepError(path: path, text: step.text)
         }
         if (match) { //step code was found
             def args = []
@@ -302,7 +302,7 @@ abstract class TestCodeAbstractAnalyser {
         } else {
             log.warn "Step code was not found: ${step.text}; $path (${step.location.line})"
             def text = step.text.replaceAll(/".+"/,"\"\"").replaceAll(/'.+'/,"\'\'")
-            analysisData.matchStepErrors += [path: path, text: text]
+            analysisData.matchStepErrors += new StepError(path: path, text: text)
         }
         code
     }
@@ -352,7 +352,7 @@ abstract class TestCodeAbstractAnalyser {
         if (!stepCodeMatch.empty) match = stepCodeMatch.first() //we consider only the first match
         if (stepCodeMatch.size() > 1) {
             log.warn "There are many implementations for step code: ${step.value}; ${step.path} (${step.line})"
-            analysisData.multipleStepMatches += [path: step.path, text: step.value]
+            analysisData.multipleStepMatches += new StepError(path: step.path, text: step.value)
         }
         if (match) { //step code was found
             def type = findStepType(step, acceptanceTests)
@@ -360,7 +360,7 @@ abstract class TestCodeAbstractAnalyser {
         } else {
             log.warn "Step code was not found: ${step.value}; ${step.path} (${step.line})"
             def text = step.value.replaceAll(/".+"/,"\"\"").replaceAll(/'.+'/,"\'\'")
-            analysisData.matchStepErrors += [path: step.path, text: text]
+            analysisData.matchStepErrors += new StepError(path: step.path, text: text)
         }
         result
     }
@@ -693,11 +693,11 @@ abstract class TestCodeAbstractAnalyser {
      */
     private fillTestI(List<TestI> interfaces, Set removedSteps) {
         def testi = TestI.collapseInterfaces(interfaces)
-        testi.matchStepErrors = organizeMatchStepErrors(removedSteps)
+        testi.matchStepErrorsPerFile = organizeMatchStepErrors(removedSteps)
         testi.multipleStepMatches = organizeMultipleStepMatches(removedSteps)
         testi.genericStepKeyword = analysisData.genericStepKeyword
-        testi.compilationErrors = organizeCompilationErrors()
-        testi.codeFromViewAnalysis = this.getCodeFromViewAnalysis()
+        testi.parseErrorsPerFile = organizeParseErrors()
+        testi.codeFromViewAnalysis = this.getCodeFromViewAnalysis() //Esse método deve ser sobrescrito pela subclasse
         testi.notFoundViews = notFoundViews.sort()
         testi.foundAcceptanceTests = analysisData.foundAcceptanceTests
         testi.foundStepDefs = analysisData.foundStepDefs
@@ -724,7 +724,7 @@ abstract class TestCodeAbstractAnalyser {
             def index = file.indexOf(repositoryPath)
             def name = index >= 0 ? file.substring(index) - (repositoryPath + File.separator) : file
             def texts = (analysisData.matchStepErrors.findAll { it.path == file }*.text)?.unique()?.sort()
-            result += [path:name, text:texts, size:texts.size()]
+            result += new StepErrorList(path:name, text:texts, size:texts.size())
         }
         result
     }
@@ -742,18 +742,18 @@ abstract class TestCodeAbstractAnalyser {
     }
 
     /***
-     * Organiza a ocorrência de erros de compilação/parse identificados durante o cálculo de TestI de uma tarefa.
+     * Organiza a ocorrência de erros de parse identificados durante o cálculo de TestI de uma tarefa.
      * Esse tipo de erro ocorre quando não se consegue gerar a AST para os arquivos de teste.
-     * @return lista de erros de compilação/parse organizados por arquivo (para cada arquivo com erro, sabe-se a
+     * @return lista de erros de parse organizados por arquivo (para cada arquivo com erro, sabe-se a
      * mensagem do erro).
      */
-    private organizeCompilationErrors() {
-        compilationErrors += gherkinManager.compilationErrors
+    private organizeParseErrors() {
+        analysisData.parseErrors += gherkinManager.parseErrors
         def result = [] as Set
-        def files = compilationErrors*.path.unique()
+        def files = analysisData.parseErrors*.path.unique()
         files.each { file ->
-            def msgs = compilationErrors.findAll { it.path == file }*.msg
-            result += [path: file, msgs: msgs.unique()]
+            def msgs = analysisData.parseErrors.findAll { it.path == file }*.msg
+            result += new ParseErrorList(path: file, msgs: msgs.unique())
         }
         result
     }
