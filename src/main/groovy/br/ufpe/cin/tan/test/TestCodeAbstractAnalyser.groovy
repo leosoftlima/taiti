@@ -27,8 +27,8 @@ abstract class TestCodeAbstractAnalyser {
     String stepsFilePath
 
     List<StepRegex> regexList
-    Set methods //keys: name, args, path
-    static Set apiMethods //keys: name, args, path
+    Set methods //keys: name, args, optionalArgs, path
+    static Set apiMethods //keys: name, args, optionalArgs, path
     List<String> projectFiles
     List<String> viewFiles
 
