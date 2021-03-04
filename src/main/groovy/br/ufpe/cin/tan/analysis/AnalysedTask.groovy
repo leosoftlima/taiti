@@ -269,7 +269,7 @@ class AnalysedTask {
     }
 
     private void extractStepMatchErrorText() {
-        def stepErrors = testi.matchStepErrors
+        def stepErrors = testi.matchStepErrorsPerFile
         def stepErrorsQuantity = 0
         def text = ""
         if (stepErrors.empty) text = ""
@@ -307,7 +307,7 @@ class AnalysedTask {
     }
 
     private void extractCompilationErrorText() {
-        def compilationErrors = testi.compilationErrors
+        def compilationErrors = testi.parseErrorsPerFile
         def compErrorsQuantity = 0
         def gherkinQuantity = 0
         def stepsQuantity = 0
