@@ -11,6 +11,7 @@ import br.ufpe.cin.tan.commit.change.stepdef.StepdefManager
 import br.ufpe.cin.tan.commit.change.unit.ChangedUnitTestFile
 import br.ufpe.cin.tan.commit.change.unit.UnitTestManager
 import br.ufpe.cin.tan.exception.CloningRepositoryException
+import br.ufpe.cin.tan.test.error.StepError
 import br.ufpe.cin.tan.test.TestCodeAbstractAnalyser
 import br.ufpe.cin.tan.util.ConstantData
 import br.ufpe.cin.tan.util.RegexUtil
@@ -49,7 +50,7 @@ class GitRepository {
     String name
     String localPath
     String lastCommit //used only to reset the repository for the original state after checkout command
-    Set removedSteps
+    Set<StepError> removedSteps
 
     List<RevCommit> identifyCommitsInFile(String filename) {
         def git = Git.open(new File(localPath))
@@ -347,7 +348,7 @@ class GitRepository {
                     //log.info "commit ${commit.name} removed scenario from ${entry.newPath}:\n ${definition.name}"
                     definition.steps.each {
                         //log.info "${it.text}; ${entry.newPath} (${it.location.line})"
-                        removedSteps += [path: entry.newPath, text: it.text]
+                        removedSteps += new StepError(path: entry.newPath, text: it.text)
                     }
                 }
             }

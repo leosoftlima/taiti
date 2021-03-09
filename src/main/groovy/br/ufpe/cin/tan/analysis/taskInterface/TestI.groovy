@@ -1,5 +1,8 @@
 package br.ufpe.cin.tan.analysis.taskInterface
 
+import br.ufpe.cin.tan.test.error.ParseErrorList
+import br.ufpe.cin.tan.test.error.StepError
+import br.ufpe.cin.tan.test.error.StepErrorList
 import br.ufpe.cin.tan.test.ruby.MethodBody
 import br.ufpe.cin.tan.util.Util
 
@@ -16,9 +19,9 @@ class TestI extends TaskInterface {
     /** ****************************************************************************************************************/
 
     Set genericStepKeyword
-    Set multipleStepMatches //[path, line, text]
-    Set matchStepErrors
-    Set compilationErrors //[path: String, msgs: List<String>]
+    Set<StepError> multipleStepMatches
+    Set<StepErrorList> matchStepErrorsPerFile
+    Set<ParseErrorList> parseErrorsPerFile
     Set notFoundViews
     Set foundAcceptanceTests
     Set foundStepDefs
@@ -37,10 +40,10 @@ class TestI extends TaskInterface {
         this.accessedProperties = [] as Set
         this.calledPageMethods = [] as Set
         this.referencedPages = [] as Set
-        this.matchStepErrors = [] as Set
+        this.matchStepErrorsPerFile = [] as Set
         this.genericStepKeyword = [] as Set
         this.multipleStepMatches = [] as Set
-        this.compilationErrors = [] as Set
+        this.parseErrorsPerFile = [] as Set
         this.notFoundViews = [] as Set
         this.foundAcceptanceTests = [] as Set
         this.foundStepDefs = [] as Set
@@ -100,10 +103,10 @@ class TestI extends TaskInterface {
         this.accessedProperties += task.accessedProperties
         this.calledPageMethods += task.calledPageMethods
         this.referencedPages += task.referencedPages
-        this.matchStepErrors += task.matchStepErrors
+        this.matchStepErrorsPerFile += task.matchStepErrorsPerFile
         this.genericStepKeyword += task.genericStepKeyword
         this.multipleStepMatches += task.multipleStepMatches
-        this.compilationErrors += task.compilationErrors
+        this.parseErrorsPerFile += task.parseErrorsPerFile
         this.notFoundViews += task.notFoundViews
         this.foundAcceptanceTests += task.foundAcceptanceTests
         this.foundStepDefs += task.foundStepDefs
@@ -128,10 +131,10 @@ class TestI extends TaskInterface {
         taskInterface.accessedProperties = accessedProperties - task.accessedProperties
         taskInterface.calledPageMethods = calledPageMethods - task.calledPageMethods
         taskInterface.referencedPages = referencedPages - task.referencedPages
-        taskInterface.matchStepErrors = matchStepErrors - task.matchStepErrors
+        taskInterface.matchStepErrorsPerFile = matchStepErrorsPerFile - task.matchStepErrorsPerFile
         taskInterface.genericStepKeyword = genericStepKeyword - task.genericStepKeyword
         taskInterface.multipleStepMatches = multipleStepMatches - task.multipleStepMatches
-        taskInterface.compilationErrors = compilationErrors - task.compilationErrors
+        taskInterface.parseErrorsPerFile = parseErrorsPerFile - task.parseErrorsPerFile
         taskInterface.notFoundViews = notFoundViews - task.notFoundViews
         taskInterface.foundAcceptanceTests = foundAcceptanceTests - task.foundAcceptanceTests
         taskInterface.foundStepDefs = foundStepDefs - task.foundStepDefs
