@@ -7,6 +7,7 @@ import br.ufpe.cin.tan.commit.change.gherkin.GherkinManager
 import br.ufpe.cin.tan.commit.change.gherkin.StepDefinition
 import br.ufpe.cin.tan.commit.change.unit.ChangedUnitTestFile
 import br.ufpe.cin.tan.test.FileToAnalyse
+import br.ufpe.cin.tan.test.error.ParseError
 import br.ufpe.cin.tan.test.StepRegex
 import br.ufpe.cin.tan.test.TestCodeAbstractAnalyser
 import br.ufpe.cin.tan.test.TestCodeVisitorInterface
@@ -71,7 +72,7 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
         def mininum = [result1, result2].find { it.errors.min() }
         if (mininum == null) return null
-        compilationErrors += mininum.errors
+        analysisData.parseErrors += mininum.errors
         mininum.node
     }
 
@@ -101,7 +102,7 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
         }
 
         def mininum = [result1, result2].find { it.errors.min() }
-        compilationErrors += mininum.errors
+        analysisData.parseErrors += mininum.errors
         mininum.node
     }
 
@@ -120,7 +121,7 @@ class RubyTestCodeAnalyser extends TestCodeAbstractAnalyser {
                 def index = ex.message.indexOf(",")
                 msg = index >= 0 ? ex.message.substring(index + 1).trim() : ex.message.trim()
             }
-            errors += [path: path, msg: msg]
+            errors += new ParseError(path: path, msg: msg)
         } finally {
             reader?.close()
         }

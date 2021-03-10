@@ -11,6 +11,7 @@ import br.ufpe.cin.tan.commit.change.stepdef.ChangedStepdefFile
 import br.ufpe.cin.tan.commit.change.stepdef.StepdefManager
 import br.ufpe.cin.tan.commit.change.unit.ChangedUnitTestFile
 import br.ufpe.cin.tan.exception.CloningRepositoryException
+import br.ufpe.cin.tan.test.error.ParseErrorList
 import br.ufpe.cin.tan.test.ruby.routes.RoutesManager
 import br.ufpe.cin.tan.util.Util
 import gherkin.ast.Background
@@ -606,7 +607,7 @@ class DoneTask extends Task {
 
     private registryCompilationErrors(TestI testi) {
         def finalErrorSet = []
-        def errors = testi.compilationErrors
+        def errors = testi.parseErrorsPerFile
 
         def gherkinErrors = errors.findAll { Util.isGherkinFile(it.path) }
         gherkinErrors?.each { error ->
@@ -625,9 +626,9 @@ class DoneTask extends Task {
             def file = error.path
             def index = error.path.indexOf(gitRepository.localPath)
             def name = index >= 0 ? file.substring(index) - (gitRepository.localPath + File.separator) : file
-            formatedResult += [path: name, msgs: error.msgs]
+            formatedResult += new ParseErrorList(path: name, msgs: error.msgs)
         }
 
-        testi.compilationErrors = formatedResult
+        testi.parseErrorsPerFile = formatedResult
     }
 }

@@ -1,5 +1,6 @@
 package br.ufpe.cin.tan.commit.change.gherkin
 
+import br.ufpe.cin.tan.test.error.ParseError
 import gherkin.AstBuilder
 import gherkin.Parser
 import gherkin.ParserException
@@ -13,10 +14,10 @@ import org.eclipse.jgit.revwalk.RevCommit
 @Slf4j
 class GherkinManager {
 
-    Set compilationErrors
+    Set<ParseError> parseErrors
 
     GherkinManager() {
-        compilationErrors = [] as Set
+        parseErrors = [] as Set
     }
 
     Feature parseGherkinFile(String content, String filename, String sha) {
@@ -29,7 +30,7 @@ class GherkinManager {
                 feature = parser.parse(content)?.feature
             } catch (ParserException ex) {
                 log.warn "Problem to parse Gherkin file '$filename' (commit $sha). ${ex.class}: ${ex.message}."
-                compilationErrors += [path: filename, msg: ex.class]
+                parseErrors += new ParseError(path: filename, msg: ex.class)
             }
         }
         feature
