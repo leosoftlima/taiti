@@ -9,11 +9,11 @@ import br.ufpe.cin.tan.test.TestCodeAbstractAnalyser
 import br.ufpe.cin.tan.test.TestCodeVisitorInterface
 import groovy.util.logging.Slf4j
 import com.github.javaparser.ast.Node
+import com.github.javaparser.ast.CompilationUnit;
 
 @Slf4j
 class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
-      String routesFile
-
+      
     CompilationUnit generateAst(String path) { 
       CompilationUnit compilationUnit = StaticJavaParser.parse(new File(path));
       return compilationUnit;
@@ -21,7 +21,6 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
     JavaTestCodeAnalyser(String repositoryPath, GherkinManager gherkinManager) {
         super(repositoryPath, gherkinManager)
-         this.routesFile = repositoryPath + JavaConstantData.ROUTES_FILE
     }
 
     /***
@@ -35,7 +34,10 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
     @Override
     List<StepRegex> doExtractStepsRegex(String path) {
-         return null
+        def node = this.generateAst(path)
+        def visitor = new JavaStepRegexVisitor(path)
+        node?.accept(visitor)
+        visitor.regexs
     }
 
     @Override
@@ -56,12 +58,32 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
     @Override
     TestCodeVisitorInterface parseStepBody(FileToAnalyse file) {
-        return null
+        def node = this.generateAst(file.path)
+        def visitor = new JavaTestCodeVisitor(projectFiles, file.path, methods)
+        def fileContent = recoverFileContent(file.path)
+        def testCodeVisitor = new JavaStepsFileVisitor(file.methods, visitor, fileContent)
+        node?.accept(testCodeVisitor)
+        visitor.methodBodies.add(new MethodBody(testCodeVisitor.body))
+        visitor
     }
 
+    /***
+     * O método deve visitar o corpo de métodos selecionados de um arquivo de código-fonte procurando por outras chamadas
+     * de método. O resultado é armazenado com um campo do visitor de entrada.
+     *
+     * @param file um map que identifica o arquivo e seus respectivos métodos a serem analisados. As palavras-chave são
+     * 'path' para identificar o arquivo e 'methods' para os métodos que, por usa vez, é descrito pelas chave 'name' e
+     * 'step'.
+     * @param visitor Visitor usado para analisar o código, específico de LP
+     */
     @Override
-    def visitFile(Object file, TestCodeVisitorInterface visitor) {
-        return null
+    visitFile(file, TestCodeVisitorInterface visitor) {
+        def node = this.generateAst(file.path)
+        visitor.lastVisitedFile = file.path
+        def fileContent = recoverFileContent(file.path)
+        def auxVisitor = new JavaMethodVisitor(file.methods, (JavaTestCodeVisitor) visitor, fileContent)
+        node?.accept(auxVisitor)
+        visitor.methodBodies.add(new MethodBody(auxVisitor.body))
     }
 
     /***
@@ -82,11 +104,17 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
     @Override
     String getClassForFile(String path) {
-        return null
+        JavaUtil.getClassName(path)
     }
 
     @Override
     boolean hasCompilationError(String path) {
-        return false
+        def node = generateAst(path)
+        if (!node) true else false
+    }
+
+    static List<String> recoverFileContent(String path) {
+        FileReader reader = new FileReader(path)
+        reader?.readLines()
     }
 }

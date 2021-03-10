@@ -7,6 +7,7 @@ import java.util.Set;
 import com.github.javaparser.ast.body.CallableDeclaration.Signature;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import com.github.javaparser.ast.CompilationUnit;
 
 /***
  * Finds all method definition in a file.

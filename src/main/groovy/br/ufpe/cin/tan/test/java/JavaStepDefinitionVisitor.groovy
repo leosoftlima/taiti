@@ -17,7 +17,7 @@ import com.github.javaparser.ast.NodeList;
  * changed any Gherkin file.
  */
 @Slf4j
-class JavaStepDefinitionVisitor extends extends VoidVisitorAdapter<Void>{
+class JavaStepDefinitionVisitor extends VoidVisitorAdapter<Void>{
     String path
     List<String> content
     List<StepDefinition> stepDefinitions
@@ -74,19 +74,12 @@ class JavaStepDefinitionVisitor extends extends VoidVisitorAdapter<Void>{
         }
         body
     }
-    private static  List<Node> getAllNodes(Node node) {
-	   	List<Node> nodes = new LinkedList<>();
-	    nodes.add(node);
-	    node.getChildNodes().forEach(children -> {
-	        nodes.addAll(getAllNodes(children));
-	    });
-	    return nodes;
-	} 
+  
     @Override
-    Object visitFCallNode(CompilationUnit compilationUnit) {
+    public void visit(CompilationUnit compilationUnit, Void args) {
         	super.visit(compilationUnit, args);
            // find all nodes tree the instance Method and gets referentes keywords Gherkins(Ex.: given, when, then, and.)
-             getAllNodes(compilationUnit).forEach(node -> {
+             JavaUtil.getAllNodes(compilationUnit).forEach(node -> {
 	        	if(node instanceof MethodDeclaration) {	
                    String keyword = ((MethodDeclaration) node).getAnnotation(0).getNameAsString() //get Name annotation node with keywork
 
@@ -109,8 +102,6 @@ class JavaStepDefinitionVisitor extends extends VoidVisitorAdapter<Void>{
                    }         
                 }
              }
-        
-        return compilationUnit
     }
 
 }
