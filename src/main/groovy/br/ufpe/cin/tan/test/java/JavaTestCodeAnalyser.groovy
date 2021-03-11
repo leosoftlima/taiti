@@ -7,6 +7,7 @@ import br.ufpe.cin.tan.test.FileToAnalyse
 import br.ufpe.cin.tan.test.StepRegex
 import br.ufpe.cin.tan.test.TestCodeAbstractAnalyser
 import br.ufpe.cin.tan.test.TestCodeVisitorInterface
+import br.ufpe.cin.tan.test.ruby.MethodBody
 import groovy.util.logging.Slf4j
 import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.CompilationUnit;

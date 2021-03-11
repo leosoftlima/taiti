@@ -7,6 +7,7 @@ import groovy.util.logging.Slf4j
 import java.util.LinkedList;
 import java.util.List;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
@@ -79,7 +80,7 @@ class JavaStepDefinitionVisitor extends VoidVisitorAdapter<Void>{
     public void visit(CompilationUnit compilationUnit, Void args) {
         	super.visit(compilationUnit, args);
            // find all nodes tree the instance Method and gets referentes keywords Gherkins(Ex.: given, when, then, and.)
-             JavaUtil.getAllNodes(compilationUnit).forEach(node -> {
+             JavaUtil.getAllNodes(compilationUnit).each {node -> 
 	        	if(node instanceof MethodDeclaration) {	
                    String keyword = ((MethodDeclaration) node).getAnnotation(0).getNameAsString() //get Name annotation node with keywork
 

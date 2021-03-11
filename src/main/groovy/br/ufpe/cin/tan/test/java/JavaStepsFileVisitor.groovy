@@ -1,4 +1,4 @@
-package br.ufpe.cin.tan.test.ruby
+package br.ufpe.cin.tan.test.java
 
 import br.ufpe.cin.tan.test.MethodToAnalyse
 import br.ufpe.cin.tan.util.ConstantData
@@ -20,7 +20,7 @@ class JavaStepsFileVisitor extends VoidVisitorAdapter<Void>{
     List<String> body
     List analysedLines
 
-    RubyStepsFileVisitor(List<MethodToAnalyse> methodsToAnalyse, JavaTestCodeVisitor methodCallVisitor, List<String> fileContent) {
+    JavaStepsFileVisitor(List<MethodToAnalyse> methodsToAnalyse, JavaTestCodeVisitor methodCallVisitor, List<String> fileContent) {
         this.lines = methodsToAnalyse*.line
         this.methods = methodsToAnalyse
         this.methodCallVisitor = methodCallVisitor
@@ -36,7 +36,7 @@ class JavaStepsFileVisitor extends VoidVisitorAdapter<Void>{
     public void visit(CompilationUnit compilationUnit, Void args) {
         	super.visit(compilationUnit, args);
            // find all nodes tree the instance Method and gets referentes keywords Gherkins(Ex.: given, when, then, and.)
-      JavaUtil.getAllNodes(compilationUnit).forEach(node -> {
+      JavaUtil.getAllNodes(compilationUnit).each {node -> 
          if(node instanceof MethodDeclaration){
            if (((MethodDeclaration) node).getRange().get().begin in lines) {
              def matches = methods.findAll { it.line == ((MethodDeclaration) node).getRange().get().begin }

@@ -1,4 +1,4 @@
-package br.ufpe.cin.tan.test.ruby
+package br.ufpe.cin.tan.test.java
 
 import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.test.MethodToAnalyse
@@ -12,16 +12,17 @@ import com.github.javaparser.ast.CompilationUnit;
  * It is needed when the "when filter" is enabled.
  * It is responsible for identifying visit calls. It ignores any other method call.
  */
-class RubyGivenStepAnalyser {
+class JavaGivenStepAnalyser {
 
     JavaTestCodeVisitor filteredVisitor
     JavaTestCodeVisitor auxVisitor
     JavaTestCodeVisitor methodCallVisitor
 
-    RubyGivenStepAnalyser(JavaTestCodeVisitor methodCallVisitor) {
+    JavaGivenStepAnalyser(JavaTestCodeVisitor methodCallVisitor) {
         this.methodCallVisitor = methodCallVisitor
     }
- def analyse(Node node, MethodToAnalyse method) {
+   
+     def analyse(Node node, MethodToAnalyse method) {
         reset()
 
         filteredVisitor.stepDefinitionMethod = method

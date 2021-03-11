@@ -7,6 +7,7 @@ import br.ufpe.cin.tan.test.StepCall
 import br.ufpe.cin.tan.test.TestCodeVisitorInterface
 import br.ufpe.cin.tan.util.ConstantData
 import br.ufpe.cin.tan.util.Util
+import br.ufpe.cin.tan.test.ruby.MethodBody
 import br.ufpe.cin.tan.util.java.JavaConstantData
 import br.ufpe.cin.tan.util.java.JavaUtil
 import groovy.util.logging.Slf4j
@@ -121,7 +122,7 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
      @Override
     public void visit(CompilationUnit compilationUnit, Void args) {
       	super.visit(compilationUnit, args);
-        JavaUtil.getAllNodes(compilationUnit).forEach(node -> {
+        JavaUtil.getAllNodes(compilationUnit).each {node -> 
          if(node instanceof MethodDeclaration){
              registryStepCall(node)
          }

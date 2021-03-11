@@ -12,7 +12,7 @@ import com.github.javaparser.ast.CompilationUnit;
 /***
  * Finds all method definition in a file.
  */
-class JavaMethodDefinitionVisitor extends extends VoidVisitorAdapter<Void>{
+class JavaMethodDefinitionVisitor extends VoidVisitorAdapter<Void>{
    	Set<Signature> signatures = new HashSet<Signature>();
 	
 	@Override

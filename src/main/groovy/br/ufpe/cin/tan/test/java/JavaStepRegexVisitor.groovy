@@ -12,7 +12,7 @@ import com.github.javaparser.ast.CompilationUnit;
  * Visits step definition files looking for regex expressions. The regex is used to match steps in Gherkin files and
  * step definitions.
  */
-class JavaStepRegexVisitor extends extends VoidVisitorAdapter<Void>{
+class JavaStepRegexVisitor extends VoidVisitorAdapter<Void>{
 
     List<StepRegex> regexs
     String path
@@ -32,7 +32,7 @@ class JavaStepRegexVisitor extends extends VoidVisitorAdapter<Void>{
   @Override
     public void visit(CompilationUnit compilationUnit, Void args) {
         super.visit(compilationUnit, args);
-        JavaUtil.getAllNodes(compilationUnit).forEach(node -> {
+        JavaUtil.getAllNodes(compilationUnit).each {node -> 
            if(node instanceof MethodDeclaration){  
              if (isStepDefinitionNode(node)) {
               def stepdefType = ((MethodDeclaration) node).getAnnotation(0).getNameAsString();

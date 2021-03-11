@@ -36,9 +36,9 @@ class JavaUtil extends Util {
       private static  List<Node> getAllNodes(Node node) {
 	   	List<Node> nodes = new LinkedList<>();
 	    nodes.add(node);
-	    node.getChildNodes().forEach(children -> {
+	    node.getChildNodes().each {children -> 
 	        nodes.addAll(getAllNodes(children));
-	    });
+	    };
 	    return nodes;
 	} 
 }

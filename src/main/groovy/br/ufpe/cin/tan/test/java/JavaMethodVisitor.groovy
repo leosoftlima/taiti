@@ -30,7 +30,7 @@ class JavaMethodVisitor extends VoidVisitorAdapter<Void>{
   @Override
     public void visit(CompilationUnit compilationUnit, Void args) {
         super.visit(compilationUnit, args);
-        JavaUtil.getAllNodes(compilationUnit).forEach(node -> {
+        JavaUtil.getAllNodes(compilationUnit).each {node -> 
            if(node instanceof MethodDeclaration){
               analyse(node)
            }
@@ -38,7 +38,7 @@ class JavaMethodVisitor extends VoidVisitorAdapter<Void>{
     }
 
     private extractMethodBody(MethodDeclaration methodDeclaration) {
-        def methodBody = fileContent.getAt([methodDeclaration.getRange().get().begin...getRange().get().end])
+        def methodBody = fileContent.getAt([methodDeclaration.getRange().get().begin..getRange().get().end])
         body += methodBody
     }
 
