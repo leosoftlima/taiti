@@ -50,7 +50,7 @@ abstract class TestCodeAbstractAnalyser {
     TestCodeAbstractAnalyser(String repositoryPath, GherkinManager gherkinManager) {
         this.repositoryPath = repositoryPath
         this.gherkinManager = gherkinManager
-        configureStepsFilePath()
+        //configureStepsFilePath() //deixar comentado só por enquanto
         regexList = []
         methods = [] as Set
         projectFiles = []
@@ -58,7 +58,7 @@ abstract class TestCodeAbstractAnalyser {
         notFoundViews = [] as Set
         codeFromViewAnalysis = [] as Set
         analysisData = new AnalysisData()
-        configureApiMethodsList()
+        //configureApiMethodsList() //deixar comentado só por enquanto
     }
 
     /***

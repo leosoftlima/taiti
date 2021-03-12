@@ -7,7 +7,14 @@ import br.ufpe.cin.tan.test.FileToAnalyse
 import br.ufpe.cin.tan.test.StepRegex
 import br.ufpe.cin.tan.test.TestCodeAbstractAnalyser
 import br.ufpe.cin.tan.test.TestCodeVisitorInterface
+import br.ufpe.cin.tan.test.error.ParseError
+import br.ufpe.cin.tan.test.ruby.MethodBody
+import br.ufpe.cin.tan.util.java.JavaUtil
+import com.github.javaparser.StaticJavaParser
+import com.github.javaparser.ast.CompilationUnit
+import groovy.util.logging.Slf4j
 
+@Slf4j
 class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
     JavaTestCodeAnalyser(String repositoryPath, GherkinManager gherkinManager) {
@@ -17,6 +24,7 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
     /***
      * Só faz sentido em projeto web. Nesse primeiro momento, pode ficar de fora.
      */
+
     @Override
     void findAllPages(TestCodeVisitorInterface visitor) {
 
@@ -24,27 +32,56 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
     @Override
     List<StepRegex> doExtractStepsRegex(String path) {
-        return null
+        def node = this.generateAst(path)
+        def visitor = new JavaStepRegexVisitor(path)
+        node?.accept(visitor)
+        visitor.regexs
     }
 
     @Override
     List<StepDefinition> doExtractStepDefinitions(String path, String content) {
-        return null
+        JavaStepDefinitionVisitor javaStepDefinitionVisitor = new JavaStepDefinitionVisitor()
+        def compilationUnit = this.generateAst(path);
+        javaStepDefinitionVisitor?.visit(compilationUnit, null);
+        return javaStepDefinitionVisitor.stepDefinitions
     }
 
     @Override
     Set doExtractMethodDefinitions(String path) {
-        return null
+        JavaMethodDefinitionVisitor javaMethodDefinitionVisitor = new JavaMethodDefinitionVisitor()
+        def compilationUnit = this.generateAst(path);
+        javaMethodDefinitionVisitor?.visit(compilationUnit, null);
+        javaMethodDefinitionVisitor.signatures
     }
 
     @Override
     TestCodeVisitorInterface parseStepBody(FileToAnalyse file) {
-        return null
+        def node = this.generateAst(file.path)
+        def visitor = new JavaTestCodeVisitor(projectFiles, file.path, methods)
+        def fileContent = recoverFileContent(file.path)
+        def testCodeVisitor = new JavaStepsFileVisitor(file.methods, visitor, fileContent)
+        node?.accept(testCodeVisitor)
+        visitor.methodBodies.add(new MethodBody(testCodeVisitor.body))
+        visitor
     }
 
+    /***
+     * O método deve visitar o corpo de métodos selecionados de um arquivo de código-fonte procurando por outras chamadas
+     * de método. O resultado é armazenado com um campo do visitor de entrada.
+     *
+     * @param file um map que identifica o arquivo e seus respectivos métodos a serem analisados. As palavras-chave são
+     * 'path' para identificar o arquivo e 'methods' para os métodos que, por usa vez, é descrito pelas chave 'name' e
+     * 'step'.
+     * @param visitor Visitor usado para analisar o código, específico de LP
+     */
     @Override
-    def visitFile(Object file, TestCodeVisitorInterface visitor) {
-        return null
+    visitFile(file, TestCodeVisitorInterface visitor) {
+        def node = this.generateAst(file.path)
+        visitor.lastVisitedFile = file.path
+        def fileContent = recoverFileContent(file.path)
+        def auxVisitor = new JavaMethodVisitor(file.methods, (JavaTestCodeVisitor) visitor, fileContent)
+        node?.accept(auxVisitor)
+        visitor.methodBodies.add(new MethodBody(auxVisitor.body))
     }
 
     /***
@@ -65,11 +102,43 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
     @Override
     String getClassForFile(String path) {
-        return null
+        JavaUtil.getClassName(path)
     }
 
     @Override
     boolean hasCompilationError(String path) {
-        return false
+        def node = this.generateAst(path)
+        if (!node) true else false
     }
+
+    static List<String> recoverFileContent(String path) {
+        FileReader reader = new FileReader(path)
+        reader?.readLines()
+    }
+
+    /***
+     * Gera a AST para um arquivo Java
+     * @param path caminho do arquivo de interesse
+     * @return objeto que representa a AST
+     */
+    def generateAst(String path) {
+        def errors = []
+        CompilationUnit compilationUnit = null
+        try{
+            compilationUnit = StaticJavaParser.parse(new File(path))
+        } catch(Exception ex){
+            def msg = ""
+            if (ex.message && !ex.message.empty) {
+                def index = ex.message.indexOf(",")
+                msg = index >= 0 ? ex.message.substring(index + 1).trim() : ex.message.trim()
+            }
+            errors += new ParseError(path: path, msg: msg)
+        }
+        def finalErrors = errors.findAll { it.path.contains("${File.separator}src${File.separator}") }
+        if(!finalErrors.empty){
+            analysisData.parseErrors += finalErrors
+        }
+        compilationUnit
+    }
+
 }
