@@ -104,7 +104,7 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
         def name = n.name
         def receiverIsPresent = n.scope.present
         def receiver
-        def path
+        def paths = []
 
         if(receiverIsPresent){
             try{
@@ -112,16 +112,19 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
                         new JavaParserTypeSolver(new File("src"))).getType(n.scope.get())
                 receiver = resolvedType.describe()
                 println "receiver: ${receiver}"
-                path = JavaUtil.getClassPathForJavaClass(receiver, projectFiles)
+                paths = JavaUtil.getClassPathForJavaClass(receiver, projectFiles)
             } catch (UnsolvedSymbolException ignored){ //o receptor da chamada não existe no projeto
                 return //o método chamado não é de interesse, então a execução encerra
             }
         } else { //receiver is this
-                path = lastVisitedFile
-                receiver = JavaUtil.getClassName(path)
+                paths += lastVisitedFile
+                receiver = JavaUtil.getClassName(lastVisitedFile)
         }
 
-        taskInterface.methods += new CalledMethod(name: name, type: receiver, file: path, step: configureStep())
+        paths.each{
+            taskInterface.methods += new CalledMethod(name: name, type: receiver, file: it, step: configureStep())
+        }
+
     }
 
     /*
