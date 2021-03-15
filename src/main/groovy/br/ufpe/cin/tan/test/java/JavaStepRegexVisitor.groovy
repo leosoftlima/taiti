@@ -7,6 +7,8 @@ import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter
 
+
+import com.github.javaparser.ast.Node;
 import java.nio.charset.StandardCharsets
 
 /***
@@ -43,4 +45,15 @@ class JavaStepRegexVisitor extends VoidVisitorAdapter<Void>{
            }
         }
       }  
+    @Override
+    Object visitRegexpNode(Node node) {
+        super.visit(node)
+        if (isStepDefinitionNode(node)) {
+            def stepdefType = ((MethodDeclaration) node).getAnnotation(0).getNameAsString();
+            regexs += new StepRegex(path: path, value: new String(((MethodDeclaration) node).getAnnotation(0), StandardCharsets.UTF_8),
+                    line: 0, keyword: stepdefType)
+        }
+        return iVisited
+    }
+
 }

@@ -13,12 +13,20 @@ import br.ufpe.cin.tan.util.java.JavaUtil
 import com.github.javaparser.StaticJavaParser
 import com.github.javaparser.ast.CompilationUnit
 import groovy.util.logging.Slf4j
+import com.github.javaparser.ast.Node
 
 @Slf4j
 class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
+      String routesFile
+
+    CompilationUnit generateAst(String path) { 
+      CompilationUnit compilationUnit = StaticJavaParser.parse(new File(path));
+      return compilationUnit;
+    }    
 
     JavaTestCodeAnalyser(String repositoryPath, GherkinManager gherkinManager) {
         super(repositoryPath, gherkinManager)
+         this.routesFile = repositoryPath + JavaConstantData.ROUTES_FILE
     }
 
     /***
@@ -36,6 +44,7 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
         def visitor = new JavaStepRegexVisitor(path)
         node?.accept(visitor)
         visitor.regexs
+         return null
     }
 
     @Override

@@ -7,11 +7,22 @@ import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter
 import groovy.util.logging.Slf4j
 
+import groovy.util.logging.Slf4j
+
+import java.util.LinkedList;
+import java.util.List;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.NodeList;
+
+
 /***
  * Visits source code files looking for step definitions. It is used when a commit changed a step definition without
  * changed any Gherkin file.
  */
 @Slf4j
+
 class JavaStepDefinitionVisitor extends VoidVisitorAdapter<Void>{
     String path
     List<String> content
@@ -75,6 +86,20 @@ class JavaStepDefinitionVisitor extends VoidVisitorAdapter<Void>{
         	super.visit(compilationUnit, args);
            // find all nodes tree the instance Method and gets referentes keywords Gherkins(Ex.: given, when, then, and.)
              JavaUtil.getAllNodes(compilationUnit).each {node -> 
+
+    private static  List<Node> getAllNodes(Node node) {
+	   	List<Node> nodes = new LinkedList<>();
+	    nodes.add(node);
+	    node.getChildNodes().forEach(children -> {
+	        nodes.addAll(getAllNodes(children));
+	    });
+	    return nodes;
+	} 
+    @Override
+    Object visitFCallNode(CompilationUnit compilationUnit) {
+        	super.visit(compilationUnit, args);
+           // find all nodes tree the instance Method and gets referentes keywords Gherkins(Ex.: given, when, then, and.)
+             getAllNodes(compilationUnit).forEach(node -> {
 	        	if(node instanceof MethodDeclaration) {	
                    String keyword = ((MethodDeclaration) node).getAnnotation(0).getNameAsString() //get Name annotation node with keywork
 
@@ -97,6 +122,8 @@ class JavaStepDefinitionVisitor extends VoidVisitorAdapter<Void>{
                    }         
                 }
              }
+        
+        return compilationUnit
     }
 
 }

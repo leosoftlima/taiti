@@ -1,12 +1,21 @@
 package br.ufpe.cin.tan.test.java
 
+
 import com.github.javaparser.ast.body.CallableDeclaration.Signature
 import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.github.javaparser.ast.body.CallableDeclaration.Signature;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+
 /***
  * Finds all method definition in a file.
  */
+
 class JavaMethodDefinitionVisitor extends VoidVisitorAdapter<Void>{
    	Set<Signature> signatures = new HashSet<Signature>();
 	
