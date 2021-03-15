@@ -2,7 +2,7 @@ package br.ufpe.cin.tan.util.java
 
 import br.ufpe.cin.tan.util.ConstantData
 import br.ufpe.cin.tan.util.Util
-import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.Node
 
 import java.util.regex.Matcher
 
@@ -41,4 +41,10 @@ class JavaUtil extends Util {
 	    };
 	    return nodes;
 	} 
+
+    static List<String> getClassPathForJavaClass(String original, Collection<String> projectFiles) {
+        def name = original + ConstantData.JAVA_EXTENSION
+        projectFiles?.findAll{ it.endsWith(name) }
+    }
+
 }

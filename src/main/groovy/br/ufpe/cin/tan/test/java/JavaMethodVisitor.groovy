@@ -8,7 +8,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.CompilationUnit;
-
+import br.ufpe.cin.tan.util.java.JavaUtil
 
 /***
  * Visits methods body searching for other method calls. It should be used associated to JavaTestCodeVisitor.
@@ -30,7 +30,7 @@ class JavaMethodVisitor extends VoidVisitorAdapter<Void>{
   @Override
     public void visit(CompilationUnit compilationUnit, Void args) {
         super.visit(compilationUnit, args);
-        JavaUtil.getAllNodes(compilationUnit).each {node -> 
+      JavaUtil.getAllNodes(compilationUnit).each { node ->
            if(node instanceof MethodDeclaration){
               analyse(node)
            }

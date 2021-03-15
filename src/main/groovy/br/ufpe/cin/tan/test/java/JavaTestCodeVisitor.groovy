@@ -29,6 +29,17 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.CompilationUnit;
+import br.ufpe.cin.tan.test.ruby.MethodBody
+import br.ufpe.cin.tan.util.Util
+import br.ufpe.cin.tan.util.java.JavaUtil
+import com.github.javaparser.ast.body.MethodDeclaration
+import com.github.javaparser.ast.expr.*
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter
+import com.github.javaparser.resolution.UnsolvedSymbolException
+import com.github.javaparser.resolution.types.ResolvedType
+import com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade
+import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver
+import groovy.util.logging.Slf4j
 
 @Slf4j
 class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVisitorInterface {
@@ -127,7 +138,27 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
     @Override
     void visit(MethodCallExpr n, Void args){
         super.visit(n, args)
+        def name = n.name
+        def receiverIsPresent = n.scope.present
+        def receiver
+        def path
 
+        if(receiverIsPresent){
+            try{
+                ResolvedType resolvedType = JavaParserFacade.get(
+                        new JavaParserTypeSolver(new File("src"))).getType(n.scope.get())
+                receiver = resolvedType.describe()
+                println "receiver: ${receiver}"
+                path = JavaUtil.getClassPathForJavaClass(receiver, projectFiles)
+            } catch (UnsolvedSymbolException ignored){ //o receptor da chamada não existe no projeto
+                return //o método chamado não é de interesse, então a execução encerra
+            }
+        } else { //receiver is this
+                path = lastVisitedFile
+                receiver = JavaUtil.getClassName(path)
+        }
+
+        taskInterface.methods += new CalledMethod(name: name, type: receiver, file: path, step: configureStep())
     }
 
     /*
@@ -170,4 +201,5 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
         super.visit(n, args)
     }
 
+}
 }

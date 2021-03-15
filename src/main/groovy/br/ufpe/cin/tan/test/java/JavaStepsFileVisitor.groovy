@@ -7,6 +7,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.CompilationUnit;
+import br.ufpe.cin.tan.util.java.JavaUtil
 
 /***
  * Visita step definitions de interesse buscando chamadas à métodos de aplicação.
@@ -36,7 +37,7 @@ class JavaStepsFileVisitor extends VoidVisitorAdapter<Void>{
     public void visit(CompilationUnit compilationUnit, Void args) {
         	super.visit(compilationUnit, args);
            // find all nodes tree the instance Method and gets referentes keywords Gherkins(Ex.: given, when, then, and.)
-      JavaUtil.getAllNodes(compilationUnit).each {node -> 
+      JavaUtil.getAllNodes(compilationUnit).each { node ->
          if(node instanceof MethodDeclaration){
            if (((MethodDeclaration) node).getRange().get().begin in lines) {
              def matches = methods.findAll { it.line == ((MethodDeclaration) node).getRange().get().begin }

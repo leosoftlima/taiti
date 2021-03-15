@@ -7,7 +7,11 @@ import br.ufpe.cin.tan.test.FileToAnalyse
 import br.ufpe.cin.tan.test.StepRegex
 import br.ufpe.cin.tan.test.TestCodeAbstractAnalyser
 import br.ufpe.cin.tan.test.TestCodeVisitorInterface
+import br.ufpe.cin.tan.test.error.ParseError
 import br.ufpe.cin.tan.test.ruby.MethodBody
+import br.ufpe.cin.tan.util.java.JavaUtil
+import com.github.javaparser.StaticJavaParser
+import com.github.javaparser.ast.CompilationUnit
 import groovy.util.logging.Slf4j
 import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.CompilationUnit;
@@ -110,7 +114,7 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
 
     @Override
     boolean hasCompilationError(String path) {
-        def node = generateAst(path)
+        def node = this.generateAst(path)
         if (!node) true else false
     }
 
@@ -118,4 +122,30 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
         FileReader reader = new FileReader(path)
         reader?.readLines()
     }
+
+    /***
+     * Gera a AST para um arquivo Java
+     * @param path caminho do arquivo de interesse
+     * @return objeto que representa a AST
+     */
+    def generateAst(String path) {
+        def errors = []
+        CompilationUnit compilationUnit = null
+        try{
+            compilationUnit = StaticJavaParser.parse(new File(path))
+        } catch(Exception ex){
+            def msg = ""
+            if (ex.message && !ex.message.empty) {
+                def index = ex.message.indexOf(",")
+                msg = index >= 0 ? ex.message.substring(index + 1).trim() : ex.message.trim()
+            }
+            errors += new ParseError(path: path, msg: msg)
+        }
+        def finalErrors = errors.findAll { it.path.contains("${File.separator}src${File.separator}") }
+        if(!finalErrors.empty){
+            analysisData.parseErrors += finalErrors
+        }
+        compilationUnit
+    }
+
 }

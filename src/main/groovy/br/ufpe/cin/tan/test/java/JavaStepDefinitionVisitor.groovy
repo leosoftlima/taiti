@@ -2,13 +2,13 @@ package br.ufpe.cin.tan.test.java
 
 import br.ufpe.cin.tan.commit.change.gherkin.StepDefinition
 import br.ufpe.cin.tan.util.ConstantData
+import com.github.javaparser.ast.CompilationUnit
+import com.github.javaparser.ast.body.MethodDeclaration
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter
 import groovy.util.logging.Slf4j
-
+import groovy.util.logging.Slf4j
 import java.util.LinkedList;
 import java.util.List;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 
@@ -75,7 +75,6 @@ class JavaStepDefinitionVisitor extends VoidVisitorAdapter<Void>{
         }
         body
     }
-  
     @Override
     public void visit(CompilationUnit compilationUnit, Void args) {
         	super.visit(compilationUnit, args);
