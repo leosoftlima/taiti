@@ -75,16 +75,21 @@ abstract class Util {
 
         FRAMEWORK_PATH = configureFramework()
         FRAMEWORK_FILES = findFilesFromDirectory(FRAMEWORK_PATH)
-        FRAMEWORK_LIB_PATH = configureLib()
 
         //configure language dependents
         switch (CODE_LANGUAGE) {
             case LanguageOption.RUBY:
+                FRAMEWORK_LIB_PATH = configureLib()
                 VALID_EXTENSION = ConstantData.RUBY_EXTENSION
                 SPECIAL_VALID_VIEW_FILES = [ConstantData.ERB_EXTENSION, ConstantData.HAML_EXTENSION, ConstantData.SLIM_EXTENSION]
                 VALID_VIEW_FILES = [ConstantData.HTML_HAML_EXTENSION, ConstantData.MOBILE_HAML_EXTENSION,
                                     ConstantData.HTML_ERB_EXTENSION, ConstantData.HTML_SLIM_EXTENSION]
                 LIB_RELATIVE_PATH = "lib"
+                GEMS_PATH = (properties.(ConstantData.PROP_GEMS)).replace(File.separator, Matcher.quoteReplacement(File.separator))
+                GEM_INFLECTOR = configureGemInflector()
+                GEM_I18N = configureGemI18n()
+                GEM_PARSER = configureGemParser()
+                GEM_AST = configureGemAst()
                 break
             case LanguageOption.GROOVY:
                 VALID_EXTENSION = ConstantData.GROOVY_EXTENSION
@@ -103,11 +108,6 @@ abstract class Util {
         VALID_EXTENSIONS = [VALID_EXTENSION] + VALID_VIEW_FILES + [ConstantData.FEATURE_EXTENSION]
         VALID_FOLDERS = [GHERKIN_FILES_RELATIVE_PATH, APPLICATION_FILES_RELATIVE_PATH, LIB_RELATIVE_PATH]
 
-        GEMS_PATH = (properties.(ConstantData.PROP_GEMS)).replace(File.separator, Matcher.quoteReplacement(File.separator))
-        GEM_INFLECTOR = configureGemInflector()
-        GEM_I18N = configureGemI18n()
-        GEM_PARSER = configureGemParser()
-        GEM_AST = configureGemAst()
         VIEW_ANALYSIS = configureViewAnalysis()
 
         CONTROLLER_FILTER = configureControllerFilter()
@@ -250,7 +250,14 @@ abstract class Util {
 
     static boolean isTestFile(String path) {
         if (!path || path.empty) return false
+
         def p = path.replaceAll(RegexUtil.FILE_SEPARATOR_REGEX, Matcher.quoteReplacement(File.separator))
+
+        if(CODE_LANGUAGE == LanguageOption.JAVA){
+            def regex = /.+(\\|\/)test(s?)(\\|\/).+/
+            return p ==~ regex
+        }
+
         def root = extractRootFolder(path)
         p = p - root
         if (p?.contains("${UNIT_TEST_FILES_RELATIVE_PATH}${File.separator}") ||
@@ -264,6 +271,11 @@ abstract class Util {
     static boolean isValidFile(String path) {
         if (!path || path.empty) return false
         def p = path.replaceAll(RegexUtil.FILE_SEPARATOR_REGEX, Matcher.quoteReplacement(File.separator))
+
+        if(CODE_LANGUAGE == LanguageOption.JAVA){
+            return VALID_EXTENSIONS.any {p.endsWith(it) }
+        }
+
         def root = extractRootFolder(path)
         p = p - root
         if (VALID_FOLDERS.any { p.startsWith(it + File.separator) } && VALID_EXTENSIONS.any {
@@ -276,6 +288,12 @@ abstract class Util {
     static boolean isStepDefinitionFile(String path) {
         if (!path || path.empty) return false
         def p = path.replaceAll(RegexUtil.FILE_SEPARATOR_REGEX, Matcher.quoteReplacement(File.separator))
+
+        if(CODE_LANGUAGE == LanguageOption.JAVA){
+            def regex = /.+(\\|\/)steps(\\|\/).+/
+            return p ==~ regex
+        }
+
         def root = extractRootFolder(path)
         p = p - root
         if (p.startsWith(STEPS_FILES_RELATIVE_PATH + File.separator) && p.endsWith(VALID_EXTENSION)) true
@@ -285,6 +303,11 @@ abstract class Util {
     static boolean isGherkinFile(String path) {
         if (!path || path.empty) return false
         def p = path.replaceAll(RegexUtil.FILE_SEPARATOR_REGEX, Matcher.quoteReplacement(File.separator))
+
+        if(CODE_LANGUAGE == LanguageOption.JAVA){
+            return p.endsWith(ConstantData.FEATURE_EXTENSION)
+        }
+
         def root = extractRootFolder(path)
         p = p - root
         if (p.startsWith(ConstantData.DEFAULT_GHERKIN_FOLDER + File.separator) && p.endsWith(ConstantData.FEATURE_EXTENSION)) true
@@ -293,7 +316,13 @@ abstract class Util {
 
     static boolean isUnitTestFile(String path) {
         if (!path || path.empty) return false
+
         def p = path.replaceAll(RegexUtil.FILE_SEPARATOR_REGEX, Matcher.quoteReplacement(File.separator))
+
+        if(CODE_LANGUAGE == LanguageOption.JAVA){
+            return (isTestFile(p) && !isGherkinFile(p) && !isStepDefinitionFile(p))
+        }
+
         def root = extractRootFolder(path)
         p = p - root
         if (p.startsWith(UNIT_TEST_FILES_RELATIVE_PATH + File.separator) && p.endsWith(VALID_EXTENSION)) true
