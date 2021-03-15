@@ -170,14 +170,23 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
     * */
     void visit(MethodReferenceExpr n, Void args){
         super.visit(n, args)
-        Expression scope = n.getScope();
-	    String identifier = n.getIdentifier();
-	    if (scope != null) {
-	        n.getScope().accept(this, arg);
-	    }
-
-	    if (identifier != null) {
-	     registryReferenceExpr(identifier,n);
+        def name = n.identifier
+        def receiverIsPresent = n.scope.present
+	    
+        if (identifier != null && receiverIsPresent) {
+          JavaParserTypeSolver javaParserfacade = new JavaParserTypeSolver(new File("src"));
+          ResolvedType resolvedType = JavaParserFacade.get(javaParserfacade).getType(n.scope);
+          receiver = resolvedType.describe()
+          println "receiver: ${receiver}"
+	      path = JavaUtil.getClassPathForJavaClass(receiver, projectFiles)
+  	       
+            if(receiver !=null){
+               taskInterface.methods += new CalledMethod(name: name, type: receiver, file: path, step: configureStep())
+            }else{
+               taskInterface.methods += new CalledMethod(name: name, type: "Object", file: path,
+                        step: configureStep())  
+            }
+        }
 	    }
     }
 
@@ -192,7 +201,17 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
     /* Acesso à classe de um tipo. Exemplo: Object.class */
     void visit(ClassExpr n, Void args){
         super.visit(n, args)
-        String nameTypeClass = n.getType()
+        def receiver = n.getType()
+        def receiverIsPresent = n.scope.present
+        def name
+        Optional<Node> nodes = n.getParentNode();
+		nodes.get().getChildNodes().each {child ->
+			if(child instanceof SimpleName) {
+				name = ((SimpleName)child).getIdentifier();
+			}	
+		});
+        path = JavaUtil.getClassPathForJavaClass(receiver, projectFiles)
+        taskInterface.methods += new CalledMethod(name: name, type: receiver, file: path, step: configureStep())  
     }
 
     /* Acesso à um campo de um objeto ou classe. Exemplo: pessoa.nome.
