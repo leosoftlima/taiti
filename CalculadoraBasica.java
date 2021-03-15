@@ -13,6 +13,9 @@ public class CalculadoraBasica {
         int subtracao = subtrair(x,y);
         System.out.println("Soma: "+soma);
         System.out.println("Subtração: "+subtracao);
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(Scanner.class);
     }
 
 }
