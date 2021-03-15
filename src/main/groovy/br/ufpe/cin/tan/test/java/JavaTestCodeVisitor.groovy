@@ -1,5 +1,5 @@
 package br.ufpe.cin.tan.test.java
-​
+
 import br.ufpe.cin.tan.analysis.taskInterface.CalledMethod
 import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.test.MethodToAnalyse
@@ -12,6 +12,7 @@ import br.ufpe.cin.tan.util.java.JavaConstantData
 import br.ufpe.cin.tan.util.java.JavaUtil
 import com.github.javaparser.ast.body.VariableDeclarator
 import com.github.javaparser.ast.expr.ClassExpr
+import com.github.javaparser.ast.expr.Expression
 import com.github.javaparser.ast.expr.FieldAccessExpr
 import com.github.javaparser.ast.expr.MethodCallExpr
 import com.github.javaparser.ast.expr.MethodReferenceExpr
@@ -28,25 +29,25 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.CompilationUnit;
-​
+
 @Slf4j
 class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVisitorInterface {
-​
+
     TestI taskInterface
     List<String> projectFiles //todos os arquivos do projeto (em sua versão masi atual, na perspectiva da tarefa)
     List<String> viewFiles //todos as views existentes no projeto (em sua versão mais atual na perspectiva da tarefa)
     String lastVisitedFile //o arquivo em análise no momento
     Set projectMethods //keys: name, args, path; todos os métodos do projeto
-​
+
     List<StepCall> calledSteps //chamadas à steps Gherkin no corpo de um step definition
     static int stepCallCounter //contador de step calls
-​
+
     MethodToAnalyse stepDefinitionMethod
     String step
     boolean filteredAnalysis
-​
+
     Set<MethodBody> methodBodies
-​
+
     JavaTestCodeVisitor(String currentFile) { //test purpose only
         taskInterface = new TestI()
         lastVisitedFile = currentFile
@@ -56,14 +57,14 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
         viewFiles = []
         projectMethods = [] as Set
     }
-​
+
     JavaTestCodeVisitor(List<String> projectFiles, String currentFile, Set methods) {
         this(currentFile)
         this.projectFiles = projectFiles
         viewFiles = projectFiles.findAll { it.contains(Util.VIEWS_FILES_RELATIVE_PATH + File.separator) }
         projectMethods = methods
     }
-​
+
     private static int countArgsMethodCall(Node node) {
         def counter = 0
         if(node instanceof MethodDeclaration) {
@@ -71,7 +72,7 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
         }
         counter
     }
-​
+
     def searchForMethodMatch(Node node) {
         def matches = []
         def argsCounter = countArgsMethodCall(node)
@@ -82,7 +83,7 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
         }
         matches
     }
-​
+
     def searchForMethodMatch(String method, int argsCounter) {
         def matches = []
         matches = projectMethods.findAll {
@@ -90,12 +91,12 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
         }
         matches
     }
-​
+
     private configureStep() {
         if (stepDefinitionMethod) stepDefinitionMethod.type
         else step
     }
-​
+
     def registryClassUsageUsingFilename(List<String> paths) {
         paths.each { path ->
             if (path?.contains(Util.VIEWS_FILES_RELATIVE_PATH)) {
@@ -106,16 +107,29 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
             }
         }
     }
-​
+
+    private registryReferenceExpr(String identifier, Node node){
+       def matches = searchForMethodMatch(node)
+            if (matches.empty) {
+                taskInterface.methods += new CalledMethod(name: iVisited.name, type: "Object", file: null,
+                        step: configureStep())
+            } else {
+                matches.each {
+                    taskInterface.methods += new CalledMethod(name: iVisited.name, type: JavaUtil.getClassName(it.path),
+                            file: it.path, step: configureStep())
+                }
+            }
+    }
+
     /*
      Representa uma chamada de método sobre um objeto ou classe.
     * */
     @Override
     void visit(MethodCallExpr n, Void args){
         super.visit(n, args)
-​
+
     }
-​
+
     /*
      Representa uma referência de método, algo que pode ser usado em expressões lambda.
      Exemplo: String s = "Hello, Instance Method!";
@@ -132,10 +146,10 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
 	    }
 
 	    if (identifier != null) {
-	     //  System.out.println(identifier);
+	     //registryReferenceExpr(identifier,n);
 	    }
     }
-​
+
     /*
     Representa uma chamada à um construtor.
     Talvez seja dispensável, pois se o objeto é criado, em algum momento será feito uso dele e isso será capturado.
@@ -143,16 +157,17 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
     void visit(ObjectCreationExpr n, Void args){
         super.visit(n, args)
     }
-​
+
     /* Acesso à classe de um tipo. Exemplo: Object.class */
     void visit(ClassExpr n, Void args){
         super.visit(n, args)
+        String nameTypeClass = n.getType()
     }
-​
+
     /* Acesso à um campo de um objeto ou classe. Exemplo: pessoa.nome.
     * No caso, o interesse estaria em saber que o objeto pessoa foi manipulado, de forma análoga à chamada de método*/
     void visit(FieldAccessExpr n, Void args){
         super.visit(n, args)
     }
-​
+
 }
