@@ -19,10 +19,7 @@ import com.github.javaparser.ast.CompilationUnit;
 @Slf4j
 class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
       
-    CompilationUnit generateAst(String path) { 
-      CompilationUnit compilationUnit = StaticJavaParser.parse(new File(path));
-      return compilationUnit;
-    }    
+  
 
     JavaTestCodeAnalyser(String repositoryPath, GherkinManager gherkinManager) {
         super(repositoryPath, gherkinManager)

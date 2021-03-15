@@ -202,4 +202,4 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
     }
 
 }
-}
+

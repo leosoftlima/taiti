@@ -44,7 +44,7 @@ class JavaStepRegexVisitor extends VoidVisitorAdapter<Void>{
            }
         }
       }  
-    @Override
+
     Object visitRegexpNode(Node node) {
         super.visit(node)
         if (isStepDefinitionNode(node)) {
@@ -52,7 +52,5 @@ class JavaStepRegexVisitor extends VoidVisitorAdapter<Void>{
             regexs += new StepRegex(path: path, value: new String(((MethodDeclaration) node).getAnnotation(0), StandardCharsets.UTF_8),
                     line: 0, keyword: stepdefType)
              }
-           }
-        }
-      }  
+    }        
 }
