@@ -9,6 +9,8 @@ class TestingJavaVisitor {
         def node = analyser.generateAst(file)
         JavaTestCodeVisitor visitor = new JavaTestCodeVisitor(file)
         node?.accept(visitor, null)
+        println "TestI:"
+        println visitor.taskInterface.toString()
     }
 
 }

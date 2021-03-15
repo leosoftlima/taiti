@@ -14,6 +14,7 @@ class JavaUtil extends Util {
         def lastIndex = path.lastIndexOf(".")
         def name = ""
         if (firstIndex >= 0 && lastIndex >= 0 && firstIndex + 1 < lastIndex) name = path.substring(firstIndex + 1, lastIndex)
+        else if (firstIndex==-1 && lastIndex>0) name = path.substring(0, lastIndex)
         name
     }
 
