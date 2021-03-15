@@ -76,61 +76,11 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
         projectMethods = methods
     }
 
-    private static int countArgsMethodCall(Node node) {
-        def counter = 0
-        if(node instanceof MethodDeclaration) {
-            counter=  ((MethodDeclaration) node).getParameters().size();
-        }
-        counter
-    }
-
-    def searchForMethodMatch(Node node) {
-        def matches = []
-        def argsCounter = countArgsMethodCall(node)
-        if(node instanceof MethodDeclaration) {
-          matches = projectMethods.findAll {
-            it.name == ((MethodDeclaration) node).getSignature() && argsCounter <= it.args && argsCounter >= it.args - it.optionalArgs
-          }
-        }
-        matches
-    }
-
-    def searchForMethodMatch(String method, int argsCounter) {
-        def matches = []
-        matches = projectMethods.findAll {
-            it.name == method && argsCounter <= it.args && argsCounter >= it.args - it.optionalArgs
-        }
-        matches
-    }
-
     private configureStep() {
         if (stepDefinitionMethod) stepDefinitionMethod.type
         else step
     }
 
-    def registryClassUsageUsingFilename(List<String> paths) {
-        paths.each { path ->
-            if (path?.contains(Util.VIEWS_FILES_RELATIVE_PATH)) {
-                def index = path?.lastIndexOf(File.separator)
-                taskInterface.classes += [name: path?.substring(index + 1), file: path, step: configureStep()]
-            } else {
-                taskInterface.classes += [name: JavaUtil.getClassName(path), file: path, step: configureStep()]
-            }
-        }
-    }
-
-    private registryReferenceExpr(String identifier, Node node){
-       def matches = searchForMethodMatch(node)
-            if (matches.empty) {
-                taskInterface.methods += new CalledMethod(name: iVisited.name, type: "Object", file: null,
-                        step: configureStep())
-            } else {
-                matches.each {
-                    taskInterface.methods += new CalledMethod(name: iVisited.name, type: JavaUtil.getClassName(it.path),
-                            file: it.path, step: configureStep())
-                }
-            }
-    }
 
     /*
      Representa uma chamada de método sobre um objeto ou classe.
@@ -141,24 +91,26 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
         def name = n.name
         def receiverIsPresent = n.scope.present
         def receiver
-        def path
+        def paths = []
 
         if(receiverIsPresent){
             try{
                 ResolvedType resolvedType = JavaParserFacade.get(
                         new JavaParserTypeSolver(new File("src"))).getType(n.scope.get())
                 receiver = resolvedType.describe()
-                println "receiver: ${receiver}"
-                path = JavaUtil.getClassPathForJavaClass(receiver, projectFiles)
+                paths = JavaUtil.getClassPathForJavaClass(receiver, projectFiles)
             } catch (UnsolvedSymbolException ignored){ //o receptor da chamada não existe no projeto
                 return //o método chamado não é de interesse, então a execução encerra
             }
         } else { //receiver is this
-                path = lastVisitedFile
-                receiver = JavaUtil.getClassName(path)
+            paths += lastVisitedFile
+            receiver = JavaUtil.getClassName(lastVisitedFile)
         }
 
-        taskInterface.methods += new CalledMethod(name: name, type: receiver, file: path, step: configureStep())
+        paths.each{
+            taskInterface.methods += new CalledMethod(name: name, type: receiver, file: it, step: configureStep())
+        }
+
     }
 
     /*
@@ -196,28 +148,32 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
     * */
     void visit(ObjectCreationExpr n, Void args){
         super.visit(n, args)
+        def paths = JavaUtil.getClassPathForJavaClass(n.typeAsString, projectFiles)
+        paths.each{path ->
+            taskInterface.classes += [name: n.typeAsString, file: path, step: configureStep()]
+        }
     }
 
     /* Acesso à classe de um tipo. Exemplo: Object.class */
     void visit(ClassExpr n, Void args){
         super.visit(n, args)
-        def receiver = n.getType()
-        def receiverIsPresent = n.scope.present
-        def name
-        Optional<Node> nodes = n.getParentNode();
-		nodes.get().getChildNodes().each {child ->
-			if(child instanceof SimpleName) {
-				name = ((SimpleName)child).getIdentifier();
-			}	
-		});
-        path = JavaUtil.getClassPathForJavaClass(receiver, projectFiles)
-        taskInterface.methods += new CalledMethod(name: name, type: receiver, file: path, step: configureStep())  
+        String nameTypeClass = n.getType()
+
+        def paths = JavaUtil.getClassPathForJavaClass(n.typeAsString, projectFiles)
+        paths.each{path ->
+            taskInterface.classes += [name: n.typeAsString, file: path, step: configureStep()]
+        }
     }
 
     /* Acesso à um campo de um objeto ou classe. Exemplo: pessoa.nome.
     * No caso, o interesse estaria em saber que o objeto pessoa foi manipulado, de forma análoga à chamada de método*/
     void visit(FieldAccessExpr n, Void args){
         super.visit(n, args)
+
+        def paths = JavaUtil.getClassPathForJavaClass(n.scope.toString(), projectFiles)
+        paths.each{path ->
+            taskInterface.classes += [name: n.scope.toString(), file: path, step: configureStep()]
+        }
     }
 
 }
