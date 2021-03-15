@@ -146,7 +146,7 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
 	    }
 
 	    if (identifier != null) {
-	     //registryReferenceExpr(identifier,n);
+	     registryReferenceExpr(identifier,n);
 	    }
     }
 
