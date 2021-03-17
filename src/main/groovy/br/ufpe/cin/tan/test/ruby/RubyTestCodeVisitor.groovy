@@ -3,6 +3,7 @@ package br.ufpe.cin.tan.test.ruby
 import br.ufpe.cin.tan.analysis.taskInterface.CalledMethod
 import br.ufpe.cin.tan.analysis.taskInterface.CalledPageMethod
 import br.ufpe.cin.tan.analysis.taskInterface.TestI
+import br.ufpe.cin.tan.test.MethodBody
 import br.ufpe.cin.tan.test.MethodToAnalyse
 import br.ufpe.cin.tan.test.StepCall
 import br.ufpe.cin.tan.test.TestCodeVisitorInterface
