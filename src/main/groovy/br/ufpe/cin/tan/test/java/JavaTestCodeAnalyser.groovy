@@ -8,7 +8,7 @@ import br.ufpe.cin.tan.test.StepRegex
 import br.ufpe.cin.tan.test.TestCodeAbstractAnalyser
 import br.ufpe.cin.tan.test.TestCodeVisitorInterface
 import br.ufpe.cin.tan.test.error.ParseError
-import br.ufpe.cin.tan.test.ruby.MethodBody
+import br.ufpe.cin.tan.test.MethodBody
 import br.ufpe.cin.tan.util.java.JavaUtil
 import com.github.javaparser.StaticJavaParser
 import com.github.javaparser.ast.CompilationUnit

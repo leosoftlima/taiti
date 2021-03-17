@@ -2,9 +2,11 @@ package br.ufpe.cin.tan.test.java
 
 import br.ufpe.cin.tan.analysis.taskInterface.CalledMethod
 import br.ufpe.cin.tan.analysis.taskInterface.TestI
+import br.ufpe.cin.tan.test.MethodBody
 import br.ufpe.cin.tan.test.MethodToAnalyse
 import br.ufpe.cin.tan.test.StepCall
 import br.ufpe.cin.tan.test.TestCodeVisitorInterface
+
 import br.ufpe.cin.tan.util.ConstantData
 import br.ufpe.cin.tan.util.Util
 import br.ufpe.cin.tan.test.ruby.MethodBody
@@ -30,12 +32,11 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.CompilationUnit;
 import br.ufpe.cin.tan.test.ruby.MethodBody
+
 import br.ufpe.cin.tan.util.Util
 import br.ufpe.cin.tan.util.java.JavaUtil
-import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.expr.*
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter
-import com.github.javaparser.resolution.UnsolvedSymbolException
 import com.github.javaparser.resolution.types.ResolvedType
 import com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver

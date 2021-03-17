@@ -7,6 +7,7 @@ import br.ufpe.cin.tan.commit.change.gherkin.GherkinManager
 import br.ufpe.cin.tan.commit.change.gherkin.StepDefinition
 import br.ufpe.cin.tan.commit.change.unit.ChangedUnitTestFile
 import br.ufpe.cin.tan.test.FileToAnalyse
+import br.ufpe.cin.tan.test.MethodBody
 import br.ufpe.cin.tan.test.error.ParseError
 import br.ufpe.cin.tan.test.StepRegex
 import br.ufpe.cin.tan.test.TestCodeAbstractAnalyser
