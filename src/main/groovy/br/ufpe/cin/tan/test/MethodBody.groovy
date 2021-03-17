@@ -1,4 +1,4 @@
-package br.ufpe.cin.tan.test.ruby
+package br.ufpe.cin.tan.test
 
 class MethodBody {
 

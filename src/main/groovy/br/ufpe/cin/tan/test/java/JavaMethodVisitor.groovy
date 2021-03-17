@@ -28,22 +28,8 @@ class JavaMethodVisitor extends VoidVisitorAdapter<Void>{
         this.body = []
     }
   @Override
-    public void visit(CompilationUnit compilationUnit, Void args) {
-        super.visit(compilationUnit, args);
-      JavaUtil.getAllNodes(compilationUnit).each { node ->
-           if(node instanceof MethodDeclaration){
-              analyse(node)
-           }
-        }
-    }
-
-    private extractMethodBody(MethodDeclaration methodDeclaration) {
-        def methodBody = fileContent.getAt([methodDeclaration.getRange().get().begin..getRange().get().end])
-        body += methodBody
-    }
-
-    private analyse(Node node) {
-      
+    void visit(MethodDeclaration methodDeclaration, Void args) {
+        super.visit(methodDeclaration, args)
         def foundMethod = methods.find { it.name == methodDeclaration.getSignature() }
         if (foundMethod) {
             extractMethodBody(methodDeclaration)
@@ -53,9 +39,15 @@ class JavaMethodVisitor extends VoidVisitorAdapter<Void>{
             } else if (Util.WHEN_FILTER && foundMethod.step == ConstantData.THEN_STEP_EN) return
             else {
                 methodBodyVisitor.step = foundMethod.step
-                node.accept(methodBodyVisitor)
+                methodDeclaration?.accept(methodBodyVisitor, null)
             }
         }
+    }
+
+    private extractMethodBody(MethodDeclaration methodDeclaration) {
+        def range = [methodDeclaration.getRange().get().begin.line..methodDeclaration.getRange().get().end.line]
+        def methodBody = fileContent.getAt(range)
+        body += methodBody
     }
 
 }

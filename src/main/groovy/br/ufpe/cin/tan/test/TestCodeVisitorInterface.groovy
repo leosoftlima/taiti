@@ -1,7 +1,6 @@
 package br.ufpe.cin.tan.test
 
 import br.ufpe.cin.tan.analysis.taskInterface.TestI
-import br.ufpe.cin.tan.test.ruby.MethodBody
 
 
 trait TestCodeVisitorInterface {

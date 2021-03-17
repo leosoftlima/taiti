@@ -2,7 +2,6 @@ package br.ufpe.cin.tan.test
 
 import br.ufpe.cin.tan.test.error.ParseError
 import br.ufpe.cin.tan.test.error.StepError
-import br.ufpe.cin.tan.test.ruby.MethodBody
 
 /***
  * Representa os dados referentes à análise do código de teste da tarefa, que são úteis para verificar ocorrência

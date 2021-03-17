@@ -3,7 +3,7 @@ package br.ufpe.cin.tan.analysis.taskInterface
 import br.ufpe.cin.tan.test.error.ParseErrorList
 import br.ufpe.cin.tan.test.error.StepError
 import br.ufpe.cin.tan.test.error.StepErrorList
-import br.ufpe.cin.tan.test.ruby.MethodBody
+import br.ufpe.cin.tan.test.MethodBody
 import br.ufpe.cin.tan.util.Util
 
 class TestI extends TaskInterface {

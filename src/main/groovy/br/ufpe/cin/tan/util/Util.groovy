@@ -290,8 +290,7 @@ abstract class Util {
         def p = path.replaceAll(RegexUtil.FILE_SEPARATOR_REGEX, Matcher.quoteReplacement(File.separator))
 
         if(CODE_LANGUAGE == LanguageOption.JAVA){
-            def regex = /.+(\\|\/)steps(\\|\/).+/
-            return p ==~ regex
+            return p ==~ RegexUtil.GENERIC_STEP_DEFINITIONS_FOLDER_REGEX
         }
 
         def root = extractRootFolder(path)

@@ -11,6 +11,8 @@ import br.ufpe.cin.tan.test.error.StepError
 import br.ufpe.cin.tan.test.error.StepErrorList
 import br.ufpe.cin.tan.test.ruby.routes.RoutesManager
 import br.ufpe.cin.tan.util.ConstantData
+import br.ufpe.cin.tan.util.LanguageOption
+import br.ufpe.cin.tan.util.RegexUtil
 import br.ufpe.cin.tan.util.Util
 import gherkin.ast.Background
 import gherkin.ast.Scenario
@@ -50,7 +52,7 @@ abstract class TestCodeAbstractAnalyser {
     TestCodeAbstractAnalyser(String repositoryPath, GherkinManager gherkinManager) {
         this.repositoryPath = repositoryPath
         this.gherkinManager = gherkinManager
-        //configureStepsFilePath() //deixar comentado só por enquanto
+        configureStepsFilePath()
         regexList = []
         methods = [] as Set
         projectFiles = []
@@ -800,7 +802,14 @@ abstract class TestCodeAbstractAnalyser {
      */
     private configureRegexList() {
         regexList = []
-        def files = Util.findFilesFromDirectoryByLanguage(stepsFilePath)
+        def files
+        if(stepsFilePath) files = Util.findFilesFromDirectoryByLanguage(stepsFilePath)
+        else {
+            def candidateFiles = Util.findFilesFromDirectoryByLanguage(repositoryPath)
+            files = candidateFiles.findAll{
+                it ==~ RegexUtil.GENERIC_STEP_DEFINITIONS_FOLDER_REGEX
+            }
+        }
         files.each { regexList += doExtractStepsRegex(it) }
     }
 
@@ -965,26 +974,28 @@ abstract class TestCodeAbstractAnalyser {
      * O Cucumber define um caminho default, mas os projetos podem configurá-lo também.
      */
     private configureStepsFilePath() {
-        stepsFilePath = repositoryPath + File.separator + Util.STEPS_FILES_RELATIVE_PATH
-        def directory = new File(stepsFilePath)
-        def files = []
-        if (directory.exists()) {
-            files = Util.findFilesFromDirectoryByLanguage(stepsFilePath)
-        }
-        if (files.empty) {
-            log.warn "Default folder of step definitions does not exists or it is empty: '${stepsFilePath}'"
-            def subfolders = Util.findFoldersFromDirectory(repositoryPath + File.separator + ConstantData.DEFAULT_GHERKIN_FOLDER)
-            def stepDefsFolder = subfolders.find { it.endsWith("step_definitions") }
-            if (stepDefsFolder && !stepDefsFolder.equals(stepsFilePath)) {
-                log.warn "Default folder of step definitions is empty."
-                def stepDefFiles = Util.findFilesFromDirectoryByLanguage(stepDefsFolder)
-                if (!stepDefFiles.empty) {
-                    def index = stepDefsFolder.indexOf(repositoryPath)
-                    stepsFilePath = stepDefsFolder.substring(index)
-                    log.warn "We fix the folder of step definitions. The right one is: '${stepsFilePath}'"
-                }
+        if(Util.CODE_LANGUAGE!= LanguageOption.JAVA){
+            stepsFilePath = repositoryPath + File.separator + Util.STEPS_FILES_RELATIVE_PATH
+            def directory = new File(stepsFilePath)
+            def files = []
+            if (directory.exists()) {
+                files = Util.findFilesFromDirectoryByLanguage(stepsFilePath)
             }
+            if (files.empty) {
+                log.warn "Default folder of step definitions does not exists or it is empty: '${stepsFilePath}'"
+                def subfolders = Util.findFoldersFromDirectory(repositoryPath + File.separator + ConstantData.DEFAULT_GHERKIN_FOLDER)
+                def stepDefsFolder = subfolders.find { it.endsWith("step_definitions") }
+                if (stepDefsFolder && !stepDefsFolder.equals(stepsFilePath)) {
+                    log.warn "Default folder of step definitions is empty."
+                    def stepDefFiles = Util.findFilesFromDirectoryByLanguage(stepDefsFolder)
+                    if (!stepDefFiles.empty) {
+                        def index = stepDefsFolder.indexOf(repositoryPath)
+                        stepsFilePath = stepDefsFolder.substring(index)
+                        log.warn "We fix the folder of step definitions. The right one is: '${stepsFilePath}'"
+                    }
+                }
 
+            }
         }
     }
 
