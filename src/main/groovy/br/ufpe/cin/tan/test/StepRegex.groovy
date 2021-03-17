@@ -12,7 +12,7 @@ class StepRegex {
 
     @Override
     String toString() {
-        "File $path ($line): $value"
+        "File $path ($line): $keyword - $value"
     }
 
     void setKeyword(String keyword) {

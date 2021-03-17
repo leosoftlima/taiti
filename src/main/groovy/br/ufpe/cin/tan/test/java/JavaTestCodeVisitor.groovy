@@ -74,7 +74,7 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
                         new JavaParserTypeSolver(new File("src"))).getType(n.scope.get())
                 receiver = resolvedType.describe()
                 paths = JavaUtil.getClassPathForJavaClass(receiver, projectFiles)
-            } catch (UnsolvedSymbolException ignored){ //o receptor da chamada não existe no projeto
+            } catch (Exception ignored){ //o receptor da chamada não existe no projeto
                 return //o método chamado não é de interesse, então a execução encerra
             }
         } else { //receiver is this

@@ -20,7 +20,17 @@ class JavaUtil extends Util {
 
     static List<String> getClassPathForJavaClass(String original, Collection<String> projectFiles) {
         def name = original + ConstantData.JAVA_EXTENSION
-        projectFiles?.findAll{ it.endsWith(name) }
+        if(projectFiles.empty) [name]
+        else projectFiles?.findAll{ it.endsWith(name) }
+    }
+
+    static List<Node> getAllNodes(Node node) {
+        List<Node> nodes = new LinkedList<>();
+        nodes.add(node);
+        node.getChildNodes().each {children ->
+            nodes.addAll(getAllNodes(children));
+        };
+        return nodes;
     }
 
 }

@@ -24,23 +24,27 @@ class JavaStepRegexVisitor extends VoidVisitorAdapter<Void>{
     }
 
     
-    private static boolean isStepDefinitionNode(Node node) {
+    private static boolean isStepDefinitionNode(MethodDeclaration node) {
         if (node instanceof MethodDeclaration && ((MethodDeclaration) node).getAnnotation(0).getNameAsString() in
          ConstantData.ALL_STEP_KEYWORDS) true
         else false
     }
 
   @Override
-    public void visit(CompilationUnit compilationUnit, Void args) {
-        super.visit(compilationUnit, args);
-      JavaUtil.getAllNodes(compilationUnit).each { node ->
-           if(node instanceof MethodDeclaration){  
-             if (isStepDefinitionNode(node)) {
-              def stepdefType = ((MethodDeclaration) node).getAnnotation(0).getNameAsString();
-              regexs += new StepRegex(path: path, value: new String(((MethodDeclaration) node).getAnnotation(0), StandardCharsets.UTF_8),
-                    line: 0, keyword: stepdefType)
-             }
-           }
-        }
-      }  
+  void visit(MethodDeclaration methodDeclaration, Void args) {
+      super.visit(methodDeclaration, args)
+      if (isStepDefinitionNode(methodDeclaration)) {
+          def annotation = methodDeclaration?.getAnnotation(0)
+          def stepdefType = annotation?.getNameAsString()
+          def value = annotation?.childNodes?.get(1) as String
+          def index1 = value.indexOf('"')
+          def index2 = value.lastIndexOf('"')
+          if(index1>-1 && index2>-1) value = value.substring(index1+1, index2)
+          else value = ""
+          def position = 0
+          if (annotation.begin.isPresent()) position = annotation.begin.get().line
+          regexs += new StepRegex(path: path, value: value, line: position, keyword: stepdefType)
+      }
+  }
+
 }

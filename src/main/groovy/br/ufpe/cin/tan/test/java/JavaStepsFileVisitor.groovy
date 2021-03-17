@@ -3,8 +3,6 @@ package br.ufpe.cin.tan.test.java
 import br.ufpe.cin.tan.test.MethodToAnalyse
 import br.ufpe.cin.tan.util.ConstantData
 import br.ufpe.cin.tan.util.Util
-import br.ufpe.cin.tan.util.java.JavaUtil
-import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter
 
@@ -33,24 +31,19 @@ class JavaStepsFileVisitor extends VoidVisitorAdapter<Void>{
      * NodeList represents a method call with self as an implicit receiver. Step code are identified here.
      */
     @Override
-    public void visit(CompilationUnit compilationUnit, Void args) {
-        	super.visit(compilationUnit, args);
-           // find all nodes tree the instance Method and gets referentes keywords Gherkins(Ex.: given, when, then, and.)
-      JavaUtil.getAllNodes(compilationUnit).each { node ->
-         if(node instanceof MethodDeclaration){
-           if (((MethodDeclaration) node).getRange().get().begin in lines) {
-             def matches = methods.findAll { it.line == ((MethodDeclaration) node).getRange().get().begin }
-               matches?.each { method ->
-                extractMethodBody(node)
-                if (Util.WHEN_FILTER) filteredAnalysis(node, method)
-                else noFilteredAnalysis(node, method)
+    void visit(MethodDeclaration methodDeclaration, Void args) {
+        super.visit(methodDeclaration, args)
+        if (methodDeclaration.getRange().get().begin.line in lines) {
+            def matches = methods.findAll { it.line == methodDeclaration.getRange().get().begin.line }
+            matches?.each { method ->
+                extractMethodBody(methodDeclaration)
+                if (Util.WHEN_FILTER) filteredAnalysis(methodDeclaration, method)
+                else noFilteredAnalysis(methodDeclaration, method)
             }
-          }
-        }        
-      }
+        }
     }
 
-    private filteredAnalysis(Node node, MethodToAnalyse method) {
+    private filteredAnalysis(MethodDeclaration node, MethodToAnalyse method) {
         switch (method.type) {
             case ConstantData.GIVEN_STEP_EN:
                 JavaGivenStepAnalyser givenStepAnalyser = new JavaGivenStepAnalyser(methodCallVisitor)
@@ -58,24 +51,22 @@ class JavaStepsFileVisitor extends VoidVisitorAdapter<Void>{
                 break
             case ConstantData.WHEN_STEP_EN: //common analysis
                 noFilteredAnalysis(node, method)
-        //we do not analyse "then" step
+            //we do not analyse "then" step
         }
     }
 
-    private noFilteredAnalysis(Node node, MethodToAnalyse method) {
+    private noFilteredAnalysis(MethodDeclaration node, MethodToAnalyse method) {
         methodCallVisitor.stepDefinitionMethod = method
-        node.accept(methodCallVisitor)
+        node?.accept(methodCallVisitor, null)
         methodCallVisitor.stepDefinitionMethod = null
     }
 
-    private extractMethodBody(Node node) {
-       if(node instanceof MethodDeclaration){ 
-          if (!(((MethodDeclaration) node).getRange().get().begin in analysedLines)) {
-            def methodBody = fileContent.getAt([((MethodDeclaration) node).getRange().get().begin..((MethodDeclaration) node).getRange().get().end])
+    private extractMethodBody(MethodDeclaration node) {
+        if (!(node.getRange().get().begin in analysedLines)) {
+            def methodBody = fileContent.getAt([node.getRange().get().begin.line..node.getRange().get().end.line])
             body += methodBody
-            analysedLines += ((MethodDeclaration) node).getRange().get().begin
-          }
-       }
+            analysedLines += ((MethodDeclaration) node).getRange().get().begin.line
+        }
     }
 
 }

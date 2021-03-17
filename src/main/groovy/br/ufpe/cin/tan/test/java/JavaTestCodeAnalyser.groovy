@@ -34,24 +34,24 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
     List<StepRegex> doExtractStepsRegex(String path) {
         def node = this.generateAst(path)
         def visitor = new JavaStepRegexVisitor(path)
-        node?.accept(visitor)
+        node?.accept(visitor, null)
         visitor.regexs
     }
 
     @Override
     List<StepDefinition> doExtractStepDefinitions(String path, String content) {
-        JavaStepDefinitionVisitor javaStepDefinitionVisitor = new JavaStepDefinitionVisitor()
-        def compilationUnit = this.generateAst(path);
-        javaStepDefinitionVisitor?.visit(compilationUnit, null);
-        return javaStepDefinitionVisitor.stepDefinitions
+        JavaStepDefinitionVisitor javaStepDefinitionVisitor = new JavaStepDefinitionVisitor(path, content)
+        def compilationUnit = this.generateAst(path)
+        compilationUnit?.accept(javaStepDefinitionVisitor, null)
+        javaStepDefinitionVisitor.stepDefinitions
     }
 
     @Override
     Set doExtractMethodDefinitions(String path) {
-        JavaMethodDefinitionVisitor javaMethodDefinitionVisitor = new JavaMethodDefinitionVisitor()
-        def compilationUnit = this.generateAst(path);
-        javaMethodDefinitionVisitor?.visit(compilationUnit, null);
-        javaMethodDefinitionVisitor.signatures
+        JavaMethodDefinitionVisitor javaMethodDefinitionVisitor = new JavaMethodDefinitionVisitor(path)
+        def compilationUnit = this.generateAst(path)
+        compilationUnit?.accept(javaMethodDefinitionVisitor, null)
+        javaMethodDefinitionVisitor.methods
     }
 
     @Override
@@ -60,7 +60,7 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
         def visitor = new JavaTestCodeVisitor(projectFiles, file.path, methods)
         def fileContent = recoverFileContent(file.path)
         def testCodeVisitor = new JavaStepsFileVisitor(file.methods, visitor, fileContent)
-        node?.accept(testCodeVisitor)
+        node?.accept(testCodeVisitor, null)
         visitor.methodBodies.add(new MethodBody(testCodeVisitor.body))
         visitor
     }
@@ -80,7 +80,7 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
         visitor.lastVisitedFile = file.path
         def fileContent = recoverFileContent(file.path)
         def auxVisitor = new JavaMethodVisitor(file.methods, (JavaTestCodeVisitor) visitor, fileContent)
-        node?.accept(auxVisitor)
+        node?.accept(auxVisitor, null)
         visitor.methodBodies.add(new MethodBody(auxVisitor.body))
     }
 
@@ -122,17 +122,19 @@ class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
      * @return objeto que representa a AST
      */
     def generateAst(String path) {
+        def fixedPath = path
+        if(!path.contains(repositoryPath)) fixedPath = repositoryPath + File.separator + path
         def errors = []
         CompilationUnit compilationUnit = null
         try{
-            compilationUnit = StaticJavaParser.parse(new File(path))
+            compilationUnit = StaticJavaParser.parse(new File(fixedPath))
         } catch(Exception ex){
             def msg = ""
             if (ex.message && !ex.message.empty) {
                 def index = ex.message.indexOf(",")
                 msg = index >= 0 ? ex.message.substring(index + 1).trim() : ex.message.trim()
             }
-            errors += new ParseError(path: path, msg: msg)
+            errors += new ParseError(path: fixedPath, msg: msg)
         }
         def finalErrors = errors.findAll { it.path.contains("${File.separator}src${File.separator}") }
         if(!finalErrors.empty){

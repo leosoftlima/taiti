@@ -30,7 +30,7 @@ class TestI extends TaskInterface {
     Set lostVisitCall
     Set trace
 
-    Set<MethodBody> code
+    Set<MethodBody> code //ESSA BIBLIOTECA PRECISA SER TROCADA, POIS É USADA EM PROJETOS RAILS
 
     TestI() {
         super()
