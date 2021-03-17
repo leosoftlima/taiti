@@ -2,5 +2,10 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/spg_repos/FluentLenium_FluentLenium" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/spg_repos/OpenLiberty_open-liberty" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/spg_repos/SoftInstigate_restheart" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/spg_repos/metasfresh_metasfresh" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/spg_repos/mzheravin_exchange-core" vcs="Git" />
   </component>
 </project>

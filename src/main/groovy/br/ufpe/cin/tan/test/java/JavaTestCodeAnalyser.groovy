@@ -11,7 +11,6 @@ import br.ufpe.cin.tan.test.error.ParseError
 import br.ufpe.cin.tan.test.ruby.MethodBody
 import br.ufpe.cin.tan.util.java.JavaUtil
 import com.github.javaparser.StaticJavaParser
-import com.github.javaparser.ast.CompilationUnit
 import groovy.util.logging.Slf4j
 import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.CompilationUnit;

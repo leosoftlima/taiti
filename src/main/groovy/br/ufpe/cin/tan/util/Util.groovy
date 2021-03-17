@@ -119,7 +119,7 @@ abstract class Util {
     }
 
     private static loadProperties() {
-        File configFile = new File(ConstantData.PROPERTIES_FILE_NAME)
+        File configFile = new File("C:\\UFPE\\TESTE_SOFTWARE\\PROJETO_ARTIGO\\github\\taiti\\target\\"+ConstantData.PROPERTIES_FILE_NAME)
         FileInputStream resourceStream = new FileInputStream(configFile)
         properties.load(resourceStream)
     }

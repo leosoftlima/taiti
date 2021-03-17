@@ -1,0 +1,360 @@
+15:58:59 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - <  Analysing tasks from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\mzheravin_exchange-core-pt-tasks.csv'  >
+15:58:59 INFO  b.u.c.tan.analysis.data.TaskImporter NativeMethodAccessorImpl.java:-2 - All tasks imported from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\mzheravin_exchange-core-pt-tasks.csv': 1
+15:58:59 INFO  b.u.c.tan.analysis.data.TaskImporter NativeMethodAccessorImpl.java:-2 - Big tasks (more than 5000 commits): 0
+15:58:59 INFO  b.u.c.tan.analysis.data.TaskImporter NativeMethodAccessorImpl.java:-2 - Invalid imported tasks (do not have application and test code or big tasks): 0
+15:58:59 INFO  b.u.c.tan.analysis.data.TaskImporter NativeMethodAccessorImpl.java:-2 - Relevant imported tasks: 1
+15:58:59 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - < Analysis strategy: Task limit = -1 (value <=0 implies all tasks); incremental analysis = false >
+15:59:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - <  Restrict gherkin changes: 'false'  >
+15:59:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - <  Filter when steps: 'true'  >
+15:59:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - <  Analyse views: 'false'  >
+15:59:04 INFO  br.ufpe.cin.tan.analysis.task.Task NativeMethodAccessorImpl.java:-2 - Configuring task '2'
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter NativeMethodAccessorImpl.java:-2 - Error while extracting tasks from CSV file.
+Error message: Could not find matching constructor for: br.ufpe.cin.tan.test.java.JavaStepDefinitionVisitor()
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaClassImpl.invokeConstructor(MetaClassImpl.java:1726)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaClassImpl.invokeConstructor(MetaClassImpl.java:1529)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.MetaClassConstructorSite.callConstructor(MetaClassConstructorSite.java:49)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:60)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:235)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:239)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.test.java.JavaTestCodeAnalyser.doExtractStepDefinitions(JavaTestCodeAnalyser.groovy:47)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.test.java.JavaTestCodeAnalyser$doExtractStepDefinitions.call(Unknown Source)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:133)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.commit.change.stepdef.StepdefManager.parseStepDefinitionFile(StepdefManager.groovy:24)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.commit.change.stepdef.StepdefManager$parseStepDefinitionFile.call(Unknown Source)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:141)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.commit.GitRepository.extractStepDefinitionAdds(GitRepository.groovy:303)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:210)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:59)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:182)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.commit.GitRepository.configureAddChange(GitRepository.groovy:386)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:93)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:325)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:384)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1019)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.callCurrent(PogoMetaClassSite.java:69)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:182)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.commit.GitRepository$_extractCodeChanges_closure13.doCall(GitRepository.groovy:428)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:93)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:325)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:294)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1019)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.Closure.call(Closure.java:426)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.Closure.call(Closure.java:442)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2030)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2015)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2056)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.dgm$162.invoke(Unknown Source)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite$PojoMetaMethodSiteNoUnwrapNoCoerce.invoke(PojoMetaMethodSite.java:274)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite.call(PojoMetaMethodSite.java:56)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callSafe(AbstractCallSite.java:87)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.commit.GitRepository.extractCodeChanges(GitRepository.groovy:425)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:93)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:325)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:384)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1019)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.callCurrent(PogoMetaClassSite.java:69)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:182)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.commit.GitRepository$_extractAllCodeChangesFromCommit_closure16.doCall(GitRepository.groovy:534)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:93)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:325)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:294)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1019)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.Closure.call(Closure.java:426)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.Closure.call(Closure.java:442)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2030)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:1890)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.dgm$159.invoke(Unknown Source)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite$PojoMetaMethodSiteNoUnwrapNoCoerce.invoke(PojoMetaMethodSite.java:274)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite.call(PojoMetaMethodSite.java:56)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.commit.GitRepository.extractAllCodeChangesFromCommit(GitRepository.groovy:533)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:93)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:325)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:384)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1019)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.callCurrent(PogoMetaClassSite.java:69)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:174)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.commit.GitRepository$_extractCommitsFromLogs_closure17.doCall(GitRepository.groovy:544)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:93)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:325)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:294)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1019)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.Closure.call(Closure.java:426)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.Closure.call(Closure.java:442)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2030)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2015)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2056)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.dgm$162.invoke(Unknown Source)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite$PojoMetaMethodSiteNoUnwrapNoCoerce.invoke(PojoMetaMethodSite.java:274)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite.call(PojoMetaMethodSite.java:56)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callSafe(AbstractCallSite.java:87)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.commit.GitRepository.extractCommitsFromLogs(GitRepository.groovy:543)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:210)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:59)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:174)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.commit.GitRepository.searchCommitsBySha(GitRepository.groovy:87)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSite.invoke(PogoMetaMethodSite.java:169)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:71)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.analysis.task.DoneTask.configureBasicData(DoneTask.groovy:323)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:210)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:59)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:166)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.analysis.task.DoneTask.configureInitialTestData(DoneTask.groovy:346)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:210)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:59)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:166)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.analysis.task.DoneTask.<init>(DoneTask.groovy:61)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:80)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.reflection.CachedConstructor.doConstructorInvoke(CachedConstructor.java:74)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.ConstructorSite.callConstructor(ConstructorSite.java:45)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:60)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:235)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:271)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.analysis.data.TaskImporter$_extractTasks_closure4.doCall(TaskImporter.groovy:98)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:93)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:325)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:294)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1019)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.Closure.call(Closure.java:426)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.Closure.call(Closure.java:442)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2030)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2015)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2056)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.dgm$162.invoke(Unknown Source)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite$PojoMetaMethodSiteNoUnwrapNoCoerce.invoke(PojoMetaMethodSite.java:274)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite.call(PojoMetaMethodSite.java:56)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.analysis.data.TaskImporter.extractTasks(TaskImporter.groovy:96)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:210)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:59)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:166)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.analysis.data.TaskImporter.extractPtTasks(TaskImporter.groovy:53)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.analysis.data.TaskImporter$extractPtTasks.call(Unknown Source)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:117)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.analysis.TaskAnalyser.generateResult(TaskAnalyser.groovy:250)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.analysis.TaskAnalyser.analysePrecisionAndRecall(TaskAnalyser.groovy:78)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.analysis.TaskAnalyser.analyseAll(TaskAnalyser.groovy:73)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.analysis.TaskAnalyser$analyseAll.call(Unknown Source)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:117)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.main.Main.runAnalysis(Main.groovy:59)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:93)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:325)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:384)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1019)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.callCurrent(PogoMetaClassSite.java:69)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:166)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.main.Main$_runAnalysisForMultipleFiles_closure1.doCall(Main.groovy:66)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:93)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:325)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:294)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1019)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.Closure.call(Closure.java:426)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - groovy.lang.Closure.call(Closure.java:442)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2030)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2015)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2056)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.dgm$162.invoke(Unknown Source)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite$PojoMetaMethodSiteNoUnwrapNoCoerce.invoke(PojoMetaMethodSite.java:274)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite.call(PojoMetaMethodSite.java:56)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.callSafe(AbstractCallSite.java:87)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.main.Main.runAnalysisForMultipleFiles(Main.groovy:65)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - java.lang.reflect.Method.invoke(Method.java:498)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:210)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:71)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:117)
+16:11:32 ERROR b.u.c.tan.analysis.data.TaskImporter TaskImporter.groovy:104 - br.ufpe.cin.tan.main.Main.main(Main.groovy:50)
+16:11:32 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - Candidate tasks (have application code and candidate gherkin scenarios): 0
+16:11:32 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - Seem to have test but actually do not (do not have candidate gherkin scenarios): 0
+16:11:32 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - Task interfaces were computed for 0 tasks!
+16:11:32 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - (From candidates) Invalid tasks: 0
+16:11:32 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - (From candidates) Valid tasks: 0
+16:11:32 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - (From candidates) Relevant tasks (valid but with no empty TestI): 0
+16:11:32 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Relevant tasks that do not satisfy all selection criteria (0): []
+16:11:32 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Relevant tasks were saved in output\mzheravin_exchange-core-pt-tasks\mzheravin_exchange-core-pt-tasks-relevant.csv, output\mzheravin_exchange-core-pt-tasks\mzheravin_exchange-core-pt-tasks-relevant-detailed.csv and output\mzheravin_exchange-core-pt-tasks\mzheravin_exchange-core-pt-tasks-tests.csv.
+16:11:32 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Valid tasks were saved in output\mzheravin_exchange-core-pt-tasks\mzheravin_exchange-core-pt-tasks-valid-detailed.csv.
+16:11:32 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser TaskAnalyser.groovy:116 - There is no invalid tasks to save!
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Analysing tasks from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\mzheravin_exchange-core-pt-tasks_candidates.csv'  >
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - All tasks imported from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\mzheravin_exchange-core-pt-tasks_candidates.csv': 0
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - Big tasks (more than 5000 commits): 0
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - Invalid imported tasks (do not have application and test code or big tasks): 0
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - Relevant imported tasks: 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - < Analysis strategy: Task limit = -1 (value <=0 implies all tasks); incremental analysis = false >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Restrict gherkin changes: 'false'  >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Filter when steps: 'true'  >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Analyse views: 'false'  >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Candidate tasks (have application code and candidate gherkin scenarios): 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Seem to have test but actually do not (do not have candidate gherkin scenarios): 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Task interfaces were computed for 0 tasks!
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - (From candidates) Invalid tasks: 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - (From candidates) Valid tasks: 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - (From candidates) Relevant tasks (valid but with no empty TestI): 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Relevant tasks that do not satisfy all selection criteria (0): []
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Relevant tasks were saved in output\mzheravin_exchange-core-pt-tasks_candidates\mzheravin_exchange-core-pt-tasks_candidates-relevant.csv, output\mzheravin_exchange-core-pt-tasks_candidates\mzheravin_exchange-core-pt-tasks_candidates-relevant-detailed.csv and output\mzheravin_exchange-core-pt-tasks_candidates\mzheravin_exchange-core-pt-tasks_candidates-tests.csv.
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Valid tasks were saved in output\mzheravin_exchange-core-pt-tasks_candidates\mzheravin_exchange-core-pt-tasks_candidates-valid-detailed.csv.
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser TaskAnalyser.groovy:116 - There is no invalid tasks to save!
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Analysing tasks from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\mzheravin_exchange-core-pt-tasks_candidates_candidates.csv'  >
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - All tasks imported from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\mzheravin_exchange-core-pt-tasks_candidates_candidates.csv': 0
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - Big tasks (more than 5000 commits): 0
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - Invalid imported tasks (do not have application and test code or big tasks): 0
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - Relevant imported tasks: 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - < Analysis strategy: Task limit = -1 (value <=0 implies all tasks); incremental analysis = false >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Restrict gherkin changes: 'false'  >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Filter when steps: 'true'  >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Analyse views: 'false'  >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Candidate tasks (have application code and candidate gherkin scenarios): 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Seem to have test but actually do not (do not have candidate gherkin scenarios): 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Task interfaces were computed for 0 tasks!
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - (From candidates) Invalid tasks: 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - (From candidates) Valid tasks: 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - (From candidates) Relevant tasks (valid but with no empty TestI): 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Relevant tasks that do not satisfy all selection criteria (0): []
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Relevant tasks were saved in output\mzheravin_exchange-core-pt-tasks_candidates_candidates\mzheravin_exchange-core-pt-tasks_candidates_candidates-relevant.csv, output\mzheravin_exchange-core-pt-tasks_candidates_candidates\mzheravin_exchange-core-pt-tasks_candidates_candidates-relevant-detailed.csv and output\mzheravin_exchange-core-pt-tasks_candidates_candidates\mzheravin_exchange-core-pt-tasks_candidates_candidates-tests.csv.
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Valid tasks were saved in output\mzheravin_exchange-core-pt-tasks_candidates_candidates\mzheravin_exchange-core-pt-tasks_candidates_candidates-valid-detailed.csv.
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser TaskAnalyser.groovy:116 - There is no invalid tasks to save!
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Analysing tasks from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates.csv'  >
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - All tasks imported from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates.csv': 0
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - Big tasks (more than 5000 commits): 0
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - Invalid imported tasks (do not have application and test code or big tasks): 0
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - Relevant imported tasks: 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - < Analysis strategy: Task limit = -1 (value <=0 implies all tasks); incremental analysis = false >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Restrict gherkin changes: 'false'  >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Filter when steps: 'true'  >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Analyse views: 'false'  >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Candidate tasks (have application code and candidate gherkin scenarios): 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Seem to have test but actually do not (do not have candidate gherkin scenarios): 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Task interfaces were computed for 0 tasks!
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - (From candidates) Invalid tasks: 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - (From candidates) Valid tasks: 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - (From candidates) Relevant tasks (valid but with no empty TestI): 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Relevant tasks that do not satisfy all selection criteria (0): []
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Relevant tasks were saved in output\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates-relevant.csv, output\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates-relevant-detailed.csv and output\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates-tests.csv.
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Valid tasks were saved in output\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates-valid-detailed.csv.
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser TaskAnalyser.groovy:116 - There is no invalid tasks to save!
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Analysing tasks from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates_candidates.csv'  >
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - All tasks imported from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates_candidates.csv': 0
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - Big tasks (more than 5000 commits): 0
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - Invalid imported tasks (do not have application and test code or big tasks): 0
+16:29:01 INFO  b.u.c.tan.analysis.data.TaskImporter null:-1 - Relevant imported tasks: 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - < Analysis strategy: Task limit = -1 (value <=0 implies all tasks); incremental analysis = false >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Restrict gherkin changes: 'false'  >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Filter when steps: 'true'  >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Analyse views: 'false'  >
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Candidate tasks (have application code and candidate gherkin scenarios): 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Seem to have test but actually do not (do not have candidate gherkin scenarios): 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Task interfaces were computed for 0 tasks!
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - (From candidates) Invalid tasks: 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - (From candidates) Valid tasks: 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - (From candidates) Relevant tasks (valid but with no empty TestI): 0
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Relevant tasks that do not satisfy all selection criteria (0): []
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Relevant tasks were saved in output\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates_candidates\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates_candidates-relevant.csv, output\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates_candidates\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates_candidates-relevant-detailed.csv and output\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates_candidates\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates_candidates-tests.csv.
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Valid tasks were saved in output\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates_candidates\mzheravin_exchange-core-pt-tasks_candidates_candidates_candidates_candidates-valid-detailed.csv.
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser TaskAnalyser.groovy:116 - There is no invalid tasks to save!
+16:29:01 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - <  Analysing tasks from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\old\metasfresh_metasfresh-pt-tasks.csv'  >

@@ -1,0 +1,29 @@
+18:35:54 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - <  Analysing tasks from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\metasfresh_metasfresh-pt-tasks.csv'  >
+18:35:56 INFO  b.u.c.tan.analysis.data.TaskImporter NativeMethodAccessorImpl.java:-2 - All tasks imported from 'C:\UFPE\TESTE_SOFTWARE\PROJETO_ARTIGO\github\taiti\tasks\metasfresh_metasfresh-pt-tasks.csv': 13
+18:35:56 INFO  b.u.c.tan.analysis.data.TaskImporter NativeMethodAccessorImpl.java:-2 - Big tasks (more than 5000 commits): 0
+18:35:56 INFO  b.u.c.tan.analysis.data.TaskImporter NativeMethodAccessorImpl.java:-2 - Invalid imported tasks (do not have application and test code or big tasks): 0
+18:35:56 INFO  b.u.c.tan.analysis.data.TaskImporter NativeMethodAccessorImpl.java:-2 - Relevant imported tasks: 13
+18:37:08 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - < Analysis strategy: Task limit = -1 (value <=0 implies all tasks); incremental analysis = false >
+18:37:20 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - <  Restrict gherkin changes: 'false'  >
+18:37:24 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - <  Filter when steps: 'true'  >
+18:37:28 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser NativeMethodAccessorImpl.java:-2 - <  Analyse views: 'false'  >
+18:37:34 INFO  br.ufpe.cin.tan.analysis.task.Task NativeMethodAccessorImpl.java:-2 - Configuring task '21'
+19:01:56 INFO  br.ufpe.cin.tan.analysis.task.Task NativeMethodAccessorImpl.java:-2 - Configuring task '40'
+19:13:16 INFO  br.ufpe.cin.tan.analysis.task.Task NativeMethodAccessorImpl.java:-2 - Configuring task '44'
+19:31:26 INFO  br.ufpe.cin.tan.analysis.task.Task NativeMethodAccessorImpl.java:-2 - Configuring task '58'
+19:35:27 INFO  br.ufpe.cin.tan.analysis.task.Task NativeMethodAccessorImpl.java:-2 - Configuring task '76'
+19:35:55 INFO  br.ufpe.cin.tan.analysis.task.Task NativeMethodAccessorImpl.java:-2 - Configuring task '114'
+19:36:10 INFO  br.ufpe.cin.tan.analysis.task.Task NativeMethodAccessorImpl.java:-2 - Configuring task '121'
+19:36:14 INFO  br.ufpe.cin.tan.analysis.task.Task null:-1 - Configuring task '122'
+19:39:52 INFO  br.ufpe.cin.tan.analysis.task.Task null:-1 - Configuring task '129'
+19:40:25 INFO  br.ufpe.cin.tan.analysis.task.Task null:-1 - Configuring task '130'
+19:49:15 INFO  br.ufpe.cin.tan.analysis.task.Task null:-1 - Configuring task '133'
+19:49:50 INFO  br.ufpe.cin.tan.analysis.task.Task null:-1 - Configuring task '134'
+19:49:56 INFO  br.ufpe.cin.tan.analysis.task.Task null:-1 - Configuring task '137'
+19:50:04 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Candidate tasks (have application code and candidate gherkin scenarios): 12
+19:50:04 INFO  b.ufpe.cin.tan.analysis.TaskAnalyser null:-1 - Seem to have test but actually do not (do not have candidate gherkin scenarios): 1
+19:50:04 INFO  b.u.cin.tan.analysis.task.DoneTask null:-1 - TASK ID: 21
+19:50:04 INFO  b.u.cin.tan.analysis.task.DoneTask null:-1 - COMMITS: [21301fae460c5ef7fad92f0759baa729259dc7bb, d50dca6a95fce0d39f3708eb7684cfec9a9e3d08, eb168efaab1c61b318ea4f85c23ae44666ba5b77, 43896cb2f71ccf77c6b081b6dcdb0be4fb34ee04, 029190dd9c03f3885b08239724ccf08b17cb21ea, f67b655482fea9f0661b85b092d7d4349f4b20af, 478b4d7d7db2536e83b7cdefed9e2e63d1e1137d, 5b6806e5a23a9f8cc4b8b2a156068cfeecc31797, 45560dd411bc06dc0bf07ac9ab6a795449bcd7a4, 4e2db79f2a671b1bd48544e5c363049b611ef93e, 453ec0d52bb04f5b1c52d226fbe98182445ee158, 9af2e0f647f9a43d8a611cc8a7c79c4f8886da15, 9061c9fb615d0f9eedfbf786fdf41f2174f0685b, c87b3de409bbf6480c9160fa5112763af1b1f399, b11c2b02c646944a5baba299bd112c570dff490f]
+19:50:04 INFO  b.u.cin.tan.analysis.task.DoneTask null:-1 - NEWEST COMMIT: 21301fae460c5ef7fad92f0759baa729259dc7bb
+19:50:04 INFO  b.u.cin.tan.analysis.task.DoneTask null:-1 - COMMITS CHANGED GHERKIN FILE: [9061c9fb615d0f9eedfbf786fdf41f2174f0685b]
+19:50:04 INFO  b.u.cin.tan.analysis.task.DoneTask null:-1 - COMMITS CHANGED STEP DEFINITION FILE: []

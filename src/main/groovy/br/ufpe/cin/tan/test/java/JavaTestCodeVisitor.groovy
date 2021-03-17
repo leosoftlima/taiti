@@ -32,9 +32,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import br.ufpe.cin.tan.test.ruby.MethodBody
 import br.ufpe.cin.tan.util.Util
 import br.ufpe.cin.tan.util.java.JavaUtil
-import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.expr.*
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter
 import com.github.javaparser.resolution.UnsolvedSymbolException
 import com.github.javaparser.resolution.types.ResolvedType
 import com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade
@@ -85,21 +83,22 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
     /*
      Representa uma chamada de método sobre um objeto ou classe.
     * */
+
     @Override
-    void visit(MethodCallExpr n, Void args){
+    void visit(MethodCallExpr n, Void args) {
         super.visit(n, args)
         def name = n.name
         def receiverIsPresent = n.scope.present
         def receiver
         def paths = []
 
-        if(receiverIsPresent){
-            try{
+        if (receiverIsPresent) {
+            try {
                 ResolvedType resolvedType = JavaParserFacade.get(
                         new JavaParserTypeSolver(new File("src"))).getType(n.scope.get())
                 receiver = resolvedType.describe()
                 paths = JavaUtil.getClassPathForJavaClass(receiver, projectFiles)
-            } catch (UnsolvedSymbolException ignored){ //o receptor da chamada não existe no projeto
+            } catch (UnsolvedSymbolException ignored) { //o receptor da chamada não existe no projeto
                 return //o método chamado não é de interesse, então a execução encerra
             }
         } else { //receiver is this
@@ -107,7 +106,7 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
             receiver = JavaUtil.getClassName(lastVisitedFile)
         }
 
-        paths.each{
+        paths.each {
             taskInterface.methods += new CalledMethod(name: name, type: receiver, file: it, step: configureStep())
         }
 
@@ -120,26 +119,27 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
               Aqui é chamado o método tamanho passando como parâmetro o método length do objeto String s
               a referência de método seria s::length
     * */
-    void visit(MethodReferenceExpr n, Void args){
+
+    void visit(MethodReferenceExpr n, Void args) {
         super.visit(n, args)
         def name = n.identifier
         def receiverIsPresent = n.scope.present
-	    
+
         if (identifier != null && receiverIsPresent) {
-          JavaParserTypeSolver javaParserfacade = new JavaParserTypeSolver(new File("src"));
-          ResolvedType resolvedType = JavaParserFacade.get(javaParserfacade).getType(n.scope);
-          receiver = resolvedType.describe()
-          println "receiver: ${receiver}"
-	      path = JavaUtil.getClassPathForJavaClass(receiver, projectFiles)
-  	       
-            if(receiver !=null){
-               taskInterface.methods += new CalledMethod(name: name, type: receiver, file: path, step: configureStep())
-            }else{
-               taskInterface.methods += new CalledMethod(name: name, type: "Object", file: path,
-                        step: configureStep())  
+            JavaParserTypeSolver javaParserfacade = new JavaParserTypeSolver(new File("src"));
+            ResolvedType resolvedType = JavaParserFacade.get(javaParserfacade).getType(n.scope);
+            receiver = resolvedType.describe()
+            println "receiver: ${receiver}"
+            path = JavaUtil.getClassPathForJavaClass(receiver, projectFiles)
+
+            if (receiver != null) {
+                taskInterface.methods += new CalledMethod(name: name, type: receiver, file: path, step: configureStep())
+            } else {
+                taskInterface.methods += new CalledMethod(name: name, type: "Object", file: path,
+                        step: configureStep())
             }
         }
-	    }
+
     }
 
     /*
@@ -149,7 +149,7 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
     void visit(ObjectCreationExpr n, Void args){
         super.visit(n, args)
         def paths = JavaUtil.getClassPathForJavaClass(n.typeAsString, projectFiles)
-        paths.each{path ->
+        paths.ea c h{ path ->
             taskInterface.classes += [name: n.typeAsString, file: path, step: configureStep()]
         }
     }
@@ -160,7 +160,7 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
         String nameTypeClass = n.getType()
 
         def paths = JavaUtil.getClassPathForJavaClass(n.typeAsString, projectFiles)
-        paths.each{path ->
+        paths.ea c h{ path ->
             taskInterface.classes += [name: n.typeAsString, file: path, step: configureStep()]
         }
     }
@@ -171,10 +171,10 @@ class JavaTestCodeVisitor extends VoidVisitorAdapter<Void> implements TestCodeVi
         super.visit(n, args)
 
         def paths = JavaUtil.getClassPathForJavaClass(n.scope.toString(), projectFiles)
-        paths.each{path ->
+        paths.ea c h{ path ->
             taskInterface.classes += [name: n.scope.toString(), file: path, step: configureStep()]
         }
     }
 
-}
 
+}

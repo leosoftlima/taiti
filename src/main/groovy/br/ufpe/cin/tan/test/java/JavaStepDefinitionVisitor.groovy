@@ -6,11 +6,10 @@ import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter
 import groovy.util.logging.Slf4j
-import groovy.util.logging.Slf4j
 import java.util.LinkedList;
 import java.util.List;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.NodeList;
+
 
 
 /***
