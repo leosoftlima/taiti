@@ -2,6 +2,7 @@ package br.ufpe.cin.tan.test.java
 
 import br.ufpe.cin.tan.commit.change.gherkin.StepDefinition
 import br.ufpe.cin.tan.util.ConstantData
+import br.ufpe.cin.tan.util.java.JavaUtil
 import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter
@@ -28,6 +29,7 @@ class JavaStepDefinitionVisitor extends VoidVisitorAdapter<Void>{
         this.content = content.readLines()
         stepDefinitions = []
     }
+
 
  private static ignoreArgs(String value) {
         if (!value && value.empty) return ""
@@ -75,33 +77,28 @@ class JavaStepDefinitionVisitor extends VoidVisitorAdapter<Void>{
         }
         body
     }
+
     @Override
-    public void visit(CompilationUnit compilationUnit, Void args) {
-        	super.visit(compilationUnit, args);
-           // find all nodes tree the instance Method and gets referentes keywords Gherkins(Ex.: given, when, then, and.)
-             JavaUtil.getAllNodes(compilationUnit).each {node -> 
-	        	if(node instanceof MethodDeclaration) {	
-                   String keyword = ((MethodDeclaration) node).getAnnotation(0).getNameAsString() //get Name annotation node with keywork
+    void visit(MethodDeclaration methodDeclaration, Void args) {
+        super.visit(methodDeclaration, args)
 
-                   if (keyword in ConstantData.ALL_STEP_KEYWORDS) {  
-                      JavaStepRegexVisitor regexVisitor = new JavaStepRegexVisitor(path);
-                      compilationUnit.accept(regexVisitor);
-                        if (!regexVisitor.regexs.empty) {
-                           def regex = regexVisitor.regexs.first()  //get first elment array stepRegex.
-                           def value =  regex.value   // return "ex.: @Then (value = "The order {long} is fully matched.")
-                           def startLine = ((MethodDeclaration) node).getRange().get().begin //get position begin line code
-                           def endLine = ((MethodDeclaration) node).getRange().get().end // get position end line code
-                           def body = ((MethodDeclaration) n).getBody().get().asBlockStmt().toString() // get content block code for keyword reference
-
-                            if (!body.empty) {
-                                //Set information StepDefinition with context cenario referents keywords
-                               stepDefinitions += new StepDefinition(path: path, value: value, regex: regex.value,
-                               line: startLine, end: endLine, body: body, keyword: keyword)
-                            }
-                      }
-                   }         
+        String keyword = methodDeclaration.getAnnotation(0).getNameAsString() //get Name annotation node with keyword
+        if (keyword in ConstantData.ALL_STEP_KEYWORDS) {
+            JavaStepRegexVisitor regexVisitor = new JavaStepRegexVisitor(path)
+            methodDeclaration?.accept(regexVisitor, null)
+            if (!regexVisitor.regexs.empty) {
+                def regex = regexVisitor.regexs.first()
+                def value = regex.value   // return "ex.: @Then (value = "The order {long} is fully matched.")
+                def startLine = methodDeclaration?.getRange()?.get()?.begin
+                def endLine = methodDeclaration?.getRange()?.get()?.end
+                def bodyStatements = methodDeclaration?.getBody()?.get()?.asBlockStmt()?.statements
+                def body = bodyStatements.collect{ it.properties.get("expression") as String } as List<String>
+                if (!body.empty) {
+                    stepDefinitions += new StepDefinition(path: path, value: value, regex: regex.value, line: startLine.line,
+                            end: endLine.line, body: body, keyword: keyword)
                 }
-             }
+            }
+        }
     }
 
 }
