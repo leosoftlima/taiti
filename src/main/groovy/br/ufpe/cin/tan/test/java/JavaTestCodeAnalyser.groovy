@@ -11,14 +11,11 @@ import br.ufpe.cin.tan.test.error.ParseError
 import br.ufpe.cin.tan.test.MethodBody
 import br.ufpe.cin.tan.util.java.JavaUtil
 import com.github.javaparser.StaticJavaParser
+import com.github.javaparser.ast.CompilationUnit
 import groovy.util.logging.Slf4j
-import com.github.javaparser.ast.Node
-import com.github.javaparser.ast.CompilationUnit;
 
 @Slf4j
 class JavaTestCodeAnalyser extends TestCodeAbstractAnalyser {
-      
-  
 
     JavaTestCodeAnalyser(String repositoryPath, GherkinManager gherkinManager) {
         super(repositoryPath, gherkinManager)

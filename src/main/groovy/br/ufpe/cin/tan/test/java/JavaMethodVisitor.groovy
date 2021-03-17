@@ -2,13 +2,8 @@ package br.ufpe.cin.tan.test.java
 
 import br.ufpe.cin.tan.util.ConstantData
 import br.ufpe.cin.tan.util.Util
-
-import com.github.javaparser.ast.body.CallableDeclaration.Signature;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.CompilationUnit;
-import br.ufpe.cin.tan.util.java.JavaUtil
+import com.github.javaparser.ast.body.MethodDeclaration
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter
 
 /***
  * Visits methods body searching for other method calls. It should be used associated to JavaTestCodeVisitor.

@@ -3,12 +3,8 @@ package br.ufpe.cin.tan.test.java
 import br.ufpe.cin.tan.test.MethodToAnalyse
 import br.ufpe.cin.tan.util.ConstantData
 import br.ufpe.cin.tan.util.Util
-
-import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.CompilationUnit;
-import br.ufpe.cin.tan.util.java.JavaUtil
+import com.github.javaparser.ast.body.MethodDeclaration
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter
 
 /***
  * Visita step definitions de interesse buscando chamadas à métodos de aplicação.

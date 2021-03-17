@@ -6,9 +6,8 @@ import br.ufpe.cin.tan.util.java.JavaUtil
 import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter
-import com.github.javaparser.ast.Node
+
 import java.nio.charset.StandardCharsets
-import com.github.javaparser.ast.CompilationUnit;
 
 /***
  * Visits step definition files looking for regex expressions. The regex is used to match steps in Gherkin files and
@@ -32,7 +31,6 @@ class JavaStepRegexVisitor extends VoidVisitorAdapter<Void>{
     }
 
   @Override
-
   void visit(MethodDeclaration methodDeclaration, Void args) {
       super.visit(methodDeclaration, args)
       if (isStepDefinitionNode(methodDeclaration)) {
