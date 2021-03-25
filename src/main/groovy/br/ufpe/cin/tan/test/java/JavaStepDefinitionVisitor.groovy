@@ -28,8 +28,8 @@ class JavaStepDefinitionVisitor extends VoidVisitorAdapter<Void>{
     void visit(MethodDeclaration methodDeclaration, Void args) {
         super.visit(methodDeclaration, args)
 
-        String keyword = methodDeclaration.getAnnotation(0).getNameAsString() //get Name annotation node with keyword
-        if (keyword in ConstantData.ALL_STEP_KEYWORDS) {
+        String keyword = methodDeclaration?.getAnnotation(0)?.nameAsString //get Name annotation node with keyword
+        if (keyword && !keyword.empty &&keyword in ConstantData.ALL_STEP_KEYWORDS) {
             JavaStepRegexVisitor regexVisitor = new JavaStepRegexVisitor(path)
             methodDeclaration?.accept(regexVisitor, null)
             if (!regexVisitor.regexs.empty) {
