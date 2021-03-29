@@ -6,4 +6,9 @@ class RenamingChange implements CodeChange {
     String path
     String oldPath
 
+    @Override
+    String toString(){
+        path
+    }
+
 }
