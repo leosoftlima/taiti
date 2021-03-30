@@ -25,9 +25,11 @@ import org.eclipse.jgit.blame.BlameResult
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RawTextComparator
+import org.eclipse.jgit.diff.RenameDetector
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.ObjectLoader
 import org.eclipse.jgit.lib.ObjectReader
+import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevTree
 import org.eclipse.jgit.revwalk.RevWalk
@@ -443,7 +445,7 @@ class GitRepository {
                                 lines: 0..<result.readLines().size())
                     }
                     break
-                case DiffEntry.ChangeType.RENAME:
+                case DiffEntry.ChangeType.RENAME: //it does not work
                     codeChanges += new RenamingChange(path: entry.newPath, oldPath: entry.oldPath)
                     break
             }
@@ -542,6 +544,11 @@ class GitRepository {
         def commits = []
         logs?.each { c ->
             List<CodeChange> codeChanges = extractAllCodeChangesFromCommit(c, parser)
+
+            def result = getAllChangedFilesFromCommit(c)
+            def files = result.files
+            def renames = result.renames as List<RenamingChange>
+
             List<ChangedProdFile> prodFiles = codeChanges.findAll {
                 it instanceof ChangedProdFile
             } as List<ChangedProdFile>
@@ -560,15 +567,9 @@ class GitRepository {
             //List<UnitFile> unitChanges = codeChanges?.findAll{ it instanceof UnitFile } as List<UnitFile>
             List<ChangedUnitTestFile> unitChanges = []
 
-            List<RenamingChange> renameChanges = codeChanges?.findAll {
-                it instanceof RenamingChange
-            } as List<RenamingChange>
-
-            def files = getAllChangedFilesFromCommit(c)
-
             commits += new Commit(hash: c.name, message: c.fullMessage.replaceAll(RegexUtil.NEW_LINE_REGEX, " "),
                     author: c.authorIdent.name, date: c.commitTime, coreChanges: prodFiles, gherkinChanges: gherkinChanges,
-                    unitChanges: unitChanges, stepChanges: stepChanges, renameChanges: renameChanges, merge: c.parentCount > 1,
+                    unitChanges: unitChanges, stepChanges: stepChanges, renameChanges: renames, merge: c.parentCount > 1,
                     files: files)
         }
         commits
@@ -610,9 +611,8 @@ class GitRepository {
         return changedLines
     }
 
-    /* CÓDIGO COPIADO DO PROJETO MININGIT PARA IDENTIFICAR TODOS OS ARQUIVOS ALTERADOS POR UMA TAREFA, SEM FILTROS */
-
-    private List getAllChangedFilesFromCommit(RevCommit commit) {
+    private getAllChangedFilesFromCommit(RevCommit commit) {
+        List<CodeChange> renames = []
         def files = []
 
         switch (commit.parentCount) {
@@ -625,21 +625,22 @@ class GitRepository {
                 while (tw.next()) {
                     files += tw.pathString.replaceAll(RegexUtil.FILE_SEPARATOR_REGEX, Matcher.quoteReplacement(File.separator))
                 }
-                //tw.release()
                 git.close()
                 break
             case 1: //commit with one parent
-                def diffs = getDiff(commit.tree, commit.parents.first().tree)
-                files = getAllChangedFilesFromDiffs(diffs)
+                def result = getDiff(commit.tree, commit.parents.first().tree)
+                files = getAllChangedFilesFromDiffs(result.diffList)
+                renames += result.renames
                 break
             default: //merge commit (commit with more than one parent)
                 commit.parents.each { parent ->
-                    def diffs = getDiff(commit.tree, parent.tree)
-                    files += getAllChangedFilesFromDiffs(diffs)
+                    def result = getDiff(commit.tree, parent.tree)
+                    files += getAllChangedFilesFromDiffs(result.diffList)
+                    renames += result.renames
                 }
         }
 
-        files?.sort()?.unique()
+        [files: files?.sort()?.unique(), renames: renames?.unique()]
     }
 
     private static List getAllChangedFilesFromDiffs(List<DiffEntry> diffs) {
@@ -655,21 +656,35 @@ class GitRepository {
         return files
     }
 
-    private List<DiffEntry> getDiff(RevTree newTree, RevTree oldTree) {
+    private getDiff(RevTree newTree, RevTree oldTree) {
         def git = Git.open(new File(localPath))
         DiffFormatter df = new DiffFormatter(new ByteArrayOutputStream())
         df.setRepository(git.repository)
         df.setDiffComparator(RawTextComparator.DEFAULT)
         df.setDetectRenames(true)
         List<DiffEntry> diffs = df.scan(oldTree, newTree)
-        List<DiffEntry> result = []
+        List<DiffEntry> diffList = []
         diffs.each {
             it.oldPath = it.oldPath.replaceAll(RegexUtil.FILE_SEPARATOR_REGEX, Matcher.quoteReplacement(File.separator))
             it.newPath = it.newPath.replaceAll(RegexUtil.FILE_SEPARATOR_REGEX, Matcher.quoteReplacement(File.separator))
-            result += it
+            diffList += it
         }
+        List<CodeChange> renames = detectRenames(diffs, git.repository)
         git.close()
-        result
+        [diffList: diffList, renames:renames]
+    }
+
+    private detectRenames(List<DiffEntry> diffs, Repository gitRepository){
+        List<CodeChange> codeChanges = []
+        RenameDetector renameDetector = new RenameDetector(gitRepository)
+        renameDetector.addAll(diffs)
+        List<DiffEntry> renameResult =renameDetector.compute()
+        for (DiffEntry rr: renameResult) {
+            if (rr.getScore() >= renameDetector.getRenameScore()) {
+                codeChanges += new RenamingChange(path: rr.newPath, oldPath: rr.oldPath)
+            }
+        }
+        codeChanges
     }
 
 
