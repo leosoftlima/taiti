@@ -5,6 +5,8 @@ import br.ufpe.cin.tan.analysis.taskInterface.TaskI
 import br.ufpe.cin.tan.analysis.taskInterface.TestI
 import br.ufpe.cin.tan.analysis.taskInterface.TaskInterface
 import br.ufpe.cin.tan.commit.Commit
+import br.ufpe.cin.tan.commit.change.CodeChange
+import br.ufpe.cin.tan.commit.change.RenamingChange
 import br.ufpe.cin.tan.commit.change.gherkin.ChangedGherkinFile
 import br.ufpe.cin.tan.commit.change.gherkin.StepDefinition
 import br.ufpe.cin.tan.commit.change.stepdef.ChangedStepdefFile
@@ -359,14 +361,33 @@ class DoneTask extends Task {
         }
     }
 
+    private identifyRenames(List<CodeChange> files){
+        def renamedFilesOfInterest = []
+        files.each{file ->
+            def renamed = this.renamedFiles.findAll{ it.path == file.path || it.oldPath == file.path }
+            if(!renamed.empty) renamedFilesOfInterest += renamed
+        }
+        renamedFilesOfInterest
+    }
+
     private extractStepDefinitionChanges() {
-        def stepDefinitions = identifyChangedStepDefinitionFiles()
+        List<ChangedStepdefFile> stepDefinitions = identifyChangedStepDefinitionFiles()
+        def renameChanges = identifyRenames(stepDefinitions)?.unique()
         def notFoundSteps = []
         def notFoundFiles = []
         List<ChangedStepdefFile> finalStepDefinitionsFilesSet = []
 
+        gitRepository.reset(lastHash)
+        def projectFiles = this.identifyAllProjectFiles()
+        gitRepository.reset()
+
         stepDefinitions?.each { stepFile ->
-            def content = gitRepository.extractFileContent(lastCommit, stepFile.path)
+            def fileName = stepFile.path
+            def newNames = renameChanges?.findAll{ it.path == fileName || it.oldPath == fileName }*.path
+            def match = projectFiles.find{ it in newNames }
+            if (match) fileName = match
+
+            def content = gitRepository.extractFileContent(lastCommit, fileName)
             StepdefManager stepdefManager = new StepdefManager(testCodeAnalyser)
             List<StepDefinition> stepDefs = stepdefManager.parseStepDefinitionFile(stepFile.path, content, lastCommit.name)
             if (stepDefs) {
@@ -407,12 +428,23 @@ class DoneTask extends Task {
 
     private extractGherkinChanges() {
         def gherkinFiles = identifyChangedGherkinFiles()
+        def renameChanges = identifyRenames(gherkinFiles)?.unique()
+
+        gitRepository.reset(lastHash)
+        def projectFiles = this.identifyAllProjectFiles()
+        gitRepository.reset()
+
         def notFoundScenarios = []
         def notFoundFiles = []
         List<ChangedGherkinFile> finalGherkinFilesSet = []
 
         gherkinFiles?.each { gherkinFile ->
-            def result = gitRepository.parseGherkinFile(gherkinFile.path, lastCommit.name)
+            def fileName = gherkinFile.path
+            def newNames = renameChanges?.findAll{ it.path == fileName || it.oldPath == fileName }*.path
+            def match = projectFiles.find{ it in newNames }
+            if (match) fileName = match
+
+            def result = gitRepository.parseGherkinFile(fileName, lastCommit.name)
             Feature feature = result.feature
             if (feature) {
                 def currentScenarios = feature?.children?.findAll { !(it instanceof Background) }*.name

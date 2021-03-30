@@ -35,7 +35,6 @@ import org.eclipse.jgit.revwalk.RevTree
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.AbstractTreeIterator
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
-import org.eclipse.jgit.treewalk.FileTreeIterator
 import org.eclipse.jgit.treewalk.TreeWalk
 import org.eclipse.jgit.treewalk.filter.PathFilter
 
@@ -549,12 +548,6 @@ class GitRepository {
             def result = getAllChangedFilesFromCommit(c)
             def files = result.files
             def renames = result.renames as List<RenamingChange>
-
-            def duplicatedChanges = []
-            result.renames.each{rename ->
-                duplicatedChanges += codeChanges.findAll{ it.path == rename.path || it.path == rename.oldPath }
-            }
-            codeChanges -= duplicatedChanges
 
             List<ChangedProdFile> prodFiles = codeChanges.findAll {
                 it instanceof ChangedProdFile
